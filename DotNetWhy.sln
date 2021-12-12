@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CCB2229E-80E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy", "src\DotNetWhy\DotNetWhy.csproj", "{D5FF2D49-DDDB-468E-A48A-781C3441F23A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Processor", "src\DotNet.Processor\DotNet.Processor.csproj", "{1DCFC4B0-99F1-402D-A5FF-3AF9BB9D82D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,8 +21,13 @@ Global
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DCFC4B0-99F1-402D-A5FF-3AF9BB9D82D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DCFC4B0-99F1-402D-A5FF-3AF9BB9D82D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DCFC4B0-99F1-402D-A5FF-3AF9BB9D82D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DCFC4B0-99F1-402D-A5FF-3AF9BB9D82D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A} = {CCB2229E-80E7-4E80-AE28-88B10D3151D7}
+		{1DCFC4B0-99F1-402D-A5FF-3AF9BB9D82D0} = {CCB2229E-80E7-4E80-AE28-88B10D3151D7}
 	EndGlobalSection
 EndGlobal
