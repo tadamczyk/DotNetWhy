@@ -1,0 +1,23 @@
+name: Continuous Integration
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore
+        run: dotnet restore
+        continue-on-error: false
+      - name: Build
+        run: dotnet build --no-restore
+        continue-on-error: false
+      - name: Test
+        run: dotnet test --no-restore

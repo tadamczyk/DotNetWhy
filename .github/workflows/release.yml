@@ -1,0 +1,29 @@
+name: Release
+on:
+  push:
+    tags: [ '*.*.*' ]
+jobs:
+  build-test-pack-publish-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore
+        run: dotnet restore
+        continue-on-error: false
+      - name: Build
+        run: dotnet build --no-restore
+        continue-on-error: false
+      - name: Test
+        run: dotnet test --no-restore
+        continue-on-error: false
+      - name: Pack
+        run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=0.1.${GITHUB_RUN_NUMBER} /p:Version=0.1.${GITHUB_RUN_NUMBER}
+        continue-on-error: false
+      - name: Publish
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push ./artifacts/*.nupkg -k $NUGET_ORG_API_KEY -s https://api.nuget.org/v3/index.json
