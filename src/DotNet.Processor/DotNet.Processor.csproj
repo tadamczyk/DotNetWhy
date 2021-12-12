@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <LangVersion>Latest</LangVersion>
+        <TargetFrameworks>NetCoreApp3.1;Net5.0;Net6.0</TargetFrameworks>
+    </PropertyGroup>
+</Project>
