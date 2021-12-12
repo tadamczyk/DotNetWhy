@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>DotNetWhy</AssemblyName>
+        <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+        <ImplicitUsings>Enable</ImplicitUsings>
+        <LangVersion>Latest</LangVersion>
+        <OutputType>Exe</OutputType>
+        <PackAsTool>True</PackAsTool>
+        <TargetFrameworks>NetCoreApp3.1;Net5.0;Net6.0</TargetFrameworks>
+        <Title>$(AssemblyName)</Title>
+        <ToolCommandName>dotnet-why</ToolCommandName>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Authors>Tomasz Adamczyk</Authors>
+        <Copyright>Copyright (c) 2021 $(Authors)</Copyright>
+        <Description>A .NET global tool to show information about why a NuGet package is installed.</Description>
+        <PackageId>$(AssemblyName)</PackageId>
+        <!--<PackageIcon>TODO</PackageIcon>-->
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageProjectUrl>https://github.com/tadamczyk/DotNetWhy</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>CLI;Tool;DependencyTree;Dependencies;Tree;NuGet;DotNet;.NET;Csharp;C#</PackageTags>
+        <PackageReleaseNotes>See $(PackageProjectUrl)/blob/master/CHANGELOG.md for release notes.</PackageReleaseNotes>
+        <RepositoryType>Git</RepositoryType>
+        <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\LICENSE" Pack="true" PackagePath="\"/>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+</Project>
