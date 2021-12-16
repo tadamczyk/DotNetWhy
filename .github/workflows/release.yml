@@ -26,4 +26,4 @@ jobs:
       - name: Publish
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: dotnet nuget push ./artifacts/*.nupkg -k $NUGET_ORG_API_KEY -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./artifacts/DotNetWhy.${GITHUB_REF##*/}.nupkg -k $NUGET_ORG_API_KEY -s https://api.nuget.org/v3/index.json
