@@ -21,7 +21,7 @@ jobs:
         run: dotnet test --no-restore
         continue-on-error: false
       - name: Pack
-        run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=${GITHUB_REF##*/} /p:Version=${GITHUB_REF##*/} /src/DotNetWhy/DotNetWhy.csproj
+        run: dotnet pack --no-restore -c Release -o ./artifacts /p:PackageVersion=${GITHUB_REF##*/} /p:Version=${GITHUB_REF##*/} ./src/DotNetWhy/DotNetWhy.csproj
         continue-on-error: false
       - name: Publish
         env:
