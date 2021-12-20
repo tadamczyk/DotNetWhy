@@ -81,12 +81,13 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 Console.ForegroundColor = ConsoleColor.Red;
             }
 
-            widthIterator += dependencyLabel.Length;
-            var isInline = widthIterator <= maxOutputWidth;
+            var isInline = widthIterator + dependencyLabel.Length + (isLastDependency ? 0 : 4) <= maxOutputWidth;
             Console.Write(isInline ? dependencyLabel : $"\n{TargetPrefix}{TargetPrefix}{dependencyLabel}");
             Console.ResetColor();
             Console.Write($"{(isLastDependency ? string.Empty : " -> ")}");
-            widthIterator = widthIterator + 4 <= maxOutputWidth ? widthIterator + 4 : 4;
+            widthIterator = isInline
+                ? widthIterator + dependencyLabel.Length + (isLastDependency ? 0 : 4)
+                : 4 + dependencyLabel.Length + (isLastDependency ? 0 : 4);
         }
 
         Console.Write("\n");
