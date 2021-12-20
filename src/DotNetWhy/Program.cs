@@ -8,8 +8,8 @@ internal static class Program
 
         var serviceProvider = IServiceProviderExtension.GetServiceProvider();
         var logger = serviceProvider.GetService<IDependencyGraphLogger>();
-        var service = serviceProvider?.GetService<IDependencyGraphService>();
-        var fileSystem = serviceProvider?.GetService<IFileSystem>();
+        var service = serviceProvider.GetService<IDependencyGraphService>();
+        var fileSystem = serviceProvider.GetService<IFileSystem>();
         var directory = fileSystem?.Directory.GetCurrentDirectory();
 
         if (!ArgumentsValidator.IsValid(args)) return;
