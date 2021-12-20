@@ -1,58 +1,93 @@
 ﻿namespace DotNetWhy.Services;
 
-internal interface IDependencyGraphLogger
-{
-    void Log(SolutionDependencyGraph solutionDependencyGraph, string packageName);
-}
-
 internal class DependencyGraphLogger : IDependencyGraphLogger
 {
+    private const string ProjectPrefix = "\u25B6";
+    private const string TargetPrefix = "  ";
+
     public void Log(SolutionDependencyGraph solutionDependencyGraph, string packageName)
     {
-                var maxWidth = Console.WindowWidth - 4;
-        if (solutionDependencyGraph?.ProjectsDependencyGraphs?.Any() ?? false)
+        if (!solutionDependencyGraph?.ProjectsDependencyGraphs?.Any() ?? false)
         {
-            var width = solutionDependencyGraph.ProjectsDependencyGraphs.Max(p => p.Name.Length) + 2;
-            Console.OutputEncoding = Encoding.UTF8;
-            foreach (var project in solutionDependencyGraph.ProjectsDependencyGraphs)
+            return;
+        }
+
+        Console.OutputEncoding = Encoding.UTF8;
+
+        var maxOutputWidth = Console.WindowWidth - 4;
+        var labelWidth = GetLabelWidth(solutionDependencyGraph);
+
+        foreach (var project in solutionDependencyGraph.ProjectsDependencyGraphs)
+        {
+            var dependenciesPathsCountForProject = GetDependenciesPathsCountForProject(project);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(GetProjectLabel(project, dependenciesPathsCountForProject, labelWidth));
+
+            foreach (var target in project.TargetsDependencyGraphs)
             {
-                var targetWidth = project.TargetsDependencyGraphs.Max(t => t.Name.Length) + 2;
-                width = width > targetWidth ? width : targetWidth;
-                var projectCount = project.TargetsDependencyGraphs
-                    .Select(t => t.DependenciesPaths.Count).Sum();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\u25B6 {project.Name.PadRight(width + projectCount.ToString().Length + 1)} [{projectCount}]");
-                foreach (var target in project.TargetsDependencyGraphs)
+                var dependenciesPathsCountForTarget = target.DependenciesPaths.Count;
+
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(GetTargetLabel(target, dependenciesPathsCountForProject, dependenciesPathsCountForTarget, labelWidth));
+                Console.ResetColor();
+
+                foreach (var dependenciesPath in target.DependenciesPaths)
                 {
-                    var targetCount = target.DependenciesPaths.Count;
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine($"  {$"[{target.Name}]".PadRight(width + (projectCount.ToString().Length - targetCount.ToString().Length))} [{targetCount}/{projectCount}]");
-                    foreach (var path in target.DependenciesPaths)
-                    {
-                        Console.ResetColor();
-                        Console.Write("  ");
-                        for (int i = 0, j = 2; i < path.Length; i++)
-                        {
-                            var isLast = i == path.Length - 1;
-                            var dependency = $"{path[i].Name} ({path[i].Version})";
-                            j = j + dependency.Length + (isLast ? 0 : 4);
-                            if (dependency.Contains(packageName))
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                            }
-                            Console.Write(j <= maxWidth ? dependency : $"\n    {dependency}");
-                            Console.ResetColor();
-                            Console.Write($"{(isLast ? "" : " -> ")}");
-                            j = j <= maxWidth ? j : 4;
-                        }
-                        Console.Write("\n");
-                    }
+                    LogDependencyPath(dependenciesPath, packageName, maxOutputWidth);
                 }
-                
-                Console.WriteLine();
             }
 
-            Console.ResetColor();
+            Console.WriteLine();
         }
+
+        Console.ResetColor();
+    }
+
+    private static int GetLabelWidth(SolutionDependencyGraph solutionDependencyGraph) =>
+        solutionDependencyGraph
+            .ProjectsDependencyGraphs
+            .Select(p => p.Name.Length)
+            .Concat(solutionDependencyGraph
+                .ProjectsDependencyGraphs
+                .SelectMany(p => p.TargetsDependencyGraphs
+                    .Select(t => t.Name.Length)))
+            .Max() + 2;
+
+    private static int GetDependenciesPathsCountForProject(ProjectDependencyGraph projectDependencyGraph) =>
+        projectDependencyGraph
+            .TargetsDependencyGraphs
+            .Select(t => t.DependenciesPaths.Count)
+            .Sum();
+
+    private static string GetProjectLabel(ProjectDependencyGraph projectDependencyGraph, int dependenciesPathsCountForProject, int nameWidth) =>
+        $"{ProjectPrefix} {projectDependencyGraph.Name.PadRight(nameWidth + dependenciesPathsCountForProject.ToString().Length + 1)} [{dependenciesPathsCountForProject}]";
+
+    private static string GetTargetLabel(TargetDependencyGraph target, int dependenciesPathsCountForProject, int dependenciesPathsCountForTarget, int nameWidth) =>
+        $"{TargetPrefix}{$"[{target.Name}]".PadRight(nameWidth + (dependenciesPathsCountForProject.ToString().Length - dependenciesPathsCountForTarget.ToString().Length))} [{dependenciesPathsCountForTarget}/{dependenciesPathsCountForProject}]";
+
+    private static void LogDependencyPath(DependenciesPath[] dependenciesPath, string packageName, int maxOutputWidth)
+    {
+        Console.Write(TargetPrefix);
+
+        for (int index = 0, widthIterator = TargetPrefix.Length; index < dependenciesPath.Length; index++)
+        {
+            var isLastDependency = index == dependenciesPath.Length - 1;
+            var dependencyLabel = $"{dependenciesPath[index].Name} ({dependenciesPath[index].Version})";
+
+            if (dependencyLabel.Contains(packageName))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+
+            widthIterator = widthIterator + dependencyLabel.Length + (isLastDependency ? 0 : 4);
+            var isInline = widthIterator <= maxOutputWidth;
+            Console.Write(isInline ? dependencyLabel : $"\n{TargetPrefix}{TargetPrefix}{dependencyLabel}");
+            Console.ResetColor();
+            Console.Write($"{(isLastDependency ? string.Empty : " -> ")}");
+            widthIterator = isInline ? widthIterator : 4;
+        }
+
+        Console.Write("\n");
     }
 }
