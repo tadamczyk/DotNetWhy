@@ -9,6 +9,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
     {
         if (!solutionDependencyGraph?.ProjectsDependencyGraphs?.Any() ?? false)
         {
+            Console.WriteLine($"Package {packageName} usage not found.");
             return;
         }
 
@@ -80,12 +81,12 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 Console.ForegroundColor = ConsoleColor.Red;
             }
 
-            widthIterator = widthIterator + dependencyLabel.Length + (isLastDependency ? 0 : 4);
+            widthIterator += dependencyLabel.Length;
             var isInline = widthIterator <= maxOutputWidth;
             Console.Write(isInline ? dependencyLabel : $"\n{TargetPrefix}{TargetPrefix}{dependencyLabel}");
             Console.ResetColor();
             Console.Write($"{(isLastDependency ? string.Empty : " -> ")}");
-            widthIterator = isInline ? widthIterator : 4;
+            widthIterator = widthIterator + 4 <= maxOutputWidth ? widthIterator + 4 : 4;
         }
 
         Console.Write("\n");
