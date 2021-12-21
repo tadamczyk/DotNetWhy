@@ -159,7 +159,15 @@ internal class DependencyGraphService : IDependencyGraphService
                         .Select(d => DependenciesPath.Create(d.Split("/")[0], d.Split("/")[1]))
                         .ToArray();
 
-                dependenciesPathsByPackage.Add(dependenciesPaths);
+                if (dependenciesPaths.Length > 2 && dependenciesPaths.Last().Equals(dependenciesPaths.ElementAt(dependenciesPaths.Length - 2)))
+                {
+                    dependenciesPaths = dependenciesPaths.Take(dependenciesPaths.Length - 1).ToArray();
+                }
+
+                if (!dependenciesPathsByPackage.Any(d => d.SequenceEqual(dependenciesPaths)))
+                {
+                    dependenciesPathsByPackage.Add(dependenciesPaths);
+                }
             }
         }
 
