@@ -1,7 +1,7 @@
 ﻿namespace DotNet.CommandExecutor.Constants;
 
-internal enum ResultStatus
+internal enum Status
 {
-    Failed = -1,
+    Failure = -1,
     Success = 0
 }
