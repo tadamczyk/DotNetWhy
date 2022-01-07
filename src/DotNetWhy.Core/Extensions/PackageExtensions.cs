@@ -2,6 +2,6 @@
 
 internal static class PackageExtensions
 {
-    public static bool IsPackageReference(this PackageSpec package) =>
-        package.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference;
+    internal static bool IsPackageReference(this PackageSpec package) =>
+        package.RestoreMetadata.ProjectStyle is ProjectStyle.PackageReference;
 }

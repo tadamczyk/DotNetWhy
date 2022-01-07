@@ -5,7 +5,7 @@ internal static partial class DotNetRunner
     internal static DotNetResult GenerateGraphFile(string workingDirectory, string outputDirectory) =>
         DotNetExecutor
             .Initialize()
-            .InDirectory(workingDirectory)
+            .InDirectory(Path.GetDirectoryName(workingDirectory))
             .WithArguments(new[]
             {
                 "msbuild",
