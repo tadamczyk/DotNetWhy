@@ -2,9 +2,8 @@
 
 internal static class ProcessExtensions
 {
-    internal static void SetDotNetProcessStartInfo(this Process process, string workingDirectory, string arguments)
-    {
-        process.StartInfo = new ProcessStartInfo(CommandConstants.Name, arguments)
+    internal static void SetProcessStartInfo(this Process process, string workingDirectory, string arguments) =>
+        process.StartInfo = new ProcessStartInfo(Command.Name, arguments)
         {
             CreateNoWindow = true,
             RedirectStandardError = true,
@@ -12,5 +11,4 @@ internal static class ProcessExtensions
             UseShellExecute = false,
             WorkingDirectory = workingDirectory
         };
-    }
 }

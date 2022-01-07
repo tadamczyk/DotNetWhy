@@ -1,7 +1,7 @@
 ﻿namespace DotNet.CommandExecutor.Constants;
 
-internal static class CommandConstants
+internal static class Command
 {
     internal const string Name = "dotnet";
-    internal const int TimeToExit = 30 * 1000;
+    internal const int MaximumExecutionTime = 30 * 1_000;
 }

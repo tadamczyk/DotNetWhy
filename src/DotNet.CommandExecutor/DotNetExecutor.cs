@@ -7,9 +7,11 @@ public sealed class DotNetExecutor : ICommandDirectory,
     private static string _workingDirectory;
     private static string _arguments;
 
-    private DotNetExecutor() => Expression.Empty();
+    private DotNetExecutor() =>
+        Expression.Empty();
 
-    public static ICommandDirectory Initialize() => new DotNetExecutor();
+    public static ICommandDirectory Initialize() =>
+        new DotNetExecutor();
 
     public ICommandArgument InDirectory(string workingDirectory)
     {
@@ -25,31 +27,31 @@ public sealed class DotNetExecutor : ICommandDirectory,
 
     public ICommandResult Execute()
     {
-        var dotNetProcess = new Process();
+        var dotNet = new Process();
 
         try
         {
-            dotNetProcess.SetDotNetProcessStartInfo(_workingDirectory, _arguments);
-            dotNetProcess.Start();
+            dotNet.SetProcessStartInfo(_workingDirectory, _arguments);
+            dotNet.Start();
 
-            var getOutput = dotNetProcess.StandardOutput.ReadToEndAsync();
-            var getErrors = dotNetProcess.StandardError.ReadToEndAsync();
-            var dotNetProcessExited = dotNetProcess.WaitForExit(CommandConstants.TimeToExit);
+            var getOutput = dotNet.StandardOutput.ReadToEndAsync();
+            var getErrors = dotNet.StandardError.ReadToEndAsync();
+            var dotNetExited = dotNet.WaitForExit(Command.MaximumExecutionTime);
 
-            if (dotNetProcessExited)
+            if (dotNetExited)
             {
                 Task.WaitAll(getOutput, getErrors);
 
-                return new DotNetResult(getOutput.Result, getErrors.Result, dotNetProcess.ExitCode);
+                return DotNetResult.Create(getOutput.Result, getErrors.Result, dotNet.ExitCode);
             }
 
-            dotNetProcess.Kill();
+            dotNet.Kill();
 
-            return new DotNetResult(getOutput.Result, getErrors.Result, (int) ResultStatus.Failed);
+            return DotNetResult.Create(getOutput.Result, getErrors.Result, (int) Status.Failure);
         }
         finally
         {
-            dotNetProcess.Dispose();
+            dotNet.Dispose();
         }
     }
 }
