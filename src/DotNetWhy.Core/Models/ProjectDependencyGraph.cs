@@ -2,16 +2,19 @@
 
 public class ProjectDependencyGraph
 {
-    private readonly List<TargetDependencyGraph> _targetsDependencyGraphs = new();
     public string Name { get; }
     public IReadOnlyCollection<TargetDependencyGraph> TargetsDependencyGraphs => _targetsDependencyGraphs.AsReadOnly();
+
+    private readonly List<TargetDependencyGraph> _targetsDependencyGraphs = new();
+    internal LockFile LockFile { get; set; }
+    internal IEnumerable<TargetFrameworkInformation> TargetFrameworks { get; set; }
 
     private ProjectDependencyGraph(string name) =>
         Name = name;
 
-    public static ProjectDependencyGraph Create(string name) =>
+    internal static ProjectDependencyGraph Create(string name) =>
         new(name);
 
-    public void AddTargetDependencyGraph(TargetDependencyGraph targetDependencyGraph) =>
+    internal void AddTargetDependencyGraph(TargetDependencyGraph targetDependencyGraph) =>
         _targetsDependencyGraphs.Add(targetDependencyGraph);
 }

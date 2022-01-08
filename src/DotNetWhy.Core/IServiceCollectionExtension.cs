@@ -4,9 +4,10 @@ public static class IServiceCollectionExtension
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services) =>
         services
+            .AddSingleton<IDependenciesPathsProvider, DependenciesPathsProvider>()
             .AddSingleton<IDependencyGraphProvider, DependencyGraphProvider>()
             .AddSingleton<IDependencyGraphSourceProvider, DependencyGraphSourceProvider>()
             .AddSingleton<IDependencyGraphService, DependencyGraphService>()
-            .AddSingleton<ILockFileProvider, LockFileProvider>()
-            .AddSingleton<ILockFileSourceProvider, LockFileSourceProvider>();
+            .AddTransient<ILockFileProvider, LockFileProvider>()
+            .AddTransient<ILockFileSourceProvider, LockFileSourceProvider>();
 }
