@@ -14,6 +14,8 @@
         <Authors>Tomasz Adamczyk</Authors>
         <Copyright>Copyright (c) 2021 $(Authors)</Copyright>
         <Description>A .NET global tool to show information about why a NuGet package is installed.</Description>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
         <PackageId>$(AssemblyName)</PackageId>
         <PackageIcon>logo.png</PackageIcon>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -22,7 +24,9 @@
         <PackageTags>CLI;Tool;DependencyTree;Dependencies;Tree;NuGet;DotNet;.NET;CSharp;C#</PackageTags>
         <PackageReleaseNotes>See $(PackageProjectUrl)/blob/master/CHANGELOG.md for release notes.</PackageReleaseNotes>
         <RepositoryType>Git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\assets\logo\256\logo.png" Pack="true" PackagePath="\" />
@@ -31,6 +35,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
         <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
     </ItemGroup>
     <ItemGroup>
