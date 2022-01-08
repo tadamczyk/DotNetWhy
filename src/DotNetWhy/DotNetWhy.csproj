@@ -14,8 +14,8 @@
         <Authors>Tomasz Adamczyk</Authors>
         <Copyright>Copyright (c) 2021 $(Authors)</Copyright>
         <Description>A .NET global tool to show information about why a NuGet package is installed.</Description>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <IncludeSymbols>true</IncludeSymbols>
+        <EmbedUntrackedSources>False</EmbedUntrackedSources>
+        <IncludeSymbols>True</IncludeSymbols>
         <PackageId>$(AssemblyName)</PackageId>
         <PackageIcon>logo.png</PackageIcon>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -24,9 +24,12 @@
         <PackageTags>CLI;Tool;DependencyTree;Dependencies;Tree;NuGet;DotNet;.NET;CSharp;C#</PackageTags>
         <PackageReleaseNotes>See $(PackageProjectUrl)/blob/master/CHANGELOG.md for release notes.</PackageReleaseNotes>
         <RepositoryType>Git</RepositoryType>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <PublishRepositoryUrl>True</PublishRepositoryUrl>
         <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\assets\logo\256\logo.png" Pack="true" PackagePath="\" />
