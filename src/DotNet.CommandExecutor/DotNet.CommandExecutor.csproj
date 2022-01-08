@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <IncludeSymbols>true</IncludeSymbols>
+        <EmbedUntrackedSources>False</EmbedUntrackedSources>
+        <IncludeSymbols>True</IncludeSymbols>
         <LangVersion>Latest</LangVersion>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <PublishRepositoryUrl>True</PublishRepositoryUrl>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <TargetFrameworks>NetCoreApp3.1;Net5.0;Net6.0</TargetFrameworks>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
