@@ -95,7 +95,7 @@ internal class DependencyGraphService : IDependencyGraphService
                 }
             });
 
-        return projectDependenciesGraphs.ToList();
+        return projectDependenciesGraphs.OrderBy(p => p.Name).ToList();
     }
 
     private static void CreateDependenciesPaths(LockFileTargetLibrary library,
