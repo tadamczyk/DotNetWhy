@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <EmbedUntrackedSources>False</EmbedUntrackedSources>
+        <EmbedUntrackedSources>True</EmbedUntrackedSources>
         <IncludeSymbols>True</IncludeSymbols>
         <LangVersion>Latest</LangVersion>
         <PublishRepositoryUrl>True</PublishRepositoryUrl>
