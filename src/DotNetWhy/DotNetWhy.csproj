@@ -14,7 +14,7 @@
         <Authors>Tomasz Adamczyk</Authors>
         <Copyright>Copyright (c) 2021 $(Authors)</Copyright>
         <Description>A .NET global tool to show information about why a NuGet package is installed.</Description>
-        <EmbedUntrackedSources>False</EmbedUntrackedSources>
+        <EmbedUntrackedSources>True</EmbedUntrackedSources>
         <IncludeSymbols>True</IncludeSymbols>
         <PackageId>$(AssemblyName)</PackageId>
         <PackageIcon>logo.png</PackageIcon>
