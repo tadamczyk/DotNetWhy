@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Interfaces;
+﻿namespace DotNetWhy.Services.Interfaces;
 
 internal interface IDependencyGraphLogger
 {

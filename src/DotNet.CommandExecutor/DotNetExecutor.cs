@@ -15,17 +15,17 @@ public sealed class DotNetExecutor : ICommandDirectory,
 
     public ICommandArgument InDirectory(string workingDirectory)
     {
-        _workingDirectory = workingDirectory;
+        _workingDirectory = workingDirectory ?? Environment.CurrentDirectory;
         return this;
     }
 
-    public ICommandExecutor WithArguments(string[] arguments)
+    public ICommandExecutor WithArguments(IEnumerable<string> arguments)
     {
-        _arguments = string.Join(" ", arguments);
+        _arguments = string.Join(" ", arguments ?? Array.Empty<string>());
         return this;
     }
 
-    public ICommandResult Execute()
+    public DotNetResult Execute()
     {
         var dotNet = new Process();
 
@@ -34,20 +34,20 @@ public sealed class DotNetExecutor : ICommandDirectory,
             dotNet.SetProcessStartInfo(_workingDirectory, _arguments);
             dotNet.Start();
 
-            var getOutput = dotNet.StandardOutput.ReadToEndAsync();
-            var getErrors = dotNet.StandardError.ReadToEndAsync();
-            var dotNetExited = dotNet.WaitForExit(Command.MaximumExecutionTime);
+            var getOutputAsync = dotNet.StandardOutput.ReadToEndAsync();
+            var getErrorsAsync = dotNet.StandardError.ReadToEndAsync();
+            var dotNetCommandDone = dotNet.WaitForExit(TimeConstants.MaximumExecutionTime);
 
-            if (dotNetExited)
+            if (dotNetCommandDone)
             {
-                Task.WaitAll(getOutput, getErrors);
+                Task.WaitAll(getOutputAsync, getErrorsAsync);
 
-                return DotNetResult.Create(getOutput.Result, getErrors.Result, dotNet.ExitCode);
+                return DotNetResult.Create(getOutputAsync.Result, getErrorsAsync.Result, dotNet.ExitCode);
             }
 
             dotNet.Kill();
 
-            return DotNetResult.Create(getOutput.Result, getErrors.Result, (int) Status.Failure);
+            return DotNetResult.Create(getOutputAsync.Result, getErrorsAsync.Result, (int) Status.Failure);
         }
         finally
         {

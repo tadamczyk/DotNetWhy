@@ -1,6 +1,6 @@
 ﻿namespace DotNetWhy.Core;
 
-public static class IServiceCollectionExtension
+public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services) =>
         services

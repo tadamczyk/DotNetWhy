@@ -1,10 +1,10 @@
 ﻿namespace DotNet.CommandExecutor;
 
-public sealed class DotNetResult : ICommandResult
+public sealed class DotNetResult
 {
     public string Output { get; }
     public string Errors { get; }
-    public bool IsSuccess => Status is (int) Constants.Status.Success;
+    public bool IsSuccess => Status is (int) Enums.Status.Success;
 
     private int Status { get; }
 
