@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Services;
+﻿namespace DotNetWhy.Services.Services;
 
 internal class DependencyGraphLogger : IDependencyGraphLogger
 {
@@ -28,20 +28,21 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
             var dependenciesPathsCountForProject = GetDependenciesPathsCountForProject(project);
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(GetProjectLabel(project, dependenciesPathsCountForSolution, dependenciesPathsCountForProject, labelWidth));
+            Console.WriteLine(GetProjectLabel(project, dependenciesPathsCountForSolution,
+                dependenciesPathsCountForProject, labelWidth));
 
             foreach (var target in project.TargetsDependencyGraphs)
             {
                 var dependenciesPathsCountForTarget = target.DependenciesPaths.Count;
 
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine(GetTargetLabel(target, dependenciesPathsCountForProject, dependenciesPathsCountForTarget, labelWidth));
+                Console.WriteLine(GetTargetLabel(target, dependenciesPathsCountForProject,
+                    dependenciesPathsCountForTarget, labelWidth));
                 Console.ResetColor();
 
                 for (var index = 1; index <= target.DependenciesPaths.Count; index++)
-                {
-                    LogDependencyPath(target.DependenciesPaths.ElementAt(index - 1), packageName, maxOutputWidth, index);
-                }
+                    LogDependencyPath(target.DependenciesPaths.ElementAt(index - 1), packageName, maxOutputWidth,
+                        index);
             }
 
             Console.WriteLine();
@@ -50,8 +51,9 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         Console.ResetColor();
     }
 
-    private static int GetLabelWidth(SolutionDependencyGraph solutionDependencyGraph) =>
-        solutionDependencyGraph
+    private static int GetLabelWidth(SolutionDependencyGraph solutionDependencyGraph)
+    {
+        return solutionDependencyGraph
             .ProjectsDependencyGraphs
             .Select(p => p.Name.Length)
             .Concat(solutionDependencyGraph
@@ -60,29 +62,47 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                     .Select(t => t.Name.Length)))
             .Concat(new[] {solutionDependencyGraph.Name.Length})
             .Max() + 8;
+    }
 
-    private static int GetDependenciesPathsCountForSolution(SolutionDependencyGraph solutionDependencyGraph) =>
-        solutionDependencyGraph
+    private static int GetDependenciesPathsCountForSolution(SolutionDependencyGraph solutionDependencyGraph)
+    {
+        return solutionDependencyGraph
             .ProjectsDependencyGraphs
             .Select(GetDependenciesPathsCountForProject)
             .Sum();
+    }
 
-    private static int GetDependenciesPathsCountForProject(ProjectDependencyGraph projectDependencyGraph) =>
-        projectDependencyGraph
+    private static int GetDependenciesPathsCountForProject(ProjectDependencyGraph projectDependencyGraph)
+    {
+        return projectDependencyGraph
             .TargetsDependencyGraphs
             .Select(t => t.DependenciesPaths.Count)
             .Sum();
+    }
 
-    private static string GetSolutionLabel(SolutionDependencyGraph solutionDependencyGraph, int dependenciesPathsCountForSolution, int nameWidth) =>
-        $"{SolutionPrefix} {solutionDependencyGraph.Name.PadRight(nameWidth + dependenciesPathsCountForSolution.ToString().Length + 2)} [{dependenciesPathsCountForSolution}]";
+    private static string GetSolutionLabel(SolutionDependencyGraph solutionDependencyGraph,
+        int dependenciesPathsCountForSolution, int nameWidth)
+    {
+        return
+            $"{SolutionPrefix} {solutionDependencyGraph.Name.PadRight(nameWidth + dependenciesPathsCountForSolution.ToString().Length + 2)} [{dependenciesPathsCountForSolution}]";
+    }
 
-    private static string GetProjectLabel(ProjectDependencyGraph projectDependencyGraph, int dependenciesPathsCountForSolution, int dependenciesPathsCountForProject, int nameWidth) =>
-        $"{ProjectPrefix} {projectDependencyGraph.Name.PadRight(nameWidth + dependenciesPathsCountForSolution.ToString().Length - dependenciesPathsCountForProject.ToString().Length + 1)} [{dependenciesPathsCountForProject}/{dependenciesPathsCountForSolution}]";
+    private static string GetProjectLabel(ProjectDependencyGraph projectDependencyGraph,
+        int dependenciesPathsCountForSolution, int dependenciesPathsCountForProject, int nameWidth)
+    {
+        return
+            $"{ProjectPrefix} {projectDependencyGraph.Name.PadRight(nameWidth + dependenciesPathsCountForSolution.ToString().Length - dependenciesPathsCountForProject.ToString().Length + 1)} [{dependenciesPathsCountForProject}/{dependenciesPathsCountForSolution}]";
+    }
 
-    private static string GetTargetLabel(TargetDependencyGraph target, int dependenciesPathsCountForProject, int dependenciesPathsCountForTarget, int nameWidth) =>
-        $"{TargetPrefix} {$"[{target.Name}]".PadRight(nameWidth + dependenciesPathsCountForProject.ToString().Length - dependenciesPathsCountForTarget.ToString().Length + 1)} [{dependenciesPathsCountForTarget}/{dependenciesPathsCountForProject}]";
+    private static string GetTargetLabel(TargetDependencyGraph target, int dependenciesPathsCountForProject,
+        int dependenciesPathsCountForTarget, int nameWidth)
+    {
+        return
+            $"{TargetPrefix} {$"[{target.Name}]".PadRight(nameWidth + dependenciesPathsCountForProject.ToString().Length - dependenciesPathsCountForTarget.ToString().Length + 1)} [{dependenciesPathsCountForTarget}/{dependenciesPathsCountForProject}]";
+    }
 
-    private static void LogDependencyPath(DependenciesPath[] dependenciesPath, string packageName, int maxOutputWidth, int iterator)
+    private static void LogDependencyPath(DependenciesPath[] dependenciesPath, string packageName, int maxOutputWidth,
+        int iterator)
     {
         Console.Write($"{iterator}.".PadRight(4));
 

@@ -13,9 +13,9 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-        <PackageReference Include="NuGet.ProjectModel" Version="6.1.0" />
+        <PackageReference Include="System.IO.Abstractions" Version="16.1.25" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\DotNet.CommandExecutor\DotNet.CommandExecutor.csproj" />
+        <ProjectReference Include="..\DotNetWhy.Core\DotNetWhy.Core.csproj" />
     </ItemGroup>
 </Project>

@@ -2,5 +2,5 @@
 
 public interface ICommandExecutor
 {
-    ICommandResult Execute();
+    DotNetResult Execute();
 }

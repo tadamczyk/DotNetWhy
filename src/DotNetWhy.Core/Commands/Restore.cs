@@ -6,10 +6,13 @@ internal static partial class DotNetRunner
         DotNetExecutor
             .Initialize()
             .InDirectory(Path.GetDirectoryName(workingDirectory))
-            .WithArguments(new[]
-            {
-                "restore",
-                $"\"{workingDirectory}\""
-            })
-            .Execute() as DotNetResult;
+            .WithArguments(GetRestoreArguments(workingDirectory))
+            .Execute();
+
+    private static IEnumerable<string> GetRestoreArguments(string workingDirectory) =>
+        new[]
+        {
+            "restore",
+            $"\"{workingDirectory}\""
+        };
 }

@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Validators;
+﻿namespace DotNetWhy.Services.Validators;
 
 internal static class PackageNameValidator
 {
