@@ -7,7 +7,7 @@ internal static partial class DotNetRunner
             .Initialize()
             .InDirectory(Path.GetDirectoryName(workingDirectory))
             .WithArguments(GetGenerateGraphFileArguments(workingDirectory, outputDirectory))
-            .Execute();
+            .AndExecute();
 
     private static IEnumerable<string> GetGenerateGraphFileArguments(string workingDirectory, string outputDirectory) =>
         new[]

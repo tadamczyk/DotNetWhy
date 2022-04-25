@@ -6,6 +6,7 @@ public class ProjectDependencyGraph
     public IReadOnlyCollection<TargetDependencyGraph> TargetsDependencyGraphs => _targetsDependencyGraphs.AsReadOnly();
 
     private readonly List<TargetDependencyGraph> _targetsDependencyGraphs = new();
+
     internal LockFile LockFile { get; set; }
     internal IEnumerable<TargetFrameworkInformation> TargetFrameworks { get; set; }
 

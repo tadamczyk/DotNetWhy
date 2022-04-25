@@ -12,7 +12,9 @@ public class DependenciesPath
         new(name, version);
 
     public override bool Equals(object obj) =>
-        obj is DependenciesPath dependenciesPath && dependenciesPath.Name == Name && dependenciesPath.Version == Version;
+        obj is DependenciesPath dependenciesPath
+            && dependenciesPath.Name == Name
+            && dependenciesPath.Version == Version;
 
     public override int GetHashCode() =>
         HashCode.Combine(Name, Version);

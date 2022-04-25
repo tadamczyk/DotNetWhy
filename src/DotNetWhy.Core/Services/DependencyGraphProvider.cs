@@ -1,6 +1,4 @@
-﻿using DotNetRunner = DotNetWhy.Core.Commands.DotNetRunner;
-
-namespace DotNetWhy.Core.Services;
+﻿namespace DotNetWhy.Core.Services;
 
 internal class DependencyGraphProvider : IDependencyGraphProvider
 {

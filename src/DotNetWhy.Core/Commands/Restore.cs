@@ -7,7 +7,7 @@ internal static partial class DotNetRunner
             .Initialize()
             .InDirectory(Path.GetDirectoryName(workingDirectory))
             .WithArguments(GetRestoreArguments(workingDirectory))
-            .Execute();
+            .AndExecute();
 
     private static IEnumerable<string> GetRestoreArguments(string workingDirectory) =>
         new[]

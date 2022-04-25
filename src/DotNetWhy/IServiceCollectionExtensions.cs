@@ -4,8 +4,7 @@ internal static class IServiceCollectionExtensions
 {
     private static readonly IServiceCollection Services;
 
-    static IServiceCollectionExtensions() =>
-        Services = new ServiceCollection();
+    static IServiceCollectionExtensions() => Services = new ServiceCollection();
 
     internal static IDotNetWhyService GetDotNetWhyService() =>
         GetServiceProvider()
