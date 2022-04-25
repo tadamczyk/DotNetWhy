@@ -1,31 +1,22 @@
 ﻿namespace DotNet.CommandExecutor;
 
-public sealed class DotNetExecutor : ICommandDirectory,
-    ICommandArgument,
-    ICommandExecutor
+public sealed class DotNetExecutor
 {
-    private static string _workingDirectory;
-    private static string _arguments;
+    private readonly string _arguments;
+    internal const string ArgumentsFieldName = nameof(_arguments);
 
-    private DotNetExecutor() =>
-        Expression.Empty();
+    private readonly string _workingDirectory;
+    internal const string WorkingDirectoryFieldName = nameof(_workingDirectory);
 
-    public static ICommandDirectory Initialize() =>
-        new DotNetExecutor();
-
-    public ICommandArgument InDirectory(string workingDirectory)
+    private DotNetExecutor()
     {
-        _workingDirectory = workingDirectory ?? Environment.CurrentDirectory;
-        return this;
+        _arguments = string.Empty;
+        _workingDirectory = Environment.CurrentDirectory;
     }
 
-    public ICommandExecutor WithArguments(IEnumerable<string> arguments)
-    {
-        _arguments = string.Join(" ", arguments ?? Array.Empty<string>());
-        return this;
-    }
+    public static DotNetExecutor Initialize() => new();
 
-    public DotNetResult Execute()
+    public DotNetResult AndExecute()
     {
         var dotNet = new Process();
 
