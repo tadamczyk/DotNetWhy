@@ -1,28 +1,36 @@
 ﻿namespace DotNet.CommandExecutor;
 
+/// <summary>
+/// The executor of the DotNet process.
+/// </summary>
 public sealed class DotNetExecutor
 {
-    private readonly string _arguments;
-    internal const string ArgumentsFieldName = nameof(_arguments);
-
-    private readonly string _workingDirectory;
-    internal const string WorkingDirectoryFieldName = nameof(_workingDirectory);
+    internal string Arguments { get; set; }
+    internal string WorkingDirectory { get; set; }
 
     private DotNetExecutor()
     {
-        _arguments = string.Empty;
-        _workingDirectory = Environment.CurrentDirectory;
+        Arguments = string.Empty;
+        WorkingDirectory = Environment.CurrentDirectory;
     }
 
+    /// <summary>
+    /// Creates a new instance of the DotNet process for future execution.
+    /// </summary>
+    /// <returns>A new instance of <see cref="DotNetExecutor" />.</returns>
     public static DotNetExecutor Initialize() => new();
 
+    /// <summary>
+    /// Executes prepared instance of the DotNet process.
+    /// </summary>
+    /// <returns>A result of performed the DotNet process as a <see cref="DotNetResult" />.</returns>
     public DotNetResult AndExecute()
     {
         var dotNet = new Process();
 
         try
         {
-            dotNet.SetProcessStartInfo(_workingDirectory, _arguments);
+            dotNet.SetProcessStartInfo(WorkingDirectory, Arguments);
             dotNet.Start();
 
             var getOutputAsync = dotNet.StandardOutput.ReadToEndAsync();
