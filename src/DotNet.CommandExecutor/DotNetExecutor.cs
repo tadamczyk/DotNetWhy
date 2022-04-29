@@ -1,7 +1,7 @@
 ﻿namespace DotNet.CommandExecutor;
 
 /// <summary>
-/// The executor of the DotNet process.
+///     The executor of the DotNet process.
 /// </summary>
 public sealed class DotNetExecutor
 {
@@ -15,13 +15,13 @@ public sealed class DotNetExecutor
     }
 
     /// <summary>
-    /// Creates a new instance of the DotNet process for future execution.
+    ///     Creates a new instance of the DotNet process for future execution.
     /// </summary>
     /// <returns>A new instance of <see cref="DotNetExecutor" />.</returns>
     public static DotNetExecutor Initialize() => new();
 
     /// <summary>
-    /// Executes prepared instance of the DotNet process.
+    ///     Executes prepared instance of the DotNet process.
     /// </summary>
     /// <returns>A result of performed the DotNet process as a <see cref="DotNetResult" />.</returns>
     public DotNetResult AndExecute()
