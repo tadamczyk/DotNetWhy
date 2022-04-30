@@ -21,12 +21,22 @@ internal class DotNetWhyService : IDotNetWhyService
 
         var directory = _fileSystem?.Directory.GetCurrentDirectory();
 
-        if (!ArgumentsValidator.IsValid(arguments)) return;
-        if (!PackageNameValidator.IsValid(arguments[0])) return;
-        if (!DependencyGraphLoggerValidator.IsValid(_logger)) return;
-        if (!DependencyGraphServiceValidator.IsValid(_service)) return;
-        if (!FileSystemValidator.IsValid(_fileSystem)) return;
-        if (!DirectoryProjectsValidator.IsValid(_fileSystem, directory)) return;
+        var validators = new BaseValidator[]
+        {
+            new ServicesValidator(this),
+            new ArgumentsValidator(arguments),
+            new PackageNameValidator(arguments[0]),
+            new DirectoryProjectsValidator(_fileSystem, directory)
+        };
+
+        foreach (var validator in validators)
+        {
+            if (validator.IsFailure)
+            {
+                validator.LogError();
+                return;
+            }
+        }
 
         Console.WriteLine($"Analyzing project(s) from {directory} directory...\n");
 

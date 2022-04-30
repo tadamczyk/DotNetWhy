@@ -1,17 +1,10 @@
 ﻿namespace DotNetWhy.Services.Validators;
 
-internal static class PackageNameValidator
+internal sealed record PackageNameValidator(string PackageName) : BaseValidator
 {
-    private static string ErrorMessage => "Package name was not specified.";
+    protected override bool ValidCondition =>
+        !string.IsNullOrWhiteSpace(PackageName);
 
-    public static bool IsValid(params object[] args)
-    {
-        if (string.IsNullOrWhiteSpace(args[0].ToString()))
-        {
-            Console.WriteLine(ErrorMessage);
-            return false;
-        }
-
-        return true;
-    }
+    protected override string ErrorMessage =>
+        "Package name was not specified.";
 }

@@ -1,18 +1,10 @@
 ﻿namespace DotNetWhy.Services.Validators;
 
-internal static class DirectoryProjectsValidator
+internal sealed record DirectoryProjectsValidator(IFileSystem FileSystem, string Directory) : BaseValidator
 {
-    private static string ErrorMessage => "Directory {0} does not contain any C# project.";
+    protected override bool ValidCondition =>
+        FileSystem.Directory.GetFiles(Directory).Any(file => file.EndsWith(".sln") || file.EndsWith(".csproj"));
 
-    public static bool IsValid(params object[] args)
-    {
-        if (!((FileSystem) args[0]).Directory.GetFiles(args[1].ToString())
-            .Any(f => f.EndsWith(".sln") || f.EndsWith(".csproj")))
-        {
-            Console.WriteLine(ErrorMessage, args[1]);
-            return false;
-        }
-
-        return true;
-    }
+    protected override string ErrorMessage =>
+        $"Directory {Directory} does not contain any C# project.";
 }
