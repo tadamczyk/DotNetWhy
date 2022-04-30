@@ -1,17 +1,10 @@
 ﻿namespace DotNetWhy.Services.Validators;
 
-internal static class ArgumentsValidator
+internal sealed record ArgumentsValidator(IEnumerable<string> Arguments) : BaseValidator
 {
-    private static string ErrorMessage => "Package name was not specified.";
+    protected override bool ValidCondition =>
+        Arguments is not null && Arguments.Any();
 
-    public static bool IsValid(params object[] args)
-    {
-        if (args is null || !args.Any())
-        {
-            Console.WriteLine(ErrorMessage);
-            return false;
-        }
-
-        return true;
-    }
+    protected override string ErrorMessage =>
+        "Package name was not specified.";
 }
