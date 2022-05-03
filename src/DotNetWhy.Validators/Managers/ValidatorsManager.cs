@@ -10,8 +10,8 @@ internal class ValidatorsManager : IValidatorsManager
     public void AddServiceDependenciesValidatorFor<T>(T service) =>
         _validators.Add(new ServiceDependenciesValidator(service));
 
-    public void AddNullOrEmptyValidator<T>(IEnumerable<T> @object, string objectName = null) =>
-        _validators.Add(new NullOrEmptyValidator<T>(@object, objectName));
+    public void AddNullOrEmptyValidator<T>(IEnumerable<T> parameter, string parameterName = null) =>
+        _validators.Add(new NullOrEmptyValidator<T>(parameter, parameterName));
 
     public void Add(BaseValidator validator) =>
         _validators.Add(validator);

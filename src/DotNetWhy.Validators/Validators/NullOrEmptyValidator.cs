@@ -1,10 +1,10 @@
 ﻿namespace DotNetWhy.Validators.Validators;
 
-internal sealed record NullOrEmptyValidator<T>(IEnumerable<T> Object, string ObjectName = null) : BaseValidator
+internal sealed record NullOrEmptyValidator<T>(IEnumerable<T> Parameter, string ParameterName = null) : BaseValidator
 {
     protected internal override bool IsValid =>
-        Object is not null && Object.Any();
+        Parameter is not null && Parameter.Any();
 
     protected internal override string ErrorMessage =>
-        $"{(string.IsNullOrEmpty(ObjectName) ? "Object" : ObjectName)} is null or empty.";
+        $"Parameter{(string.IsNullOrEmpty(ParameterName) ? string.Empty : $" '{ParameterName}'")} is null or empty.";
 }
