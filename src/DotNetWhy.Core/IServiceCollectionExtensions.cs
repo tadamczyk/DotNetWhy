@@ -2,7 +2,7 @@
 
 public static class IServiceCollectionExtensions
 {
-    public static IServiceCollection AddCoreServices(this IServiceCollection services) =>
+    public static IServiceCollection AddCore(this IServiceCollection services) =>
         services
             .AddSingleton<IDependenciesPathsProvider, DependenciesPathsProvider>()
             .AddSingleton<IDependencyGraphProvider, DependencyGraphProvider>()

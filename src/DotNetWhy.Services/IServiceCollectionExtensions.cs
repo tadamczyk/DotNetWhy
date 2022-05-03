@@ -7,5 +7,6 @@ public static class IServiceCollectionExtensions
             .AddSingleton<IDependencyGraphLogger, DependencyGraphLogger>()
             .AddSingleton<IDotNetWhyService, DotNetWhyService>()
             .AddSingleton<IFileSystem, FileSystem>()
-            .AddCoreServices();
+            .AddCore()
+            .AddValidators();
 }

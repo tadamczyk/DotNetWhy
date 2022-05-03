@@ -16,15 +16,15 @@
         <Description>A .NET global tool to show information about why a NuGet package is installed.</Description>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <IncludeSymbols>true</IncludeSymbols>
-        <PackageId>$(AssemblyName)</PackageId>
         <PackageIcon>logo.png</PackageIcon>
+        <PackageId>$(AssemblyName)</PackageId>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/tadamczyk/DotNetWhy</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>CLI;Tool;DependencyTree;Dependencies;Tree;NuGet;DotNet;.NET;CSharp;C#</PackageTags>
         <PackageReleaseNotes>See $(PackageProjectUrl)/blob/master/CHANGELOG.md for release notes.</PackageReleaseNotes>
-        <RepositoryType>Git</RepositoryType>
+        <PackageTags>CLI;Tool;DependencyTree;Dependencies;Tree;NuGet;DotNet;.NET;CSharp;C#</PackageTags>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
         <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>

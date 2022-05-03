@@ -2,7 +2,13 @@
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{73C1D697-FB88-4209-A706-5A4B6628A7E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{14C56BF9-2170-41B7-96CB-90E75A61932A}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{94C78EE2-45E7-4F5D-A7F8-0A36A02EF860}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.CommandExecutor.Tests", "tests\DotNet.CommandExecutor.Tests\DotNet.CommandExecutor.Tests.csproj", "{797B5632-9CB4-49CB-9882-974E93E87967}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.CommandExecutor", "src\DotNet.CommandExecutor\DotNet.CommandExecutor.csproj", "{F2A3C3AE-9E29-4F6E-853E-633AC624F620}"
 EndProject
@@ -12,12 +18,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Core", "src\DotNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Services", "src\DotNetWhy.Services\DotNetWhy.Services.csproj", "{7A7E01DD-8077-4398-A826-770534AE3954}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Validators", "src\DotNetWhy.Validators\DotNetWhy.Validators.csproj", "{FB2B5061-C332-47CC-80AD-4B379123ADFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{797B5632-9CB4-49CB-9882-974E93E87967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{797B5632-9CB4-49CB-9882-974E93E87967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{797B5632-9CB4-49CB-9882-974E93E87967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{797B5632-9CB4-49CB-9882-974E93E87967}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2A3C3AE-9E29-4F6E-853E-633AC624F620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2A3C3AE-9E29-4F6E-853E-633AC624F620}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2A3C3AE-9E29-4F6E-853E-633AC624F620}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -34,8 +46,14 @@ Global
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-        {F2A3C3AE-9E29-4F6E-853E-633AC624F620} = {94C78EE2-45E7-4F5D-A7F8-0A36A02EF860}
+		{14C56BF9-2170-41B7-96CB-90E75A61932A} = {73C1D697-FB88-4209-A706-5A4B6628A7E7}
+		{797B5632-9CB4-49CB-9882-974E93E87967} = {14C56BF9-2170-41B7-96CB-90E75A61932A}
+		{F2A3C3AE-9E29-4F6E-853E-633AC624F620} = {94C78EE2-45E7-4F5D-A7F8-0A36A02EF860}
 	EndGlobalSection
 EndGlobal
