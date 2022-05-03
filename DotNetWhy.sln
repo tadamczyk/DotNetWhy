@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Core", "src\DotNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Services", "src\DotNetWhy.Services\DotNetWhy.Services.csproj", "{7A7E01DD-8077-4398-A826-770534AE3954}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Validators", "src\DotNetWhy.Validators\DotNetWhy.Validators.csproj", "{FB2B5061-C332-47CC-80AD-4B379123ADFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2B5061-C332-47CC-80AD-4B379123ADFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{14C56BF9-2170-41B7-96CB-90E75A61932A} = {73C1D697-FB88-4209-A706-5A4B6628A7E7}

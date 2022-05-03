@@ -1,12 +1,12 @@
-﻿namespace DotNetWhy.Services.Validators;
+﻿namespace DotNetWhy.Validators.Validators;
 
-internal sealed record ServicesValidator(object Service) : BaseValidator
+internal sealed record ServiceDependenciesValidator(object Service) : BaseValidator
 {
-    protected override bool ValidCondition =>
+    protected internal override bool IsValid =>
         GetServicePrivateReadonlyFieldsValues()
             .All(value => value is not null);
 
-    protected override string ErrorMessage =>
+    protected internal override string ErrorMessage =>
         "Service is not initialized properly.";
 
     private IEnumerable<object> GetServicePrivateReadonlyFieldsValues() =>
