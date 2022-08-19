@@ -11,9 +11,8 @@
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
-        <PackageReference Include="System.IO.Abstractions" Version="17.0.3"/>
+        <PackageReference Include="System.IO.Abstractions" Version="17.1.1"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\DotNetWhy.Core\DotNetWhy.Core.csproj"/>
