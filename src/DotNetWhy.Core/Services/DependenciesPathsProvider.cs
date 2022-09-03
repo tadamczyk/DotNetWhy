@@ -7,7 +7,9 @@ internal class DependenciesPathsProvider : IDependenciesPathsProvider
     private const string CloseBracket = "]";
     private const string Separator = ":";
     
-    public IReadOnlyCollection<DependenciesPath[]> GetByPackageName(string dependenciesPath, string packageName)
+    public IReadOnlyCollection<DependenciesPath[]> GetByPackageName(
+        string dependenciesPath,
+        string packageName)
     {
         var dependenciesPathsByPackageName = new List<DependenciesPath[]>();
 
@@ -38,7 +40,9 @@ internal class DependenciesPathsProvider : IDependenciesPathsProvider
         return dependenciesPathsByPackageName;
     }
 
-    private static List<(int packageDepth, int packageIndex)> GetPackageAppearances(string dependenciesPath, string packageName)
+    private static List<(int packageDepth, int packageIndex)> GetPackageAppearances(
+        string dependenciesPath,
+        string packageName)
     {
         var packageAppearances = new List<(int, int)>();
 
@@ -62,7 +66,9 @@ internal class DependenciesPathsProvider : IDependenciesPathsProvider
         }
     }
 
-    private static string GetDependencyPath(string dependenciesPath, int packageIndex)
+    private static string GetDependencyPath(
+        string dependenciesPath,
+        int packageIndex)
     {
         var nextDependencyOpenBracketCount = dependenciesPath.Length - packageIndex < MaximumSearchLength
             ? dependenciesPath.Length - packageIndex - 1
@@ -79,7 +85,10 @@ internal class DependenciesPathsProvider : IDependenciesPathsProvider
         return dependencyPath;
     }
 
-    private static string GetParentDependency(string dependenciesPath, int currentDepth, int packageIndex)
+    private static string GetParentDependency(
+        string dependenciesPath,
+        int currentDepth,
+        int packageIndex)
     {
         var parentDependencyIndex = dependenciesPath.LastIndexOf($"{OpenBracket}{currentDepth}{CloseBracket}",
             packageIndex - 1,
