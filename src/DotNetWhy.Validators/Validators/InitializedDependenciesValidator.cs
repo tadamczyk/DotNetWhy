@@ -1,6 +1,7 @@
 ﻿namespace DotNetWhy.Validators.Validators;
 
-internal sealed record ServiceDependenciesValidator(object Service) : BaseValidator
+internal sealed record InitializedDependenciesValidator(object Service)
+    : BaseValidator
 {
     protected internal override bool IsValid =>
         GetServicePrivateReadonlyFieldsValues()
@@ -21,10 +22,11 @@ internal sealed record ServiceDependenciesValidator(object Service) : BaseValida
 
     private bool IsPrivateReadonlyInitializedByConstructorField(FieldInfo field) =>
         field.IsPrivate
-        && field.IsInitOnly
-        && _serviceConstructorParametersTypes.Contains(field.FieldType);
+            && field.IsInitOnly
+            && GetServiceConstructorParametersTypes()
+                .Contains(field.FieldType);
 
-    private readonly IEnumerable<Type> _serviceConstructorParametersTypes =
+    private IEnumerable<Type> GetServiceConstructorParametersTypes() =>
         Service
             .GetType()
             .GetConstructors()

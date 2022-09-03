@@ -5,41 +5,43 @@ internal class DotNetWhyService : IDotNetWhyService
     private readonly IDependencyGraphLogger _logger;
     private readonly IDependencyGraphService _service;
     private readonly IFileSystem _fileSystem;
-    private readonly IValidatorsManager _validatorsManager;
+    private readonly IValidatorsWrapper _validatorsWrapper;
 
-    public DotNetWhyService(IDependencyGraphLogger logger,
+    public DotNetWhyService(
+        IDependencyGraphLogger logger,
         IDependencyGraphService service,
         IFileSystem fileSystem,
-        IValidatorsManager validatorsManager)
+        IValidatorsWrapper validatorsWrapper)
     {
         _logger = logger;
         _service = service;
         _fileSystem = fileSystem;
-        _validatorsManager = validatorsManager;
+        _validatorsWrapper = validatorsWrapper;
     }
 
-    public void Run(IReadOnlyCollection<string> arguments) =>
-        StopwatchLogger.Log(() => _validatorsManager.Validate(validators =>
-            {
-                validators.AddServiceDependenciesValidatorFor(this);
-                validators.AddNullOrEmptyValidator(arguments, "Arguments");
-                validators.AddNullOrEmptyValidator(arguments.FirstOrDefault(), "Package name");
-                validators.Add(new DirectoryProjectsValidator(_fileSystem));
-            },
-            () =>
-            {
-                var directory = _fileSystem?.Directory.GetCurrentDirectory();
-                var packageName = arguments.First();
+    public void Run(IReadOnlyCollection<string> arguments)
+    {
+        _validatorsWrapper.ValidateAndExecute(
+            SetValidators,
+            GetDependencyTree);
 
-                Console.WriteLine($"Analyzing project(s) from {directory} directory...\n");
-                var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
-                _logger.Log(solutionDependencyGraph, packageName);
-            },
-            errors =>
-            {
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error);
-                }
-            }));
+        void SetValidators(IValidatorsWrapper validators)
+        {
+            validators
+                .AddInitializedDependenciesValidator(this)
+                .AddNotNullOrEmptyValidator(arguments, "Arguments")
+                .AddNotNullOrEmptyValidator(arguments.FirstOrDefault(), "Package name")
+                .Add(new DirectoryProjectsValidator(_fileSystem));
+        }
+
+        void GetDependencyTree()
+        {
+            var directory = _fileSystem.Directory.GetCurrentDirectory();
+            var packageName = arguments.First();
+
+            Console.WriteLine($"Analyzing project(s) from {directory} directory...\n");
+            var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
+            _logger.Log(solutionDependencyGraph, packageName);
+        }
+    }
 }
