@@ -19,9 +19,11 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         public const string Target = "\u1433";
     }
 
-    public DependencyGraphLogger()
+    private readonly ILogger _logger;
+
+    public DependencyGraphLogger(ILogger logger)
     {
-        Console.OutputEncoding = Encoding.UTF8;
+        _logger = logger;
     }
 
     public void Log(
@@ -30,14 +32,14 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
     {
         if (solutionDependencyGraph is null || !solutionDependencyGraph.ProjectsDependencyGraphs.Any())
         {
-            LogLine($"Package {packageName} usage not found.");
+            _logger.LogLine($"Package {packageName} usage not found.");
             return;
         }
 
         var width = new Width(Console.WindowWidth - Widths.DoubleTab, GetLabelWidth(solutionDependencyGraph));
 
         var dependenciesPathsCountForSolution = GetDependenciesPathsCountForSolution(solutionDependencyGraph);
-        LogLine(
+        _logger.LogLine(
             GetLabel(
                 Prefixes.Solution,
                 solutionDependencyGraph.Name,
@@ -48,7 +50,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         foreach (var project in solutionDependencyGraph.ProjectsDependencyGraphs)
         {
             var dependenciesPathsCountForProject = GetDependenciesPathsCountForProject(project);
-            LogLine(
+            _logger.LogLine(
                 GetLabel(
                     Prefixes.Project,
                     project.Name,
@@ -60,7 +62,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
             foreach (var target in project.TargetsDependencyGraphs)
             {
                 var dependenciesPathsCountForTarget = target.DependenciesPaths.Count;
-                LogLine(
+                _logger.LogLine(
                     GetLabel(
                         Prefixes.Target,
                         target.Name,
@@ -79,7 +81,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 }
             }
 
-            LogLine();
+            _logger.LogLine();
         }
     }
 
@@ -118,13 +120,13 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         int? count = null) =>
         $"{prefix} {$"{name}".PadRight(width)} {$"[{(count.HasValue ? $"{count}/" : string.Empty)}{all}]".PadLeft(Widths.QuadrupleTab)}";
 
-    private static void LogDependencyPath(
+    private void LogDependencyPath(
         IReadOnlyList<DependenciesPath> dependenciesPath,
         string packageName,
         int maxWidth,
         int iterator)
     {
-        Log($"{iterator}.".PadRight(Widths.DoubleTab));
+        _logger.Log($"{iterator}.".PadRight(Widths.DoubleTab));
 
         for (int index = 0, widthIterator = Widths.Tab; index < dependenciesPath.Count; index++)
         {
@@ -134,25 +136,11 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
             var isInline = widthIterator + dependencyLabel.Length + width <= maxWidth;
             widthIterator = dependencyLabel.Length + width + (isInline ? widthIterator : Widths.TripleTab);
 
-            Log(isInline ? dependencyLabel : $"\n      {dependencyLabel}",
+            _logger.Log(isInline ? dependencyLabel : $"\n      {dependencyLabel}",
                 dependencyLabel.Contains(packageName) ? ConsoleColor.Red : null);
-            Log($"{(isLastDependency ? string.Empty : " -> ")}");
+            _logger.Log($"{(isLastDependency ? string.Empty : " -> ")}");
         }
 
-        LogLine();
-    }
-
-    private static void Log(string text = "", ConsoleColor? color = null)
-    {
-        if (color.HasValue) Console.ForegroundColor = color.Value;
-        Console.Write(text);
-        Console.ResetColor();
-    }
-
-    private static void LogLine(string text = "", ConsoleColor? color = null)
-    {
-        if (color.HasValue) Console.ForegroundColor = color.Value;
-        Console.WriteLine(text);
-        Console.ResetColor();
+        _logger.LogLine();
     }
 }

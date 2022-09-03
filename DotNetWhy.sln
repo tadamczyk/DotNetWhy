@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy", "src\DotNetWhy\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Core", "src\DotNetWhy.Core\DotNetWhy.Core.csproj", "{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Loggers", "src\DotNetWhy.Loggers\DotNetWhy.Loggers.csproj", "{71B1839A-636D-46A7-9621-BAE724A6FCC3}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Services", "src\DotNetWhy.Services\DotNetWhy.Services.csproj", "{7A7E01DD-8077-4398-A826-770534AE3954}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Validators", "src\DotNetWhy.Validators\DotNetWhy.Validators.csproj", "{FB2B5061-C332-47CC-80AD-4B379123ADFC}"
@@ -42,6 +44,10 @@ Global
 		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71B1839A-636D-46A7-9621-BAE724A6FCC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71B1839A-636D-46A7-9621-BAE724A6FCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71B1839A-636D-46A7-9621-BAE724A6FCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71B1839A-636D-46A7-9621-BAE724A6FCC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Release|Any CPU.ActiveCfg = Release|Any CPU

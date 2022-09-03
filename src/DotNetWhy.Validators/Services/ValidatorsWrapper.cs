@@ -3,6 +3,12 @@
 internal class ValidatorsWrapper : IValidatorsWrapper
 {
     private readonly IList<BaseValidator> _validators = new List<BaseValidator>();
+    private readonly ILogger _logger;
+
+    public ValidatorsWrapper(ILogger logger)
+    {
+        _logger = logger;
+    }
 
     public IValidatorsWrapper AddInitializedDependenciesValidator<T>(T service)
     {
@@ -38,7 +44,7 @@ internal class ValidatorsWrapper : IValidatorsWrapper
                 if (!validator.IsValid)
                 {
                     if (onFailure is null)
-                        Console.WriteLine(validator.ErrorMessage);
+                        _logger.LogLine(validator.ErrorMessage);
                     else
                         onFailure(new[] {validator.ErrorMessage});
 
@@ -50,7 +56,7 @@ internal class ValidatorsWrapper : IValidatorsWrapper
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception.Message);
+            _logger.LogLine(exception.Message);
         }
     }
 }

@@ -5,17 +5,20 @@ internal class DotNetWhyService : IDotNetWhyService
     private readonly IDependencyGraphLogger _logger;
     private readonly IDependencyGraphService _service;
     private readonly IFileSystem _fileSystem;
+    private readonly ILogger _consoleLogger;
     private readonly IValidatorsWrapper _validatorsWrapper;
 
     public DotNetWhyService(
         IDependencyGraphLogger logger,
         IDependencyGraphService service,
         IFileSystem fileSystem,
+        ILogger consoleLogger,
         IValidatorsWrapper validatorsWrapper)
     {
         _logger = logger;
         _service = service;
         _fileSystem = fileSystem;
+        _consoleLogger = consoleLogger;
         _validatorsWrapper = validatorsWrapper;
     }
 
@@ -39,7 +42,7 @@ internal class DotNetWhyService : IDotNetWhyService
             var directory = _fileSystem.Directory.GetCurrentDirectory();
             var packageName = arguments.First();
 
-            Console.WriteLine($"Analyzing project(s) from {directory} directory...\n");
+            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...");
             var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
             _logger.Log(solutionDependencyGraph, packageName);
         }

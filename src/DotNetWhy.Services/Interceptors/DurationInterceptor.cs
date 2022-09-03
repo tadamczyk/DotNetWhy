@@ -2,6 +2,13 @@
 
 internal class DurationInterceptor : IInterceptor
 {
+    private readonly ILogger _logger;
+
+    public DurationInterceptor(ILogger logger)
+    {
+        _logger = logger;
+    }
+
     public void Intercept(IInvocation invocation)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -14,7 +21,7 @@ internal class DurationInterceptor : IInterceptor
         {
             stopwatch.Stop();
 
-            Console.WriteLine($"Time elapsed: {stopwatch.Elapsed:hh\\:mm\\:ss\\.ff}");
+            _logger.LogLine($"Time elapsed: {stopwatch.Elapsed:hh\\:mm\\:ss\\.ff}");
         }
     }
 }

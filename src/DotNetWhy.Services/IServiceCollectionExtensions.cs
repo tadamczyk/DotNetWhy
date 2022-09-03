@@ -1,6 +1,6 @@
 ﻿namespace DotNetWhy.Services;
 
-public static class IServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
@@ -8,6 +8,7 @@ public static class IServiceCollectionExtensions
             .AddSingleton<IFileSystem, FileSystem>()
             .AddInterceptedSingleton<IDotNetWhyService, DotNetWhyService, DurationInterceptor>()
             .AddCore()
+            .AddLoggers()
             .AddValidators();
 
     private static IServiceCollection AddInterceptedSingleton<TInterface, TImplementation, TInterceptor>(
