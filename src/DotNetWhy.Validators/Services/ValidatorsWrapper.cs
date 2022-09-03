@@ -2,12 +2,7 @@
 
 internal class ValidatorsWrapper : IValidatorsWrapper
 {
-    private readonly IList<BaseValidator> _validators;
-
-    public ValidatorsWrapper()
-    {
-        _validators = new List<BaseValidator>();
-    }
+    private readonly IList<BaseValidator> _validators = new List<BaseValidator>();
 
     public IValidatorsWrapper AddInitializedDependenciesValidator<T>(T service)
     {
@@ -32,7 +27,7 @@ internal class ValidatorsWrapper : IValidatorsWrapper
     public void ValidateAndExecute(
         Action<IValidatorsWrapper> validators,
         Action onSuccess,
-        Action<IEnumerable<string>> onFailure)
+        Action<IEnumerable<string>> onFailure = null)
     {
         try
         {
@@ -42,7 +37,11 @@ internal class ValidatorsWrapper : IValidatorsWrapper
             {
                 if (!validator.IsValid)
                 {
-                    onFailure(new[] {validator.ErrorMessage});
+                    if (onFailure is null)
+                        Console.WriteLine(validator.ErrorMessage);
+                    else
+                        onFailure(new[] {validator.ErrorMessage});
+
                     return;
                 }
             }
@@ -53,21 +52,5 @@ internal class ValidatorsWrapper : IValidatorsWrapper
         {
             Console.WriteLine(exception.Message);
         }
-    }
-
-    public void ValidateAndExecute(
-        Action<IValidatorsWrapper> validators,
-        Action onSuccess)
-    {
-        ValidateAndExecute(
-            validators,
-            onSuccess,
-            errors =>
-            {
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error);
-                }
-            });
     }
 }

@@ -12,10 +12,6 @@ public interface IValidatorsWrapper
 
     void ValidateAndExecute(
         Action<IValidatorsWrapper> validators,
-        Action onSuccess);
-    
-    void ValidateAndExecute(
-        Action<IValidatorsWrapper> validators,
         Action onSuccess,
-        Action<IEnumerable<string>> onFailure);
+        Action<IEnumerable<string>> onFailure = null);
 }
