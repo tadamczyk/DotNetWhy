@@ -12,5 +12,6 @@ global using DotNetWhy.Services.Interfaces;
 global using DotNetWhy.Services.Services;
 global using DotNetWhy.Services.Validators;
 global using DotNetWhy.Validators;
+global using DotNetWhy.Validators.Validators;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
