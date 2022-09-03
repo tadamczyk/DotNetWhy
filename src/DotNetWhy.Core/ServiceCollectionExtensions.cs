@@ -1,8 +1,8 @@
 ﻿namespace DotNetWhy.Core;
 
-public static class IServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCoreServices(this IServiceCollection services) =>
+    public static IServiceCollection AddCore(this IServiceCollection services) =>
         services
             .AddSingleton<IDependenciesPathsProvider, DependenciesPathsProvider>()
             .AddSingleton<IDependencyGraphProvider, DependencyGraphProvider>()

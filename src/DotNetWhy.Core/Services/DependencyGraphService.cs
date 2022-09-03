@@ -6,7 +6,8 @@ internal class DependencyGraphService : IDependencyGraphService
     private readonly IDependencyGraphProvider _dependencyGraphProvider;
     private readonly ILockFileProvider _lockFileProvider;
 
-    public DependencyGraphService(IDependenciesPathsProvider dependenciesPathsProvider,
+    public DependencyGraphService(
+        IDependenciesPathsProvider dependenciesPathsProvider,
         IDependencyGraphProvider dependencyGraphProvider,
         ILockFileProvider lockFileProvider)
     {
@@ -15,7 +16,9 @@ internal class DependencyGraphService : IDependencyGraphService
         _lockFileProvider = lockFileProvider;
     }
 
-    public SolutionDependencyGraph GetDependencyGraphByPackageName(string workingDirectory, string packageName)
+    public SolutionDependencyGraph GetDependencyGraphByPackageName(
+        string workingDirectory,
+        string packageName)
     {
         var dependenciesPathBuilder = new StringBuilder();
         var solutionDependencyGraph = SolutionDependencyGraph.Create(Path.GetFileName(workingDirectory));
@@ -98,7 +101,8 @@ internal class DependencyGraphService : IDependencyGraphService
         return projectDependenciesGraphs.OrderBy(p => p.Name).ToList();
     }
 
-    private static void CreateDependenciesPaths(LockFileTargetLibrary library,
+    private static void CreateDependenciesPaths(
+        LockFileTargetLibrary library,
         LockFileTarget lockFileTargetFramework,
         StringBuilder dependenciesPathBuilder,
         int indentLevel)

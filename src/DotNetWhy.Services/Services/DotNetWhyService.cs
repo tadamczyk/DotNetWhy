@@ -5,37 +5,46 @@ internal class DotNetWhyService : IDotNetWhyService
     private readonly IDependencyGraphLogger _logger;
     private readonly IDependencyGraphService _service;
     private readonly IFileSystem _fileSystem;
+    private readonly ILogger _consoleLogger;
+    private readonly IValidatorsWrapper _validatorsWrapper;
 
-    public DotNetWhyService(IDependencyGraphLogger logger,
+    public DotNetWhyService(
+        IDependencyGraphLogger logger,
         IDependencyGraphService service,
-        IFileSystem fileSystem)
+        IFileSystem fileSystem,
+        ILogger consoleLogger,
+        IValidatorsWrapper validatorsWrapper)
     {
         _logger = logger;
         _service = service;
         _fileSystem = fileSystem;
+        _consoleLogger = consoleLogger;
+        _validatorsWrapper = validatorsWrapper;
     }
 
-    public void Run(string[] arguments)
+    public void Run(IReadOnlyCollection<string> arguments)
     {
-        var stopWatch = Stopwatch.StartNew();
+        _validatorsWrapper.ValidateAndExecute(
+            SetValidators,
+            GetDependencyTree);
 
-        var directory = _fileSystem?.Directory.GetCurrentDirectory();
+        void SetValidators(IValidatorsWrapper validators)
+        {
+            validators
+                .AddInitializedDependenciesValidator(this)
+                .AddNotNullOrEmptyValidator(arguments, "Arguments")
+                .AddNotNullOrEmptyValidator(arguments.FirstOrDefault(), "Package name")
+                .Add(new DirectoryProjectsValidator(_fileSystem));
+        }
 
-        if (!ArgumentsValidator.IsValid(arguments)) return;
-        if (!PackageNameValidator.IsValid(arguments[0])) return;
-        if (!DependencyGraphLoggerValidator.IsValid(_logger)) return;
-        if (!DependencyGraphServiceValidator.IsValid(_service)) return;
-        if (!FileSystemValidator.IsValid(_fileSystem)) return;
-        if (!DirectoryProjectsValidator.IsValid(_fileSystem, directory)) return;
+        void GetDependencyTree()
+        {
+            var directory = _fileSystem.Directory.GetCurrentDirectory();
+            var packageName = arguments.First();
 
-        Console.WriteLine($"Analyzing project(s) from {directory} directory...\n");
-
-        var packageName = arguments[0];
-        var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
-        _logger.Log(solutionDependencyGraph, packageName);
-
-        stopWatch.Stop();
-
-        Console.WriteLine($"Time elapsed: {stopWatch.Elapsed:hh\\:mm\\:ss\\.ff}");
+            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...\n");
+            var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
+            _logger.Log(solutionDependencyGraph, packageName);
+        }
     }
 }

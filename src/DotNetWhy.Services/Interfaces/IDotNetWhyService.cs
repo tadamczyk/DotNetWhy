@@ -2,5 +2,5 @@
 
 public interface IDotNetWhyService
 {
-    void Run(string[] arguments);
+    void Run(IReadOnlyCollection<string> arguments);
 }
