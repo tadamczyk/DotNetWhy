@@ -36,7 +36,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
             return;
         }
 
-        var width = new Width(Console.WindowWidth - Widths.DoubleTab, GetLabelWidth(solutionDependencyGraph));
+        var width = new Width(_logger.Configuration.MaxWidth - Widths.DoubleTab, GetLabelWidth(solutionDependencyGraph));
 
         var dependenciesPathsCountForSolution = GetDependenciesPathsCountForSolution(solutionDependencyGraph);
         _logger.LogLine(
@@ -45,7 +45,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 solutionDependencyGraph.Name,
                 width.Label,
                 dependenciesPathsCountForSolution),
-            ConsoleColor.DarkCyan);
+            Color.DarkCyan);
 
         foreach (var project in solutionDependencyGraph.ProjectsDependencyGraphs)
         {
@@ -57,7 +57,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                     width.Label,
                     dependenciesPathsCountForSolution,
                     dependenciesPathsCountForProject),
-                ConsoleColor.Green);
+                Color.Green);
 
             foreach (var target in project.TargetsDependencyGraphs)
             {
@@ -69,7 +69,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                         width.Label,
                         dependenciesPathsCountForProject,
                         dependenciesPathsCountForTarget),
-                    ConsoleColor.DarkGreen);
+                    Color.DarkGreen);
 
                 for (var index = 1; index <= target.DependenciesPaths.Count; index++)
                 {
@@ -137,7 +137,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
             widthIterator = dependencyLabel.Length + width + (isInline ? widthIterator : Widths.TripleTab);
 
             _logger.Log(isInline ? dependencyLabel : $"\n      {dependencyLabel}",
-                dependencyLabel.Contains(packageName) ? ConsoleColor.Red : null);
+                dependencyLabel.Contains(packageName) ? Color.Red : null);
             _logger.Log($"{(isLastDependency ? string.Empty : " -> ")}");
         }
 

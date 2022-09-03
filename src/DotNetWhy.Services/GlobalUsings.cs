@@ -1,5 +1,4 @@
-﻿global using System;
-global using System.Collections.Generic;
+﻿global using System.Collections.Generic;
 global using System.Diagnostics;
 global using System.IO.Abstractions;
 global using System.Linq;
@@ -7,6 +6,7 @@ global using Castle.DynamicProxy;
 global using DotNetWhy.Core;
 global using DotNetWhy.Core.Models;
 global using DotNetWhy.Loggers;
+global using DotNetWhy.Loggers.Enums;
 global using DotNetWhy.Services.Interceptors;
 global using DotNetWhy.Services.Interfaces;
 global using DotNetWhy.Services.Services;

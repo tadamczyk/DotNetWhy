@@ -2,6 +2,7 @@
 
 public interface ILogger
 {
-    void Log(string text = "", ConsoleColor? color = null);
-    void LogLine(string text = "", ConsoleColor? color = null);
+    LoggerConfiguration Configuration { get; }
+    void Log(string text = "", Color? color = null);
+    void LogLine(string text = "", Color? color = null);
 }
