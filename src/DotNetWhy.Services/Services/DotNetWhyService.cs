@@ -42,7 +42,7 @@ internal class DotNetWhyService : IDotNetWhyService
             var directory = _fileSystem.Directory.GetCurrentDirectory();
             var packageName = arguments.First();
 
-            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...");
+            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...\n");
             var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
             _logger.Log(solutionDependencyGraph, packageName);
         }
