@@ -20,4 +20,12 @@ jobs:
         run: dotnet build --no-restore
         continue-on-error: false
       - name: Test
-        run: dotnet test --no-restore
+        run: dotnet test --no-restore --logger trx --results-directory ./testsResults
+      - name: Report
+        uses: bibipkins/dotnet-test-reporter@v1
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        with:
+          github-token: $REPO_TOKEN
+          test-results: ./testsResults
+          comment-title: 'Tests Results'
