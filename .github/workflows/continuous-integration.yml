@@ -22,7 +22,7 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --logger trx --results-directory ./testsResults
       - name: Report
-        uses: bibipkins/dotnet-test-reporter@v1
+        uses: bibipkins/dotnet-test-reporter@v1.0.0-beta.4
         env:
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         with:
