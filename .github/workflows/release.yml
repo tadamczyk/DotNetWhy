@@ -3,7 +3,7 @@ on:
   push:
     tags: [ '*.*.*' ]
 jobs:
-  build-test-pack-publish-and-release:
+  build-test-pack-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
