@@ -24,7 +24,7 @@ jobs:
       - name: Report
         uses: bibipkins/dotnet-test-reporter@v1.0.0-beta.4
         env:
-          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+          REPO_TOKEN: ${{ github.REPO_TOKEN }}
         with:
           github-token: $REPO_TOKEN
           test-results: ./testsResults
