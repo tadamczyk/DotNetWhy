@@ -103,6 +103,7 @@ public class DotNetExecutorTests
     }
 
     [Test]
+    [Ignore("Ignore as a test for dotnet-test-reporter")]
     public void Should_DotNet_With_Correct_Arguments_Command_Ran_In_Current_Directory_Result_Has_Empty_Errors()
     {
         // Arrange
