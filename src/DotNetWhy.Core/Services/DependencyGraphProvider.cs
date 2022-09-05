@@ -2,20 +2,21 @@
 
 internal class DependencyGraphProvider : IDependencyGraphProvider
 {
-    private const int MaxRetryLimit = 3;
-    private readonly IDependencyGraphSourceProvider _dependencyGraphSourceProvider;
-    private int _retryCounter;
+    private readonly IDependencyGraphSourceProvider _sourceProvider;
+    private readonly Retry _retry;
 
-    public DependencyGraphProvider(IDependencyGraphSourceProvider dependencyGraphSourceProvider)
+    public DependencyGraphProvider(IDependencyGraphSourceProvider sourceProvider)
     {
-        _dependencyGraphSourceProvider = dependencyGraphSourceProvider;
+        _sourceProvider = sourceProvider;
+        _retry = new Retry();
     }
 
     public DependencyGraphSpec Get(string workingDirectory)
     {
+        var dependencyGraphSource = _sourceProvider.Get();
+
         try
         {
-            var dependencyGraphSource = _dependencyGraphSourceProvider.Get();
             var dotNetGenerateGraphFileResult = DotNetRunner.GenerateGraphFile(workingDirectory, dependencyGraphSource);
 
             return dotNetGenerateGraphFileResult.IsSuccess
@@ -24,10 +25,9 @@ internal class DependencyGraphProvider : IDependencyGraphProvider
         }
         catch (Exception exception) when (exception is not GenerateGraphFileFailedException)
         {
-            if (_retryCounter++ < MaxRetryLimit)
-                return Get(workingDirectory);
-            
-            throw new GenerateGraphFileFailedException(workingDirectory);
+            return _retry.CanTryAgain()
+                ? Get(workingDirectory)
+                : throw new GenerateGraphFileFailedException(workingDirectory);
         }
     }
 }

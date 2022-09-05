@@ -2,5 +2,5 @@
 
 public interface IDependencyGraphService
 {
-    SolutionDependencyGraph GetDependencyGraphByPackageName(string workingDirectory, string packageName);
+    Solution GetConvertedDependencyGraphByPackageName(string workingDirectory, string packageName);
 }

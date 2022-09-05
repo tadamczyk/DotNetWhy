@@ -2,5 +2,5 @@
 
 internal interface IDependencyGraphLogger
 {
-    void Log(SolutionDependencyGraph solutionDependencyGraph, string packageName);
+    void Log(Solution solution, string packageName);
 }
