@@ -2,15 +2,13 @@
 
 public record Project(string Name)
 {
-    public int DependenciesCounter =>
-        _targets.Sum(t => t.DependenciesCounter);
+    private readonly IList<Target> _targets = new List<Target>();
 
-    public IReadOnlyCollection<Target> Targets =>
-        _targets as IReadOnlyCollection<Target>;
+    public ImmutableArray<Target> Targets => _targets.ToImmutableArray();
 
-    private readonly IList<Target> _targets =
-        new List<Target>();
+    public int DependencyCounter => _targets.Sum(target => target.DependencyCounter);
 
-    internal void AddTarget(Target target) =>
-        _targets.Add(target);
+    public bool HasTargets => _targets.Any();
+
+    internal void AddTarget(Target target) => _targets.Add(target);
 }

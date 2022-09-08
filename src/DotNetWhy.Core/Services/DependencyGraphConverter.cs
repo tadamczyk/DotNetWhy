@@ -3,6 +3,7 @@
 internal class DependencyGraphConverter : IDependencyGraphConverter
 {
     private readonly ILockFileProvider _lockFileProvider;
+    private string PackageName { get; set; }
 
     public DependencyGraphConverter(ILockFileProvider lockFileProvider)
     {
@@ -11,65 +12,75 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
 
     public Solution ToSolution(DependencyGraphSpec dependencyGraphSpec, string solutionName, string packageName)
     {
+        PackageName = packageName;
         var solution = new Solution(solutionName);
-        var projectsBag = new ConcurrentBag<Project>();
         var sourceProjects = GetSourceProjects(dependencyGraphSpec);
 
         Parallel.ForEach(sourceProjects, sourceProject =>
         {
             var project = new Project(sourceProject.Name);
-            var sourceProjectLockFile = _lockFileProvider.Get(sourceProject.FilePath, sourceProject.RestoreMetadata.OutputPath);
+            var sourceProjectLockFile = GetSourceProjectLockFile(sourceProject.FilePath, sourceProject.RestoreMetadata.OutputPath);
             if (sourceProjectLockFile is null) return;
 
             foreach (var sourceTarget in sourceProject.TargetFrameworks)
             {
                 var target = new Target(sourceTarget.TargetAlias);
-                var sourceTargetLockFile = sourceProjectLockFile.Targets.FirstOrDefault(t => t.TargetFramework.Equals(sourceTarget.FrameworkName));
+                var sourceTargetLockFile = GetSourceTargetLockFile(sourceProjectLockFile, sourceTarget.FrameworkName.ToString());
                 if (sourceTargetLockFile is null) continue;
 
                 foreach (var sourceDependency in sourceTarget.Dependencies)
                 {
-                    var library = sourceTargetLockFile.Libraries.FirstOrDefault(l => l.Name.Equals(sourceDependency.Name));
-                    if (library is null) continue;
+                    var sourceLibraryLockFile = GetSourceLibraryLockFile(sourceTargetLockFile, sourceDependency.Name);
+                    if (sourceLibraryLockFile is null) continue;
 
-                    var dependency = library.ToDependency();
-                    CreateDependenciesPaths(sourceTargetLockFile, library, dependency, packageName);
-                    dependency.SetDependenciesCounter(0);
-                    if (dependency.Dependencies.Any()) target.AddDependency(dependency);
+                    var dependency = sourceLibraryLockFile.ToDependency();
+                    CreateDependenciesPaths(sourceTargetLockFile, sourceLibraryLockFile, dependency);
+
+                    if (dependency.HasDependencies) target.AddDependency(dependency);
                 }
-                if (target.Dependencies.Any()) project.AddTarget(target);
+                if (target.HasDependencies) project.AddTarget(target);
             }
-            if (project.Targets.Any()) projectsBag.Add(project);
+            if (project.HasTargets) solution.AddProject(project);
         });
-
-        if (projectsBag.Any()) solution.AddProjects(projectsBag.OrderBy(p => p.Name).ToList());
 
         return solution;
     }
 
-    private static IEnumerable<PackageSpec> GetSourceProjects(DependencyGraphSpec dependencyGraphSpec) =>
+    private IEnumerable<PackageSpec> GetSourceProjects(
+        DependencyGraphSpec dependencyGraphSpec) =>
         dependencyGraphSpec.Projects.Where(p => p.RestoreMetadata.ProjectStyle is ProjectStyle.PackageReference);
 
-    private static void CreateDependenciesPaths(
-        LockFileTarget lockFileTarget,
-        LockFileTargetLibrary library,
-        Dependency dependency,
-        string packageName)
+    private LockFile GetSourceProjectLockFile(
+        string filePath,
+        string outputPath) =>
+        _lockFileProvider.Get(filePath, outputPath);
+
+    private LockFileTarget GetSourceTargetLockFile(
+        LockFile sourceProjectLockFile,
+        string name) =>
+        sourceProjectLockFile.Targets.FirstOrDefault(t => t.TargetFramework.ToString().Equals(name));
+
+    private LockFileTargetLibrary GetSourceLibraryLockFile(
+        LockFileTarget sourceTargetLockFile,
+        string name) =>
+        sourceTargetLockFile.Libraries.FirstOrDefault(l => l.Name.Equals(name));
+
+    private void CreateDependenciesPaths(
+        LockFileTarget sourceTargetLockFile,
+        LockFileTargetLibrary sourceLibraryLockFile,
+        Dependency dependency)
     {
-        if (!library.Dependencies.Any())
-            return;
+        if (!sourceLibraryLockFile.Dependencies.Any()) return;
 
-        foreach (var libraryDependency in library.Dependencies)
+        foreach (var libraryDependency in sourceLibraryLockFile.Dependencies)
         {
-            var childLibrary = lockFileTarget.Libraries.FirstOrDefault(l => l.Name.Equals(libraryDependency.Id));
-            if (childLibrary is null) continue;
+            var childSourceLibraryLockFile = GetSourceLibraryLockFile(sourceTargetLockFile, libraryDependency.Id);
+            if (childSourceLibraryLockFile is null) continue;
 
-            var childDependency = childLibrary.ToDependency();
-            
-            CreateDependenciesPaths(lockFileTarget, childLibrary, childDependency, packageName);
+            var childDependency = childSourceLibraryLockFile.ToDependency();
+            CreateDependenciesPaths(sourceTargetLockFile, childSourceLibraryLockFile, childDependency);
 
-            if (childDependency.Contains(packageName))
-                dependency.AddDependency(childDependency);
+            if (childDependency.IsOrContainsPackage(PackageName)) dependency.AddDependency(childDependency);
         }
     }
 }

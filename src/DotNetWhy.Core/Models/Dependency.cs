@@ -2,25 +2,21 @@
 
 public record Dependency(string Name, string Version)
 {
-    public int DependenciesCounter { get; private set; }
+    private readonly IList<Dependency> _dependencies = new List<Dependency>();
 
-    public IReadOnlyList<Dependency> Dependencies =>
-        _dependencies as IReadOnlyList<Dependency>;
+    public ImmutableArray<Dependency> Dependencies => _dependencies.ToImmutableArray();
 
-    private readonly IList<Dependency> _dependencies =
-        new List<Dependency>();
+    public int DependencyCounter =>
+        HasDependencies ? _dependencies.Sum(d => d.DependencyCounter) : 1;
 
-    public void AddDependency(Dependency dependency) =>
-        _dependencies.Add(dependency);
+    public bool HasDependencies => _dependencies.Any();
 
-    public bool Contains(string packageName) =>
-        Name.Contains(packageName, StringComparison.InvariantCultureIgnoreCase) || _dependencies.Any();
+    public override string ToString() => $"{Name} ({Version})";
 
-    public void SetDependenciesCounter(int value) =>
-        DependenciesCounter = value;
+    internal void AddDependency(Dependency dependency) => _dependencies.Add(dependency);
 
-    public override string ToString() =>
-        $"{Name} ({Version})";
+    internal bool IsOrContainsPackage(string packageName) =>
+        Name.Contains(packageName, StringComparison.InvariantCultureIgnoreCase) || HasDependencies;
 }
 
 public static class DependencyExtensions

@@ -32,20 +32,20 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         Solution solution,
         string packageName)
     {
-        if (solution is null || !solution.Projects.Any())
+        if (!solution.HasProjects)
         {
             _logger.LogLine($"Package {packageName} usage not found.");
             return;
         }
 
-        var width = new Width(_logger.Configuration.MaxWidth - Widths.DoubleTab, GetLabelWidth(solution));
+        var (maxWidth, labelWidth) = new Width(_logger.Configuration.MaxWidth - Widths.DoubleTab, GetLabelWidth(solution));
 
         _logger.LogLine(
             GetLabel(
                 Prefixes.Solution,
                 solution.Name,
-                width.Label,
-                solution.DependenciesCounter),
+                labelWidth,
+                solution.DependencyCounter),
             Color.DarkCyan);
 
         foreach (var project in solution.Projects)
@@ -54,9 +54,9 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 GetLabel(
                     Prefixes.Project,
                     project.Name,
-                    width.Label,
-                    solution.DependenciesCounter,
-                    project.DependenciesCounter),
+                    labelWidth,
+                    solution.DependencyCounter,
+                    project.DependencyCounter),
                 Color.Green);
 
             foreach (var target in project.Targets)
@@ -65,14 +65,14 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                     GetLabel(
                         Prefixes.Target,
                         target.Name,
-                        width.Label,
-                        project.DependenciesCounter,
-                        target.DependenciesCounter),
+                        labelWidth,
+                        project.DependencyCounter,
+                        target.DependencyCounter),
                     Color.DarkGreen);
 
-                for (var index = 1; index <= target.Dependencies.Count; index++)
+                _iterator = 0;
+                foreach (var dependency in target.Dependencies)
                 {
-                    var dependency = target.Dependencies.ElementAt(index - 1);
                     Print(dependency);
                 }
             }
@@ -106,7 +106,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
 
     private void Print(Dependency dependency, StringBuilder builder = null)
     {                        
-        if (dependency.Dependencies is null || !dependency.Dependencies.Any())
+        if (!dependency.HasDependencies)
         {
             _logger.Log($"{++_iterator}.".PadRight(Widths.DoubleTab));
             _logger.LogLine(builder?.ToString());

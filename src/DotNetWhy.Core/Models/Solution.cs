@@ -2,23 +2,13 @@
 
 public record Solution(string Name)
 {
-    public int DependenciesCounter =>
-        _projects.Sum(p => p.DependenciesCounter);
+    private readonly ConcurrentBag<Project> _projects = new();
 
-    public IReadOnlyCollection<Project> Projects =>
-        _projects as IReadOnlyCollection<Project>;
+    public ImmutableArray<Project> Projects => _projects.OrderBy(project => project.Name).ToImmutableArray();
 
-    private readonly IList<Project> _projects =
-        new List<Project>();
+    public int DependencyCounter => _projects.Sum(project => project.DependencyCounter);
 
-    internal void AddProject(Project project) =>
-        _projects.Add(project);
+    public bool HasProjects => _projects.Any();
 
-    internal void AddProjects(IEnumerable<Project> projects)
-    {
-        foreach (var project in projects)
-        {
-            _projects.Add(project);
-        }
-    }
+    internal void AddProject(Project project) => _projects.Add(project);
 }
