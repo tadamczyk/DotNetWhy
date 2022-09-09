@@ -2,13 +2,20 @@
 
 internal class DependencyGraphLogger : IDependencyGraphLogger
 {
-    private static int _iterator;
+    private static Index _index;
     private static string _packageName;
     private static Separator _separator;
     private static Width _width;
 
-    private record Separator(char Short, string Long);
+    private record Separator(char Default, char Short, string Long);
     private record Width(int Max, int Label);
+
+    private record Index
+    {
+        public int Value { get; private set; }
+        public void Reset() => Value = 0;
+        public int Next() => ++Value;
+    }
 
     private static class Widths
     {
@@ -30,6 +37,9 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
     public DependencyGraphLogger(ILogger logger)
     {
         _logger = logger;
+
+        _index = new Index();
+        _separator = new Separator(' ', ':', " -> ");
     }
 
     public void Log(
@@ -43,7 +53,6 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         }
 
         _packageName = packageName;
-        _separator = new Separator(':', " -> ");
         _width = new Width(
             (_logger.Configuration.MaxWidth >= 144 ? 144 : _logger.Configuration.MaxWidth >= 120 ? 120 : 80) - Widths.DoubleTab,
             GetLabelWidth(solution));
@@ -78,10 +87,10 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                         target.DependencyCounter),
                     Color.DarkGreen);
 
-                _iterator = 0;
+                _index.Reset();
                 foreach (var dependency in target.Dependencies)
                 {
-                    Print(dependency);
+                    PrintDependencyPaths(dependency);
                 }
             }
 
@@ -112,33 +121,11 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         int? count = null) =>
         $"{prefix} {$"{name}".PadRight(width)} {$"[{(count.HasValue ? $"{count}/" : string.Empty)}{all}]".PadLeft(Widths.QuadrupleTab)}";
 
-    private void Print(Dependency dependency, StringBuilder dependencyPathBuilder = null)
+    private void PrintDependencyPaths(Dependency dependency, StringBuilder dependencyPathBuilder = null)
     {
         if (!dependency.HasDependencies)
         {
-            _logger.Log($"{++_iterator}.".PadRight(Widths.DoubleTab));
-
-            var dependencyPath = dependencyPathBuilder?.ToString();
-            var dependencyPathParts = dependencyPath?.Split(_separator.Short);
-            var dependencyPathIndex = dependencyPathParts?.Length;
-            var currentWidth = Widths.DoubleTab;
-
-            foreach (var dependencyPathPart in dependencyPathParts)
-            {
-                currentWidth += dependencyPathPart.Length + _separator.Long.Length;
-                if (currentWidth >= _width.Max)
-                {
-                    currentWidth = Widths.TripleTab;
-                    _logger.LogLine();
-                    _logger.Log(' ', currentWidth);
-                }
-
-                _logger.Log(dependencyPathPart, dependencyPathPart.Contains(_packageName) ? Color.Red : null);
-                if (--dependencyPathIndex > 0) _logger.Log(_separator.Long);
-            }
-
-            _logger.LogLine();
-
+            PrintDependencyPath(dependencyPathBuilder?.ToString());
             return;
         }
 
@@ -148,7 +135,32 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 .Append(_separator.Short)
                 .Append(childDependency);
 
-            Print(childDependency, dependencyPathBuilder);
+            PrintDependencyPaths(childDependency, dependencyPathBuilder);
         }
+    }
+
+    private void PrintDependencyPath(string dependencyPath)
+    {
+        _logger.Log($"{_index.Next()}.".PadRight(Widths.DoubleTab));
+
+        var dependencyPathParts = dependencyPath?.Split(_separator.Short);
+        var dependencyPathIndex = dependencyPathParts?.Length;
+        var currentWidth = Widths.DoubleTab;
+
+        foreach (var dependencyPathPart in dependencyPathParts)
+        {
+            currentWidth += dependencyPathPart.Length + _separator.Long.Length;
+            if (currentWidth >= _width.Max)
+            {
+                currentWidth = Widths.TripleTab;
+                _logger.LogLine();
+                _logger.Log(_separator.Default, currentWidth);
+            }
+
+            _logger.Log(dependencyPathPart, dependencyPathPart.Contains(_packageName) ? Color.Red : null);
+            if (--dependencyPathIndex > 0) _logger.Log(_separator.Long);
+        }
+
+        _logger.LogLine();
     }
 }

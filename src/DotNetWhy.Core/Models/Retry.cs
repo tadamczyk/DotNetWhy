@@ -2,8 +2,6 @@
 
 internal record Retry(int Max = 3)
 {
-    private int _counter;
-
-    public bool CanTryAgain() =>
-        _counter++ < Max;
+    public int Current { get; private set; }
+    public bool CanTryAgain() => Current++ < Max;
 }
