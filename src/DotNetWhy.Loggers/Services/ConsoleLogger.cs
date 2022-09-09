@@ -9,10 +9,17 @@ internal class ConsoleLogger : ILogger
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public void Log(string text = "", Color? color = null)
+    public void Log(string text, Color? color = null)
     {
         if (color.HasValue) Console.ForegroundColor = color.Value.Parse();
         Console.Write(text);
+        Console.ResetColor();
+    }
+
+    public void Log(char character, int repeat, Color? color = null)
+    {
+        if (color.HasValue) Console.ForegroundColor = color.Value.Parse();
+        Console.Write(new string(character, repeat));
         Console.ResetColor();
     }
 

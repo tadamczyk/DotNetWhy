@@ -3,7 +3,11 @@
 internal class DependencyGraphLogger : IDependencyGraphLogger
 {
     private static int _iterator;
+    private static string _packageName;
+    private static Separator _separator;
+    private static Width _width;
 
+    private record Separator(char Short, string Long);
     private record Width(int Max, int Label);
 
     private static class Widths
@@ -38,13 +42,17 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
             return;
         }
 
-        var (maxWidth, labelWidth) = new Width(_logger.Configuration.MaxWidth - Widths.DoubleTab, GetLabelWidth(solution));
+        _packageName = packageName;
+        _separator = new Separator(':', " -> ");
+        _width = new Width(
+            (_logger.Configuration.MaxWidth >= 144 ? 144 : _logger.Configuration.MaxWidth >= 120 ? 120 : 80) - Widths.DoubleTab,
+            GetLabelWidth(solution));
 
         _logger.LogLine(
             GetLabel(
                 Prefixes.Solution,
                 solution.Name,
-                labelWidth,
+                _width.Label,
                 solution.DependencyCounter),
             Color.DarkCyan);
 
@@ -54,7 +62,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                 GetLabel(
                     Prefixes.Project,
                     project.Name,
-                    labelWidth,
+                    _width.Label,
                     solution.DependencyCounter,
                     project.DependencyCounter),
                 Color.Green);
@@ -65,7 +73,7 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
                     GetLabel(
                         Prefixes.Target,
                         target.Name,
-                        labelWidth,
+                        _width.Label,
                         project.DependencyCounter,
                         target.DependencyCounter),
                     Color.DarkGreen);
@@ -104,25 +112,43 @@ internal class DependencyGraphLogger : IDependencyGraphLogger
         int? count = null) =>
         $"{prefix} {$"{name}".PadRight(width)} {$"[{(count.HasValue ? $"{count}/" : string.Empty)}{all}]".PadLeft(Widths.QuadrupleTab)}";
 
-    private void Print(Dependency dependency, StringBuilder builder = null)
-    {                        
+    private void Print(Dependency dependency, StringBuilder dependencyPathBuilder = null)
+    {
         if (!dependency.HasDependencies)
         {
             _logger.Log($"{++_iterator}.".PadRight(Widths.DoubleTab));
-            _logger.LogLine(builder?.ToString());
+
+            var dependencyPath = dependencyPathBuilder?.ToString();
+            var dependencyPathParts = dependencyPath?.Split(_separator.Short);
+            var dependencyPathIndex = dependencyPathParts?.Length;
+            var currentWidth = Widths.DoubleTab;
+
+            foreach (var dependencyPathPart in dependencyPathParts)
+            {
+                currentWidth += dependencyPathPart.Length + _separator.Long.Length;
+                if (currentWidth >= _width.Max)
+                {
+                    currentWidth = Widths.TripleTab;
+                    _logger.LogLine();
+                    _logger.Log(' ', currentWidth);
+                }
+
+                _logger.Log(dependencyPathPart, dependencyPathPart.Contains(_packageName) ? Color.Red : null);
+                if (--dependencyPathIndex > 0) _logger.Log(_separator.Long);
+            }
+
+            _logger.LogLine();
+
             return;
         }
 
         foreach (var childDependency in dependency.Dependencies)
         {
-            builder = (builder ?? new StringBuilder(dependency.ToString()))
-                .Append(' ')
-                .Append("->")
-                .Append(' ')
-                .Append(childDependency)
-                .Append(' ');
+            dependencyPathBuilder = (dependencyPathBuilder ?? new StringBuilder(dependency.ToString()))
+                .Append(_separator.Short)
+                .Append(childDependency);
 
-            Print(childDependency, builder);
+            Print(childDependency, dependencyPathBuilder);
         }
     }
 }

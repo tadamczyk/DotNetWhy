@@ -39,10 +39,10 @@ internal class DotNetWhyService : IDotNetWhyService
 
         void GetDependencyTree()
         {
-            var directory = _fileSystem.Directory.GetCurrentDirectory();
-            var packageName = arguments.First();
+            var directory = _fileSystem.Directory.GetCurrentDirectory().Trim();
+            var packageName = arguments.First().Trim();
 
-            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...\n");
+            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...");
             var solutionDependencyGraph = _service.GetConvertedDependencyGraphByPackageName(directory, packageName);
             _logger.Log(solutionDependencyGraph, packageName);
         }
