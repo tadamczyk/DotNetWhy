@@ -2,7 +2,7 @@
 
 internal static class ConsoleLoggerConstants
 {
-    public static readonly Encoding Encoding = Encoding.UTF8;
+    public static Encoding Encoding => Encoding.UTF8;
 
     public static class Prefixes
     {

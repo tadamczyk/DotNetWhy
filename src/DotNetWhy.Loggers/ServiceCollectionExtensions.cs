@@ -4,6 +4,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddLoggers(this IServiceCollection services) =>
         services
-            .AddSingleton<IDependencyTreeLogger, DependencyTreeLogger>()
+            .AddSingleton<IBaseDependencyTreeLogger, BaseDependencyTreeLogger>()
+            .AddSingleton<IDependencyTreeLogger, ConsoleDependencyTreeLogger>()
             .AddSingleton<ILogger, ConsoleLogger>();
 }

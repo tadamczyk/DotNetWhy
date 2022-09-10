@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Loggers.Services;
+﻿namespace DotNetWhy.Loggers.Interfaces;
 
 internal interface ILogger
 {

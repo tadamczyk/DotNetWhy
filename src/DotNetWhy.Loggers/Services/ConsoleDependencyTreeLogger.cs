@@ -1,20 +1,15 @@
 ﻿namespace DotNetWhy.Loggers.Services;
 
-internal class DependencyTreeLogger : IDependencyTreeLogger
+internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependencyTreeLogger
 {
     private static string _packageName;
     private readonly IndexHelper _index = new();
     private readonly ILogger _logger;
 
-    public DependencyTreeLogger(ILogger logger)
+    public ConsoleDependencyTreeLogger(ILogger logger)
+        : base(logger)
     {
         _logger = logger;
-    }
-
-    public void LogStartMessage(string workingDirectory)
-    {
-        _logger.LogLine($"Analyzing project(s) from {workingDirectory} directory...");
-        _logger.LogLine();
     }
 
     public void LogResults(
@@ -66,16 +61,6 @@ internal class DependencyTreeLogger : IDependencyTreeLogger
 
             _logger.LogLine();
         });
-    }
-
-    public void LogErrors(IEnumerable<string> errors)
-    {
-        errors.ForEach(error => _logger.LogLine(error, Color.Red));
-    }
-
-    public void LogEndMessage(TimeSpan elapsedTime)
-    {
-        _logger.LogLine($"Time elapsed: {elapsedTime:hh\\:mm\\:ss\\.ff}");
     }
 
     private static string GetLabel(

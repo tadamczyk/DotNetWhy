@@ -1,8 +1,8 @@
 ﻿namespace DotNetWhy.Loggers;
 
-public interface IDependencyTreeLogger : IDependencyTreeResultsLogger
+public interface IDependencyTreeLogger : IBaseDependencyTreeLogger
 {
-    void LogStartMessage(string workingDirectory);
-    void LogErrors(IEnumerable<string> errors);
-    void LogEndMessage(TimeSpan elapsedTime);
+    void LogResults(
+        Solution solution,
+        string packageName);
 }

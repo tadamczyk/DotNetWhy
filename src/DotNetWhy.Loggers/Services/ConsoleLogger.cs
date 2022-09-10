@@ -21,7 +21,7 @@ internal class ConsoleLogger : ILogger
     public void LogLine(
         string text = "",
         Color? color = null) =>
-        Wrapper(() => Console.WriteLine(text), color);
+        Log(text + Environment.NewLine, color);
 
     private static void Wrapper(
         Action log,

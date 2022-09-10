@@ -6,5 +6,6 @@ global using DotNetWhy.Domain;
 global using DotNetWhy.Loggers.Constants;
 global using DotNetWhy.Loggers.Enums;
 global using DotNetWhy.Loggers.Extensions;
+global using DotNetWhy.Loggers.Interfaces;
 global using DotNetWhy.Loggers.Services;
 global using Microsoft.Extensions.DependencyInjection;

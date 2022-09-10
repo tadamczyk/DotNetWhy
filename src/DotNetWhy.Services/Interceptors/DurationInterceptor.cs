@@ -2,9 +2,9 @@
 
 internal class DurationInterceptor : IInterceptor
 {
-    private readonly IDependencyTreeLogger _logger;
+    private readonly IBaseDependencyTreeLogger _logger;
 
-    public DurationInterceptor(IDependencyTreeLogger logger)
+    public DurationInterceptor(IBaseDependencyTreeLogger logger)
     {
         _logger = logger;
     }
