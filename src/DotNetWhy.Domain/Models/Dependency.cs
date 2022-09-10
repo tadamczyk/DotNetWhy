@@ -18,9 +18,3 @@ public record Dependency(string Name, string Version)
 
     public override string ToString() => $"{Name} ({Version})";
 }
-
-public static class DependencyExtensions
-{
-    public static Dependency ToDependency(this LockFileTargetLibrary lockFileTargetLibrary) =>
-        new(lockFileTargetLibrary.Name, lockFileTargetLibrary.Version.ToString());
-}

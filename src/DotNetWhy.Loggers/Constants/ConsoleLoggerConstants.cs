@@ -24,18 +24,15 @@ internal static class ConsoleLoggerConstants
         public static int DoubleTab => 2 * Tab;
         public static int TripleTab => 3 * Tab;
         public static int QuadrupleTab => 4 * Tab;
-        public static int Max => (Console.WindowWidth >= 144 ? 144 : Console.WindowWidth >= 120 ? 120 : 80) - DoubleTab;
-        public static int Label(Solution solution) =>
-            new[]
-            {
-                solution.Name.Length,
-                solution
-                    .Projects
-                    .Select(project => project.Name.Length).Max(),
-                solution
-                    .Projects
-                    .SelectMany(project => project.Targets
-                        .Select(target => target.Name.Length)).Max()
-            }.Max() + DoubleTab;
+
+        public static int Label;
+
+        public static int Max =>
+            (System.Console.WindowWidth >= 144
+                ? 144
+                : System.Console.WindowWidth >= 120
+                    ? 120
+                    : 80)
+            - DoubleTab;
     }
 }

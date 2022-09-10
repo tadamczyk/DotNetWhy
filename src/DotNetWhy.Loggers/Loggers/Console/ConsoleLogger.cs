@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Loggers.Services;
+﻿namespace DotNetWhy.Loggers.Console;
 
 internal class ConsoleLogger : ILogger
 {
@@ -16,7 +16,7 @@ internal class ConsoleLogger : ILogger
     public void Log(
         string text,
         Color? color = null) =>
-        Wrapper(() => Console.Write(text), color);
+        Wrapper(() => System.Console.Write(text), color);
 
     public void LogLine(
         string text = "",
@@ -29,6 +29,6 @@ internal class ConsoleLogger : ILogger
     {
         color?.Set();
         log();
-        Console.ResetColor();
+        System.Console.ResetColor();
     }
 }

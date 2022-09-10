@@ -1,8 +1,7 @@
-﻿namespace DotNetWhy.Loggers.Services;
+﻿namespace DotNetWhy.Loggers.Console;
 
 internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependencyTreeLogger
 {
-    private static string _packageName;
     private readonly IndexHelper _index = new();
     private readonly ILogger _logger;
 
@@ -22,54 +21,26 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
             return;
         }
 
-        _packageName = packageName;
-        var labelWidth = ConsoleLoggerConstants.Widths.Label(solution);
+        packageName.SetAsSearchedPackageName();
+        solution.SetLabelWidth();
 
-        _logger.LogLine(
-            GetLabel(
-                ConsoleLoggerConstants.Prefixes.Solution,
-                solution.Name,
-                labelWidth,
-                solution.DependencyCounter),
-            Color.DarkCyan);
+        _logger.LogLine(solution.GetSolutionLabel(), Color.DarkCyan);
 
         solution.Projects.ForEach(project =>
         {
-            _logger.LogLine(
-                GetLabel(
-                    ConsoleLoggerConstants.Prefixes.Project,
-                    project.Name,
-                    labelWidth,
-                    solution.DependencyCounter,
-                    project.DependencyCounter),
-                Color.Green);
+            _logger.LogLine(project.GetProjectLabel(solution.DependencyCounter), Color.Green);
 
             project.Targets.ForEach(target =>
             {
-                _logger.LogLine(
-                    GetLabel(
-                        ConsoleLoggerConstants.Prefixes.Target,
-                        target.Name,
-                        labelWidth,
-                        project.DependencyCounter,
-                        target.DependencyCounter),
-                    Color.DarkGreen);
-
                 _index.Reset();
+                _logger.LogLine(target.GetTargetLabel(project.DependencyCounter), Color.DarkGreen);
+
                 target.Dependencies.ForEach(dependency => LogDependencyTree(dependency));
             });
 
             _logger.LogLine();
         });
     }
-
-    private static string GetLabel(
-        string prefix,
-        string name,
-        int width,
-        int all,
-        int? count = null) =>
-        $"{prefix} {$"{name}".PadRight(width)} {$"[{(count.HasValue ? $"{count}/" : string.Empty)}{all}]".PadLeft(ConsoleLoggerConstants.Widths.QuadrupleTab)}";
 
     private void LogDependencyTree(Dependency dependency, StringBuilder dependencyPathBuilder = null)
     {
@@ -82,7 +53,8 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         foreach (var childDependency in dependency.Dependencies)
         {
             dependencyPathBuilder = (dependencyPathBuilder ?? new StringBuilder(dependency.ToString()))
-                .Append(ConsoleLoggerConstants.Separators.Short).Append(childDependency);
+                .Append(ConsoleLoggerConstants.Separators.Short)
+                .Append(childDependency);
 
             LogDependencyTree(childDependency, dependencyPathBuilder);
         }
@@ -106,7 +78,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
                 _logger.Log(ConsoleLoggerConstants.Separators.Default, currentWidth);
             }
 
-            _logger.Log(dependencyPathPart, dependencyPathPart.Contains(_packageName, StringComparison.InvariantCultureIgnoreCase) ? Color.Red : null);
+            _logger.Log(dependencyPathPart, dependencyPathPart.Contains(ConsoleLoggerExtensions.SearchedPackageName, StringComparison.InvariantCultureIgnoreCase) ? Color.Red : null);
             if (--dependencyPathIndex > 0) _logger.Log(ConsoleLoggerConstants.Separators.Long);
         }
 
