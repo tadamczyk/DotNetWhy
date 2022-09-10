@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Validators.Validators;
+﻿namespace DotNetWhy.Validators;
 
 public abstract record BaseValidator
 {

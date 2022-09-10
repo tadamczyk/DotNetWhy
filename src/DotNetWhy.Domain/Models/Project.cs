@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Models;
+﻿namespace DotNetWhy.Domain;
 
 public record Project(string Name)
 {
@@ -10,5 +10,5 @@ public record Project(string Name)
 
     public bool HasTargets => _targets.Any();
 
-    internal void AddTarget(Target target) => _targets.Add(target);
+    public void AddTarget(Target target) => _targets.Add(target);
 }

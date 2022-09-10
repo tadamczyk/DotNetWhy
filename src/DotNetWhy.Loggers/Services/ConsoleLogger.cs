@@ -2,31 +2,33 @@
 
 internal class ConsoleLogger : ILogger
 {
-    public LoggerConfiguration Configuration => new(Console.WindowWidth);
-
     public ConsoleLogger()
     {
-        Console.OutputEncoding = Encoding.UTF8;
+        ConsoleLoggerConstants.Encoding.Set();
     }
 
-    public void Log(string text, Color? color = null)
-    {
-        if (color.HasValue) Console.ForegroundColor = color.Value.Parse();
-        Console.Write(text);
-        Console.ResetColor();
-    }
+    public void Log(
+        char character,
+        int repeat,
+        Color? color = null) =>
+        Log(new string(character, repeat), color);
 
-    public void Log(char character, int repeat, Color? color = null)
-    {
-        if (color.HasValue) Console.ForegroundColor = color.Value.Parse();
-        Console.Write(new string(character, repeat));
-        Console.ResetColor();
-    }
+    public void Log(
+        string text,
+        Color? color = null) =>
+        Wrapper(() => Console.Write(text), color);
 
-    public void LogLine(string text = "", Color? color = null)
+    public void LogLine(
+        string text = "",
+        Color? color = null) =>
+        Wrapper(() => Console.WriteLine(text), color);
+
+    private static void Wrapper(
+        Action log,
+        Color? color = null)
     {
-        if (color.HasValue) Console.ForegroundColor = color.Value.Parse();
-        Console.WriteLine(text);
+        color?.Set();
+        log();
         Console.ResetColor();
     }
 }

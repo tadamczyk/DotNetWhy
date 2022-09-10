@@ -3,15 +3,16 @@
 internal class LockFileProvider : ILockFileProvider
 {
     private readonly ILockFileSourceProvider _sourceProvider;
-    private readonly Retry _retry;
+    private readonly RetryHelper _retry = new();
 
     public LockFileProvider(ILockFileSourceProvider sourceProvider)
     {
         _sourceProvider = sourceProvider;
-        _retry = new Retry();
     }
 
-    public LockFile Get(string workingDirectory, string outputDirectory)
+    public LockFile Get(
+        string workingDirectory,
+        string outputDirectory)
     {
         var lockFileSource = _sourceProvider.Get(outputDirectory);
 

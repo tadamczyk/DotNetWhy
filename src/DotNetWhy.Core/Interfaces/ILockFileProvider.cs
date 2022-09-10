@@ -2,5 +2,7 @@
 
 internal interface ILockFileProvider
 {
-    LockFile Get(string workingDirectory, string outputDirectory);
+    LockFile Get(
+        string workingDirectory,
+        string outputDirectory);
 }

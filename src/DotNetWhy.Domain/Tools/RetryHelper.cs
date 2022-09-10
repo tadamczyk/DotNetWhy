@@ -1,7 +1,8 @@
-﻿namespace DotNetWhy.Core.Models;
+﻿namespace DotNetWhy.Domain;
 
-internal record Retry(int Max = 3)
+public record RetryHelper(int Max = 3)
 {
     public int Current { get; private set; }
+
     public bool CanTryAgain() => Current++ < Max;
 }

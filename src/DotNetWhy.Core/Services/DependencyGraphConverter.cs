@@ -10,7 +10,10 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
         _lockFileProvider = lockFileProvider;
     }
 
-    public Solution ToSolution(DependencyGraphSpec dependencyGraphSpec, string solutionName, string packageName)
+    public Solution Convert(
+        DependencyGraphSpec dependencyGraphSpec,
+        string solutionName,
+        string packageName)
     {
         PackageName = packageName;
         var solution = new Solution(solutionName);

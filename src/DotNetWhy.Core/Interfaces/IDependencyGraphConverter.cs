@@ -2,5 +2,8 @@
 
 internal interface IDependencyGraphConverter
 {
-    Solution ToSolution(DependencyGraphSpec dependencyGraphSpec, string solutionName, string packageName);
+    Solution Convert(
+        DependencyGraphSpec dependencyGraphSpec,
+        string solutionName,
+        string packageName);
 }

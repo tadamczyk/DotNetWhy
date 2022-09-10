@@ -2,9 +2,9 @@
 
 internal class DurationInterceptor : IInterceptor
 {
-    private readonly ILogger _logger;
+    private readonly IDependencyTreeLogger _logger;
 
-    public DurationInterceptor(ILogger logger)
+    public DurationInterceptor(IDependencyTreeLogger logger)
     {
         _logger = logger;
     }
@@ -21,7 +21,7 @@ internal class DurationInterceptor : IInterceptor
         {
             stopwatch.Stop();
 
-            _logger.LogLine($"Time elapsed: {stopwatch.Elapsed:hh\\:mm\\:ss\\.ff}");
+            _logger.LogEndMessage(stopwatch.Elapsed);
         }
     }
 }

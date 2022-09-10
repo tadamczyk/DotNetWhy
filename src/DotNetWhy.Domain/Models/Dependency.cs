@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Models;
+﻿namespace DotNetWhy.Domain;
 
 public record Dependency(string Name, string Version)
 {
@@ -11,12 +11,12 @@ public record Dependency(string Name, string Version)
 
     public bool HasDependencies => _dependencies.Any();
 
-    public override string ToString() => $"{Name} ({Version})";
+    public void AddDependency(Dependency dependency) => _dependencies.Add(dependency);
 
-    internal void AddDependency(Dependency dependency) => _dependencies.Add(dependency);
-
-    internal bool IsOrContainsPackage(string packageName) =>
+    public bool IsOrContainsPackage(string packageName) =>
         Name.Contains(packageName, StringComparison.InvariantCultureIgnoreCase) || HasDependencies;
+
+    public override string ToString() => $"{Name} ({Version})";
 }
 
 public static class DependencyExtensions

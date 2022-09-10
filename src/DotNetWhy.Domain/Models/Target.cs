@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Models;
+﻿namespace DotNetWhy.Domain;
 
 public record Target(string Name)
 {
@@ -10,5 +10,5 @@ public record Target(string Name)
 
     public bool HasDependencies => _dependencies.Any();
 
-    internal void AddDependency(Dependency dependency) => _dependencies.Add(dependency);
+    public void AddDependency(Dependency dependency) => _dependencies.Add(dependency);
 }

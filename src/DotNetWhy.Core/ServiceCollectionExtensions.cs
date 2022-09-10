@@ -6,8 +6,8 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton<IDependencyGraphConverter, DependencyGraphConverter>()
             .AddSingleton<IDependencyGraphProvider, DependencyGraphProvider>()
+            .AddSingleton<IDependencyTreeService, DependencyTreeService>()
             .AddSingleton<IDependencyGraphSourceProvider, DependencyGraphSourceProvider>()
-            .AddSingleton<IDependencyGraphService, DependencyGraphService>()
             .AddTransient<ILockFileProvider, LockFileProvider>()
             .AddTransient<ILockFileSourceProvider, LockFileSourceProvider>();
 }

@@ -1,11 +1,11 @@
 ﻿namespace DotNetWhy.Core.Services;
 
-internal class DependencyGraphService : IDependencyGraphService
+internal class DependencyTreeService : IDependencyTreeService
 {
     private readonly IDependencyGraphConverter _converter;
     private readonly IDependencyGraphProvider _provider;
 
-    public DependencyGraphService(
+    public DependencyTreeService(
         IDependencyGraphConverter converter,
         IDependencyGraphProvider provider)
     {
@@ -13,7 +13,7 @@ internal class DependencyGraphService : IDependencyGraphService
         _provider = provider;
     }
 
-    public Solution GetConvertedDependencyGraphByPackageName(
+    public Solution GetDependencyTreeByPackageName(
         string workingDirectory,
         string packageName)
     {
@@ -24,7 +24,7 @@ internal class DependencyGraphService : IDependencyGraphService
             return new Solution(solutionName);
         }
 
-        var solution = _converter.ToSolution(solutionDependencyGraph, solutionName, packageName);
+        var solution = _converter.Convert(solutionDependencyGraph, solutionName, packageName);
 
         return solution;
     }
