@@ -1,7 +1,11 @@
 ﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
 global using System.Text;
+global using DotNetWhy.Domain;
+global using DotNetWhy.Loggers.Console;
+global using DotNetWhy.Loggers.Constants;
 global using DotNetWhy.Loggers.Enums;
 global using DotNetWhy.Loggers.Extensions;
-global using DotNetWhy.Loggers.Models;
-global using DotNetWhy.Loggers.Services;
+global using DotNetWhy.Loggers.Interfaces;
 global using Microsoft.Extensions.DependencyInjection;

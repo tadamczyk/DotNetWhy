@@ -1,34 +1,32 @@
-﻿namespace DotNetWhy.Services.Services;
+﻿namespace DotNetWhy.Services;
 
 internal class DotNetWhyService : IDotNetWhyService
 {
-    private readonly IDependencyGraphLogger _logger;
-    private readonly IDependencyGraphService _service;
+    private readonly IDependencyTreeLogger _logger;
+    private readonly IDependencyTreeService _service;
     private readonly IFileSystem _fileSystem;
-    private readonly ILogger _consoleLogger;
-    private readonly IValidatorsWrapper _validatorsWrapper;
+    private readonly IValidationWrapper _validationWrapper;
 
     public DotNetWhyService(
-        IDependencyGraphLogger logger,
-        IDependencyGraphService service,
+        IDependencyTreeLogger logger,
+        IDependencyTreeService service,
         IFileSystem fileSystem,
-        ILogger consoleLogger,
-        IValidatorsWrapper validatorsWrapper)
+        IValidationWrapper validationWrapper)
     {
         _logger = logger;
         _service = service;
         _fileSystem = fileSystem;
-        _consoleLogger = consoleLogger;
-        _validatorsWrapper = validatorsWrapper;
+        _validationWrapper = validationWrapper;
     }
 
     public void Run(IReadOnlyCollection<string> arguments)
     {
-        _validatorsWrapper.ValidateAndExecute(
+        _validationWrapper.ValidateAndExecute(
             SetValidators,
-            GetDependencyTree);
+            GetDependencyTree,
+            GetErrors);
 
-        void SetValidators(IValidatorsWrapper validators)
+        void SetValidators(IValidationWrapper validators)
         {
             validators
                 .AddInitializedDependenciesValidator(this)
@@ -39,12 +37,17 @@ internal class DotNetWhyService : IDotNetWhyService
 
         void GetDependencyTree()
         {
-            var directory = _fileSystem.Directory.GetCurrentDirectory();
-            var packageName = arguments.First();
+            var directory = _fileSystem.Directory.GetCurrentDirectory().Trim();
+            var packageName = arguments.First().Trim();
 
-            _consoleLogger.LogLine($"Analyzing project(s) from {directory} directory...\n");
-            var solutionDependencyGraph = _service.GetDependencyGraphByPackageName(directory, packageName);
-            _logger.Log(solutionDependencyGraph, packageName);
+            _logger.LogStartMessage(directory);
+            var dependencyTree = _service.GetDependencyTreeByPackageName(directory, packageName);
+            _logger.LogResults(dependencyTree, packageName);
+        }
+
+        void GetErrors(IEnumerable<string> errors)
+        {
+            _logger.LogErrors(errors);
         }
     }
 }

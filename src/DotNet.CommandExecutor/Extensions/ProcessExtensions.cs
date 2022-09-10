@@ -2,7 +2,8 @@
 
 internal static class ProcessExtensions
 {
-    internal static void SetProcessStartInfo(this Process process,
+    internal static void SetProcessStartInfo(
+        this Process process,
         string workingDirectory,
         string arguments) =>
         process.StartInfo = new ProcessStartInfo(ProcessConstants.Name, arguments)

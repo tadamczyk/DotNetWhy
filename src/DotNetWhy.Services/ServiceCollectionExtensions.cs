@@ -4,9 +4,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
-            .AddSingleton<IDependencyGraphLogger, DependencyGraphLogger>()
-            .AddSingleton<IFileSystem, FileSystem>()
             .AddInterceptedSingleton<IDotNetWhyService, DotNetWhyService, DurationInterceptor>()
+            .AddSingleton<IFileSystem, FileSystem>()
             .AddCore()
             .AddLoggers()
             .AddValidators();

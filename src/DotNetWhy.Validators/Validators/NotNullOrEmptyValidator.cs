@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Validators.Validators;
+﻿namespace DotNetWhy.Validators;
 
 internal sealed record NotNullOrEmptyValidator<T>(
         IEnumerable<T> Parameter,

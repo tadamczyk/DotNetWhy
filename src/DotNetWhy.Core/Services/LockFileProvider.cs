@@ -2,31 +2,33 @@
 
 internal class LockFileProvider : ILockFileProvider
 {
-    private const int MaxRetryLimit = 3;
-    private readonly ILockFileSourceProvider _lockFileSourceProvider;
-    private int _retryCounter;
+    private readonly ILockFileSourceProvider _sourceProvider;
+    private readonly RetryHelper _retry = new();
 
-    public LockFileProvider(ILockFileSourceProvider lockFileSourceProvider)
+    public LockFileProvider(ILockFileSourceProvider sourceProvider)
     {
-        _lockFileSourceProvider = lockFileSourceProvider;
+        _sourceProvider = sourceProvider;
     }
 
-    public LockFile Get(string workingDirectory, string outputDirectory)
+    public LockFile Get(
+        string workingDirectory,
+        string outputDirectory)
     {
+        var lockFileSource = _sourceProvider.Get(outputDirectory);
+
         try
         {
             var dotNetRestoreResult = DotNetRunner.Restore(workingDirectory);
 
             return dotNetRestoreResult.IsSuccess
-                ? LockFileUtilities.GetLockFile(_lockFileSourceProvider.Get(outputDirectory), NullLogger.Instance)
+                ? LockFileUtilities.GetLockFile(lockFileSource, NullLogger.Instance)
                 : throw new RestoreProjectFailedException(workingDirectory);
         }
         catch (Exception exception) when (exception is not RestoreProjectFailedException)
         {
-            if (_retryCounter++ < MaxRetryLimit)
-                return Get(workingDirectory, outputDirectory);
-            
-            throw new RestoreProjectFailedException(workingDirectory);
+            return _retry.CanTryAgain()
+                ? Get(workingDirectory, outputDirectory)
+                : throw new RestoreProjectFailedException(workingDirectory);
         }
     }
 }

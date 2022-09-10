@@ -1,6 +1,6 @@
 ﻿namespace DotNetWhy.Loggers.Enums;
 
-public enum Color
+internal enum Color
 {
     DarkCyan,
     DarkGreen,

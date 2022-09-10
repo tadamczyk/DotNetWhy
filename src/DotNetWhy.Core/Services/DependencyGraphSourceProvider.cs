@@ -2,9 +2,11 @@
 
 internal class DependencyGraphSourceProvider : IDependencyGraphSourceProvider
 {
-    private const string TempFileExtension = ".tmp";
     private const string JsonFileExtension = ".json";
+    private const string TempFileExtension = ".tmp";
 
     public string Get() =>
-        Path.Combine(Path.GetTempPath(), Path.GetTempFileName().Replace(TempFileExtension, JsonFileExtension));
+        Path.Combine(
+            Path.GetTempPath(),
+            Path.GetTempFileName().Replace(TempFileExtension, JsonFileExtension));
 }
