@@ -1,8 +1,17 @@
-﻿namespace DotNetWhy.Loggers;
+﻿namespace DotNetWhy.Loggers.Interfaces;
 
-public interface ILogger
+internal interface ILogger
 {
-    LoggerConfiguration Configuration { get; }
-    void Log(string text = "", Color? color = null);
-    void LogLine(string text = "", Color? color = null);
+    void Log(
+        char character,
+        int repeat,
+        Color? color = null);
+
+    void Log(
+        string text,
+        Color? color = null);
+
+    void LogLine(
+        string text = "",
+        Color? color = null);
 }

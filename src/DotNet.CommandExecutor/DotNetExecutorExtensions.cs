@@ -12,7 +12,8 @@ public static class DotNetExecutorExtensions
     /// <param name="dotNetExecutor">The extensible instance of <see cref="DotNetExecutor" />.</param>
     /// <param name="workingDirectory">The working directory in which the <see cref="DotNetExecutor" /> has to be execute.</param>
     /// <returns>The <see cref="DotNetExecutor" />.</returns>
-    public static DotNetExecutor InDirectory(this DotNetExecutor dotNetExecutor,
+    public static DotNetExecutor InDirectory(
+        this DotNetExecutor dotNetExecutor,
         string workingDirectory)
     {
         dotNetExecutor.WorkingDirectory = workingDirectory ?? Environment.CurrentDirectory;
@@ -26,7 +27,8 @@ public static class DotNetExecutorExtensions
     /// <param name="dotNetExecutor">The extensible instance of <see cref="DotNetExecutor" />.</param>
     /// <param name="arguments">The arguments with which the <see cref="DotNetExecutor" /> has to be execute.</param>
     /// <returns>The <see cref="DotNetExecutor" />.</returns>
-    public static DotNetExecutor WithArguments(this DotNetExecutor dotNetExecutor,
+    public static DotNetExecutor WithArguments(
+        this DotNetExecutor dotNetExecutor,
         IEnumerable<string> arguments)
     {
         dotNetExecutor.Arguments = string.Join(" ", arguments ?? Array.Empty<string>());
