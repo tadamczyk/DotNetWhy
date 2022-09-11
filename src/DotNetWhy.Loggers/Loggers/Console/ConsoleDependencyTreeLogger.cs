@@ -76,12 +76,13 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
         foreach (var dependencyPathPart in dependencyPathParts)
         {
-            currentWidth += dependencyPathPart.Length + ConsoleLoggerConstants.Separators.Long.Length;
+            var dependencyPathPartWidth = dependencyPathPart.Length + ConsoleLoggerConstants.Separators.Long.Length;
+            currentWidth += dependencyPathPartWidth;
             if (currentWidth >= ConsoleLoggerConstants.Widths.Max)
             {
-                currentWidth = ConsoleLoggerConstants.Widths.TripleTab;
+                currentWidth = ConsoleLoggerConstants.Widths.TripleTab + dependencyPathPartWidth;
                 _logger.LogLine();
-                _logger.Log(ConsoleLoggerConstants.Separators.Default, currentWidth);
+                _logger.Log(ConsoleLoggerConstants.Separators.Default, ConsoleLoggerConstants.Widths.TripleTab);
             }
 
             _logger.Log(dependencyPathPart, dependencyPathPart.Contains(ConsoleLoggerExtensions.SearchedPackageName, StringComparison.InvariantCultureIgnoreCase) ? Color.Red : null);
