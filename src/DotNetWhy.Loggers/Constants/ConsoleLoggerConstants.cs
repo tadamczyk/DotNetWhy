@@ -24,15 +24,7 @@ internal static class ConsoleLoggerConstants
         public static int DoubleTab => 2 * Tab;
         public static int TripleTab => 3 * Tab;
         public static int QuadrupleTab => 4 * Tab;
-
+        public static int Max => System.Console.WindowWidth - DoubleTab;
         public static int Label;
-
-        public static int Max =>
-            (System.Console.WindowWidth >= 144
-                ? 144
-                : System.Console.WindowWidth >= 120
-                    ? 120
-                    : 80)
-            - DoubleTab;
     }
 }
