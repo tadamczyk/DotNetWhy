@@ -1,6 +1,4 @@
-﻿namespace DotNetWhy.Domain.Tests.Models;
-
-[TestFixture]
+﻿[TestFixture]
 [TestOf(typeof(Dependency))]
 public class DependencyTests
 {
