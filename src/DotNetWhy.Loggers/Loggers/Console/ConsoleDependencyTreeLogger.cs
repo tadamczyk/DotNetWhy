@@ -28,12 +28,12 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
         solution.Projects.ForEach(project =>
         {
-            _logger.LogLine(project.GetProjectLabel(solution.DependencyCounter), Color.Green);
+            _logger.LogLine(project.GetProjectLabel(solution.DependencyPathCounter), Color.Green);
 
             project.Targets.ForEach(target =>
             {
                 _index.Reset();
-                _logger.LogLine(target.GetTargetLabel(project.DependencyCounter), Color.DarkGreen);
+                _logger.LogLine(target.GetTargetLabel(project.DependencyPathCounter), Color.DarkGreen);
 
                 target.Dependencies.ForEach(dependency => LogDependencyTree(dependency));
             });

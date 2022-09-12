@@ -2,11 +2,11 @@
 
 public record Target(string Name)
 {
-    private readonly IList<Dependency> _dependencies = new List<Dependency>();
+    private readonly List<Dependency> _dependencies = new();
 
-    public ImmutableArray<Dependency> Dependencies => _dependencies.ToImmutableArray();
+    public IReadOnlyCollection<Dependency> Dependencies => _dependencies.AsReadOnly();
 
-    public int DependencyCounter => _dependencies.Sum(d => d.DependencyCounter);
+    public int DependencyPathCounter => _dependencies.Sum(d => d.DependencyPathCounter);
 
     public bool HasDependencies => _dependencies.Any();
 
