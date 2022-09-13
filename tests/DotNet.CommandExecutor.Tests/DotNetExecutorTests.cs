@@ -1,5 +1,3 @@
-namespace DotNet.CommandExecutor.Tests;
-
 [TestFixture]
 [TestOf(typeof(DotNetExecutor))]
 public class DotNetExecutorTests
