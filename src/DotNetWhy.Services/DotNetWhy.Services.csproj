@@ -13,7 +13,6 @@
     <ItemGroup>
         <PackageReference Include="Castle.Core" Version="5.1.0"/>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
-        <PackageReference Include="System.IO.Abstractions" Version="17.2.1"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\DotNetWhy.Core\DotNetWhy.Core.csproj"/>

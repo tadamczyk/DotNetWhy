@@ -15,6 +15,8 @@ internal class DurationInterceptor : IInterceptor
 
         try
         {
+            _logger.LogStartMessage(Environment.CurrentDirectory);
+
             invocation.Proceed();
         }
         finally
