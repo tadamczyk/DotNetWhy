@@ -22,7 +22,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
         Parallel.ForEach(sourceProjects, sourceProject =>
         {
             var project = new Project(sourceProject.Name);
-            var sourceProjectLockFile = GetSourceProjectLockFile(sourceProject.FilePath, sourceProject.RestoreMetadata.OutputPath);
+            var sourceProjectLockFile = GetSourceProjectLockFile(sourceProject.RestoreMetadata.OutputPath);
             if (sourceProjectLockFile is null) return;
 
             foreach (var sourceTarget in sourceProject.TargetFrameworks)
@@ -53,10 +53,8 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
         DependencyGraphSpec dependencyGraphSpec) =>
         dependencyGraphSpec.Projects.Where(p => p.RestoreMetadata.ProjectStyle is ProjectStyle.PackageReference);
 
-    private LockFile GetSourceProjectLockFile(
-        string filePath,
-        string outputPath) =>
-        _lockFileProvider.Get(filePath, outputPath);
+    private LockFile GetSourceProjectLockFile(string outputPath) =>
+        _lockFileProvider.Get(outputPath);
 
     private LockFileTarget GetSourceTargetLockFile(
         LockFile sourceProjectLockFile,
