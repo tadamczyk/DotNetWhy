@@ -1,7 +1,7 @@
 ﻿global using System;
 global using System.Collections.Generic;
 global using System.Diagnostics;
-global using System.IO.Abstractions;
+global using System.IO;
 global using System.Linq;
 global using Castle.DynamicProxy;
 global using DotNetWhy.Core;
