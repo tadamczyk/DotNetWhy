@@ -6,7 +6,7 @@
         <LangVersion>latest</LangVersion>
         <OutputType>exe</OutputType>
         <PackAsTool>true</PackAsTool>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Title>$(AssemblyName)</Title>
         <ToolCommandName>dotnet-why</ToolCommandName>
     </PropertyGroup>
