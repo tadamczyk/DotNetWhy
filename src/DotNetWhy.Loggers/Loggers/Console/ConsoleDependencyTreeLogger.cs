@@ -52,7 +52,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
         foreach (var childDependency in dependency.Dependencies)
         {
-            var currentDependencyPathLength = dependencyPathBuilder?.Length ?? 0;
+            var currentDependencyPathLength = dependencyPathBuilder?.Length ?? dependency.ToString().Length;
 
             dependencyPathBuilder = (dependencyPathBuilder ?? new StringBuilder(dependency.ToString()))
                 .Append(ConsoleLoggerConstants.Separators.Short)
