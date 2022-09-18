@@ -21,13 +21,18 @@ internal class DependencyTreeService : IDependencyTreeService
         string packageName)
     {
         var solutionName = Path.GetFileName(workingDirectory) ?? workingDirectory;
-        var solutionDependencyGraph = _provider.Get(workingDirectory);
-        if (solutionDependencyGraph.Projects.IsNullOrEmpty())
+
+        DependencyGraphSpec solutionDependencyGraph = default;
+        Parallel.Invoke(
+            () => { solutionDependencyGraph = _provider.Get(workingDirectory); },
+            () => _lockFilesGenerator.Generate(workingDirectory)
+        );
+
+        if (solutionDependencyGraph?.Projects?.IsNullOrEmpty() ?? true)
         {
             return new Solution(solutionName);
         }
 
-        _lockFilesGenerator.Generate(workingDirectory);
         var solution = _converter.Convert(solutionDependencyGraph, solutionName, packageName);
 
         return solution;
