@@ -19,30 +19,30 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
         var solution = new Solution(solutionName);
         var sourceProjects = GetSourceProjects(dependencyGraphSpec);
 
-        Parallel.ForEach(sourceProjects, sourceProject =>
+        sourceProjects.ForEach(sourceProject =>
         {
             var project = new Project(sourceProject.Name);
             var sourceProjectLockFile = GetSourceProjectLockFile(sourceProject.RestoreMetadata.OutputPath);
             if (sourceProjectLockFile is null) return;
 
-            foreach (var sourceTarget in sourceProject.TargetFrameworks)
+            sourceProject.TargetFrameworks.ForEach(sourceTarget =>
             {
                 var target = new Target(sourceTarget.TargetAlias);
                 var sourceTargetLockFile = GetSourceTargetLockFile(sourceProjectLockFile, sourceTarget.FrameworkName.ToString());
-                if (sourceTargetLockFile is null) continue;
+                if (sourceTargetLockFile is null) return;
 
-                foreach (var sourceDependency in sourceTarget.Dependencies)
+                sourceTarget.Dependencies.ForEach(sourceDependency =>
                 {
                     var sourceLibraryLockFile = GetSourceLibraryLockFile(sourceTargetLockFile, sourceDependency.Name);
-                    if (sourceLibraryLockFile is null) continue;
+                    if (sourceLibraryLockFile is null) return;
 
                     var dependency = sourceLibraryLockFile.ToDependency();
                     CreateDependenciesPaths(sourceTargetLockFile, sourceLibraryLockFile, dependency);
 
                     if (dependency.HasDependencies || dependency.IsOrContainsPackage(PackageName)) target.AddDependency(dependency);
-                }
+                });
                 if (target.HasDependencies) project.AddTarget(target);
-            }
+            });
             if (project.HasTargets) solution.AddProject(project);
         });
 
@@ -73,15 +73,15 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
     {
         if (!sourceLibraryLockFile.Dependencies.Any()) return;
 
-        foreach (var libraryDependency in sourceLibraryLockFile.Dependencies)
+        sourceLibraryLockFile.Dependencies.ForEach(libraryDependency =>
         {
             var childSourceLibraryLockFile = GetSourceLibraryLockFile(sourceTargetLockFile, libraryDependency.Id);
-            if (childSourceLibraryLockFile is null) continue;
+            if (childSourceLibraryLockFile is null) return;
 
             var childDependency = childSourceLibraryLockFile.ToDependency();
             CreateDependenciesPaths(sourceTargetLockFile, childSourceLibraryLockFile, childDependency);
 
             if (childDependency.IsOrContainsPackage(PackageName)) dependency.AddDependency(childDependency);
-        }
+        });
     }
 }
