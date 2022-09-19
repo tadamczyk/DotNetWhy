@@ -27,7 +27,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
 
             sourceProject.TargetFrameworks.ForEach(sourceTarget =>
             {
-                var target = new Target(sourceTarget.TargetAlias);
+                var target = new Target(sourceTarget.FrameworkName.ToString() ?? sourceTarget.TargetAlias);
                 var sourceTargetLockFile = GetSourceTargetLockFile(sourceProjectLockFile, sourceTarget.FrameworkName.ToString());
                 if (sourceTargetLockFile is null) return;
 
