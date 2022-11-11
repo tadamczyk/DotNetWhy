@@ -4,22 +4,31 @@ internal class DependencyTreeService : IDependencyTreeService
 {
     private readonly IDependencyGraphConverter _converter;
     private readonly IDependencyGraphProvider _provider;
+    private readonly ILockFilesGenerator _lockFilesGenerator;
 
     public DependencyTreeService(
         IDependencyGraphConverter converter,
-        IDependencyGraphProvider provider)
+        IDependencyGraphProvider provider,
+        ILockFilesGenerator lockFilesGenerator)
     {
         _converter = converter;
         _provider = provider;
+        _lockFilesGenerator = lockFilesGenerator;
     }
 
     public Solution GetDependencyTreeByPackageName(
         string workingDirectory,
         string packageName)
     {
-        var solutionName = Path.GetFileName(workingDirectory) ?? string.Empty;
-        var solutionDependencyGraph = _provider.Get(workingDirectory);
-        if (solutionDependencyGraph.Projects.IsNullOrEmpty())
+        var solutionName = Path.GetFileName(workingDirectory) ?? workingDirectory;
+
+        DependencyGraphSpec solutionDependencyGraph = default;
+        Parallel.Invoke(
+            () => { solutionDependencyGraph = _provider.Get(workingDirectory); },
+            () => _lockFilesGenerator.Generate(workingDirectory)
+        );
+
+        if (solutionDependencyGraph?.Projects?.IsNullOrEmpty() ?? true)
         {
             return new Solution(solutionName);
         }

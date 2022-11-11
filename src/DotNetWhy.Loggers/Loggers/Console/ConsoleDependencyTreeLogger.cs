@@ -50,9 +50,9 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
             return;
         }
 
-        foreach (var childDependency in dependency.Dependencies)
+        dependency.Dependencies.ForEach(childDependency =>
         {
-            var currentDependencyPathLength = dependencyPathBuilder?.Length ?? 0;
+            var currentDependencyPathLength = dependencyPathBuilder?.Length ?? dependency.ToString().Length;
 
             dependencyPathBuilder = (dependencyPathBuilder ?? new StringBuilder(dependency.ToString()))
                 .Append(ConsoleLoggerConstants.Separators.Short)
@@ -63,7 +63,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
             dependencyPathBuilder.Remove(
                 currentDependencyPathLength,
                 dependencyPathBuilder.Length - currentDependencyPathLength);
-        }
+        });
     }
 
     private void LogDependencyPath(string dependencyPath)
@@ -74,7 +74,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         var dependencyPathIndex = dependencyPathParts?.Length;
         var currentWidth = ConsoleLoggerConstants.Widths.DoubleTab;
 
-        foreach (var dependencyPathPart in dependencyPathParts)
+        dependencyPathParts.ForEach(dependencyPathPart =>
         {
             var dependencyPathPartWidth = dependencyPathPart.Length + ConsoleLoggerConstants.Separators.Long.Length;
             currentWidth += dependencyPathPartWidth;
@@ -87,7 +87,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
             _logger.Log(dependencyPathPart, dependencyPathPart.Contains(ConsoleLoggerExtensions.SearchedPackageName, StringComparison.InvariantCultureIgnoreCase) ? Color.Red : null);
             if (--dependencyPathIndex > 0) _logger.Log(ConsoleLoggerConstants.Separators.Long);
-        }
+        });
 
         _logger.LogLine();
     }

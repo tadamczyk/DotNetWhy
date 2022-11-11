@@ -15,7 +15,7 @@ internal static class ConsoleLoggerConstants
     {
         public const char Default = ' ';
         public const char Short = ':';
-        public const string Long = " -> ";
+        public const string Long = " \u25B6 ";
     }
 
     public static class Widths
