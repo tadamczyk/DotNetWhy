@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Loggers.Constants;
+namespace DotNetWhy.Loggers.Constants;
 
 internal static class ConsoleLoggerConstants
 {

@@ -1,4 +1,4 @@
-﻿[TestFixture]
+[TestFixture]
 [TestOf(typeof(Solution))]
 public class SolutionTests
 {

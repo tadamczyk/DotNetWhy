@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Loggers.Enums;
+namespace DotNetWhy.Loggers.Enums;
 
 internal enum Color
 {

@@ -1,4 +1,4 @@
-﻿namespace DotNet.CommandExecutor;
+namespace DotNet.CommandExecutor;
 
 /// <summary>
 ///     The result model of the DotNet process performed.

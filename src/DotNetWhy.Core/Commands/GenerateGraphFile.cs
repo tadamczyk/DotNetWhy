@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Commands;
+namespace DotNetWhy.Core.Commands;
 
 internal static partial class DotNetRunner
 {

@@ -1,4 +1,4 @@
-﻿[TestFixture]
+[TestFixture]
 [TestOf(typeof(RetryHelper))]
 public class RetryHelperTests
 {

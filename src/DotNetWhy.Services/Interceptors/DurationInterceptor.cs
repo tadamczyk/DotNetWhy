@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Services.Interceptors;
+namespace DotNetWhy.Services.Interceptors;
 
 internal class DurationInterceptor : IInterceptor
 {

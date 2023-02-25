@@ -1,4 +1,4 @@
-﻿[TestFixture]
+[TestFixture]
 [TestOf(typeof(Dependency))]
 public class DependencyTests
 {

@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Interfaces;
+namespace DotNetWhy.Core.Interfaces;
 
 internal interface ILockFileProvider
 {

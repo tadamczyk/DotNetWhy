@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Loggers.Extensions;
+namespace DotNetWhy.Loggers.Extensions;
 
 internal static class ConsoleLoggerExtensions
 {

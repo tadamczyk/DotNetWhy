@@ -1,4 +1,4 @@
-﻿namespace DotNet.CommandExecutor.Enums;
+namespace DotNet.CommandExecutor.Enums;
 
 internal enum Status
 {

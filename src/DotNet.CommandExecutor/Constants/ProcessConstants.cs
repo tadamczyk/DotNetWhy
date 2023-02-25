@@ -1,4 +1,4 @@
-﻿namespace DotNet.CommandExecutor.Constants;
+namespace DotNet.CommandExecutor.Constants;
 
 internal static class ProcessConstants
 {

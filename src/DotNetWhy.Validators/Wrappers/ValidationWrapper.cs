@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Validators.Wrappers;
+namespace DotNetWhy.Validators.Wrappers;
 
 internal class ValidationWrapper : IValidationWrapper
 {

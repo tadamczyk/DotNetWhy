@@ -1,4 +1,4 @@
-﻿[TestFixture]
+[TestFixture]
 [TestOf(typeof(Project))]
 public class ProjectTests
 {

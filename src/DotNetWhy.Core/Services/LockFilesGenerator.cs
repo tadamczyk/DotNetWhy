@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Services;
+namespace DotNetWhy.Core.Services;
 
 internal class LockFilesGenerator : ILockFilesGenerator
 {

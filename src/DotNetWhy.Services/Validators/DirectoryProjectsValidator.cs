@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Services.Validators;
+namespace DotNetWhy.Services.Validators;
 
 internal sealed record DirectoryProjectsValidator : BaseValidator
 {

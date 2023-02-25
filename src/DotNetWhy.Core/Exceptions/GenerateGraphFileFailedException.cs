@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core.Exceptions;
+namespace DotNetWhy.Core.Exceptions;
 
 internal class GenerateGraphFileFailedException : Exception
 {

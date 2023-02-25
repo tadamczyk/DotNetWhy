@@ -1,4 +1,4 @@
-﻿namespace DotNet.CommandExecutor;
+namespace DotNet.CommandExecutor;
 
 /// <summary>
 ///     The extension methods for setting internal properties of <see cref="DotNetExecutor" />.

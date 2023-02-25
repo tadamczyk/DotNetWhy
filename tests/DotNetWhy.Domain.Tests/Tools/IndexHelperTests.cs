@@ -1,4 +1,4 @@
-﻿[TestFixture]
+[TestFixture]
 [TestOf(typeof(IndexHelper))]
 public class IndexHelperTests
 {

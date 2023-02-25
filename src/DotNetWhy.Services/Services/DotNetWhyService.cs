@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Services;
+namespace DotNetWhy.Services;
 
 internal class DotNetWhyService : IDotNetWhyService
 {

@@ -1,4 +1,4 @@
-﻿namespace DotNet.CommandExecutor;
+namespace DotNet.CommandExecutor;
 
 /// <summary>
 ///     The executor of the DotNet process.

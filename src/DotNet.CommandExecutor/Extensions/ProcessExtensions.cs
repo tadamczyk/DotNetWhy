@@ -1,4 +1,4 @@
-﻿namespace DotNet.CommandExecutor.Extensions;
+namespace DotNet.CommandExecutor.Extensions;
 
 internal static class ProcessExtensions
 {

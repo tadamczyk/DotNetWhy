@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Validators;
+namespace DotNetWhy.Validators;
 
 public static class ServiceCollectionExtensions
 {

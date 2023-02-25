@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Loggers;
+namespace DotNetWhy.Loggers;
 
 internal class BaseDependencyTreeLogger : IBaseDependencyTreeLogger
 {

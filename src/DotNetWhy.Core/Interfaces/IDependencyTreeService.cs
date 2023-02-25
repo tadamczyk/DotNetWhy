@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Core;
+namespace DotNetWhy.Core;
 
 public interface IDependencyTreeService
 {
