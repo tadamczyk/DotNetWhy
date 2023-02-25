@@ -13,7 +13,7 @@ internal static class ConsoleLoggerExtensions
     public static void SetAsSearchedPackageName(this string packageName) =>
         SearchedPackageName = packageName;
 
-    public static void SetLabelWidth(this Solution solution) => 
+    public static void SetLabelWidth(this Solution solution) =>
         ConsoleLoggerConstants.Widths.Label =
             new[]
             {

@@ -6,10 +6,8 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
     private readonly ILogger _logger;
 
     public ConsoleDependencyTreeLogger(ILogger logger)
-        : base(logger)
-    {
+        : base(logger) =>
         _logger = logger;
-    }
 
     public void LogResults(
         Solution solution,
@@ -85,7 +83,11 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
                 _logger.Log(ConsoleLoggerConstants.Separators.Default, ConsoleLoggerConstants.Widths.TripleTab);
             }
 
-            _logger.Log(dependencyPathPart, dependencyPathPart.Contains(ConsoleLoggerExtensions.SearchedPackageName, StringComparison.InvariantCultureIgnoreCase) ? Color.Red : null);
+            _logger.Log(dependencyPathPart,
+                dependencyPathPart.Contains(ConsoleLoggerExtensions.SearchedPackageName,
+                    StringComparison.InvariantCultureIgnoreCase)
+                    ? Color.Red
+                    : null);
             if (--dependencyPathIndex > 0) _logger.Log(ConsoleLoggerConstants.Separators.Long);
         });
 

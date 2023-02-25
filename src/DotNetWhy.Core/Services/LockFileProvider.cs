@@ -4,10 +4,7 @@ internal class LockFileProvider : ILockFileProvider
 {
     private readonly ILockFileSourceProvider _sourceProvider;
 
-    public LockFileProvider(ILockFileSourceProvider sourceProvider)
-    {
-        _sourceProvider = sourceProvider;
-    }
+    public LockFileProvider(ILockFileSourceProvider sourceProvider) => _sourceProvider = sourceProvider;
 
     public LockFile Get(string outputDirectory)
     {

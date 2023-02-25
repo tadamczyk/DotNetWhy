@@ -22,9 +22,9 @@ internal sealed record InitializedDependenciesValidator(object Service)
 
     private bool IsPrivateReadonlyInitializedByConstructorField(FieldInfo field) =>
         field.IsPrivate
-            && field.IsInitOnly
-            && GetServiceConstructorParametersTypes()
-                .Contains(field.FieldType);
+        && field.IsInitOnly
+        && GetServiceConstructorParametersTypes()
+            .Contains(field.FieldType);
 
     private IEnumerable<Type> GetServiceConstructorParametersTypes() =>
         Service

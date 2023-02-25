@@ -9,7 +9,7 @@ internal sealed record DirectoryProjectsValidator : BaseValidator
         Directory
             .GetFiles(Environment.CurrentDirectory)
             .Any(file => file.EndsWith(SolutionFileExtension, StringComparison.InvariantCultureIgnoreCase)
-                                || file.EndsWith(ProjectFileExtension, StringComparison.InvariantCultureIgnoreCase));
+                         || file.EndsWith(ProjectFileExtension, StringComparison.InvariantCultureIgnoreCase));
 
     protected override string ErrorMessage =>
         $"Directory {Environment.CurrentDirectory} does not contain any C# project.";

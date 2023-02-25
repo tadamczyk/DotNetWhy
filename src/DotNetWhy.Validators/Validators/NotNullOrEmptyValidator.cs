@@ -7,7 +7,7 @@ internal sealed record NotNullOrEmptyValidator<T>(
 {
     protected internal override bool IsValid =>
         Parameter is not null
-            && Parameter.Any();
+        && Parameter.Any();
 
     protected internal override string ErrorMessage =>
         $"Parameter{(string.IsNullOrEmpty(ParameterName) ? string.Empty : $" '{ParameterName}'")} is null or empty.";

@@ -28,10 +28,7 @@ internal class DependencyTreeService : IDependencyTreeService
             () => _lockFilesGenerator.Generate(workingDirectory)
         );
 
-        if (solutionDependencyGraph?.Projects?.IsNullOrEmpty() ?? true)
-        {
-            return new Solution(solutionName);
-        }
+        if (solutionDependencyGraph?.Projects?.IsNullOrEmpty() ?? true) return new Solution(solutionName);
 
         var solution = _converter.Convert(solutionDependencyGraph, solutionName, packageName);
 
