@@ -5,10 +5,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
     private readonly ILockFileProvider _lockFileProvider;
     private string PackageName { get; set; }
 
-    public DependencyGraphConverter(ILockFileProvider lockFileProvider)
-    {
-        _lockFileProvider = lockFileProvider;
-    }
+    public DependencyGraphConverter(ILockFileProvider lockFileProvider) => _lockFileProvider = lockFileProvider;
 
     public Solution Convert(
         DependencyGraphSpec dependencyGraphSpec,
@@ -28,7 +25,8 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
             sourceProject.TargetFrameworks.ForEach(sourceTarget =>
             {
                 var target = new Target(sourceTarget.FrameworkName.ToString() ?? sourceTarget.TargetAlias);
-                var sourceTargetLockFile = GetSourceTargetLockFile(sourceProjectLockFile, sourceTarget.FrameworkName.ToString());
+                var sourceTargetLockFile =
+                    GetSourceTargetLockFile(sourceProjectLockFile, sourceTarget.FrameworkName.ToString());
                 if (sourceTargetLockFile is null) return;
 
                 sourceTarget.Dependencies.ForEach(sourceDependency =>
@@ -39,7 +37,8 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
                     var dependency = sourceLibraryLockFile.ToDependency();
                     CreateDependenciesPaths(sourceTargetLockFile, sourceLibraryLockFile, dependency);
 
-                    if (dependency.HasDependencies || dependency.IsOrContainsPackage(PackageName)) target.AddDependency(dependency);
+                    if (dependency.HasDependencies || dependency.IsOrContainsPackage(PackageName))
+                        target.AddDependency(dependency);
                 });
                 if (target.HasDependencies) project.AddTarget(target);
             });

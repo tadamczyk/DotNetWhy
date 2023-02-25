@@ -4,10 +4,7 @@ internal class DurationInterceptor : IInterceptor
 {
     private readonly IBaseDependencyTreeLogger _logger;
 
-    public DurationInterceptor(IBaseDependencyTreeLogger logger)
-    {
-        _logger = logger;
-    }
+    public DurationInterceptor(IBaseDependencyTreeLogger logger) => _logger = logger;
 
     public void Intercept(IInvocation invocation)
     {

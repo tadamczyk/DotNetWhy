@@ -1,0 +1,46 @@
+# editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 120
+trim_trailing_whitespace = true
+
+[*.cs]
+csharp_style_collection_initializer = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_conditional_t_access = true:suggestion
+csharp_style_discard_out_parameters = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_constructors = true:suggestion
+csharp_style_expression_bodied_function_members = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = true:suggestion
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_operators = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_global_using_directive = true:suggestion
+csharp_style_inline_out_variable_declaration = true:suggestion
+csharp_style_interpolated_string_handler = verbatim:suggestion
+csharp_style_nullable_annotation = not_nullable:suggestion
+csharp_style_nullable_annotation_for_value_types = true:suggestion
+csharp_style_object_initializer = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_prefer_simple_using_statement = true:suggestion
+csharp_style_preferred_usings_place_system_directives_first = true:suggestion
+csharp_style_switch_expression = true:suggestion
+csharp_style_throw_expression = true:suggestion
+csharp_style_top_level_statements = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_sort_system_directives_first = true
+
+[*.{yaml,yml}]
+indent_size = 2

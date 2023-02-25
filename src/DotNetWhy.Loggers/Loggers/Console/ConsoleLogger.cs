@@ -2,10 +2,7 @@
 
 internal class ConsoleLogger : ILogger
 {
-    public ConsoleLogger()
-    {
-        ConsoleLoggerConstants.Encoding.Set();
-    }
+    public ConsoleLogger() => ConsoleLoggerConstants.Encoding.Set();
 
     public void Log(
         char character,

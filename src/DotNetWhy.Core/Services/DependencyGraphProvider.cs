@@ -5,10 +5,7 @@ internal class DependencyGraphProvider : IDependencyGraphProvider
     private readonly IDependencyGraphSourceProvider _sourceProvider;
     private readonly RetryHelper _retry = new();
 
-    public DependencyGraphProvider(IDependencyGraphSourceProvider sourceProvider)
-    {
-        _sourceProvider = sourceProvider;
-    }
+    public DependencyGraphProvider(IDependencyGraphSourceProvider sourceProvider) => _sourceProvider = sourceProvider;
 
     public DependencyGraphSpec Get(string workingDirectory)
     {

@@ -9,18 +9,12 @@ internal class LockFilesGenerator : ILockFilesGenerator
         try
         {
             var dotNetRestoreResult = DotNetRunner.Restore(workingDirectory);
-            
-            if (!dotNetRestoreResult.IsSuccess)
-            {
-                throw new RestoreProjectFailedException(workingDirectory);
-            }
+
+            if (!dotNetRestoreResult.IsSuccess) throw new RestoreProjectFailedException(workingDirectory);
         }
         catch (Exception exception) when (exception is not RestoreProjectFailedException)
         {
-            if (_retry.CanTryAgain())
-            {
-                Generate(workingDirectory);
-            }
+            if (_retry.CanTryAgain()) Generate(workingDirectory);
 
             throw new RestoreProjectFailedException(workingDirectory);
         }
