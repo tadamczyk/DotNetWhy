@@ -1,8 +1,14 @@
 ﻿namespace DotNetWhy.Services;
 
-public static class ServiceCollectionExtensions
+public static class Factory
 {
-    public static IServiceCollection AddServices(this IServiceCollection services) =>
+    public static IDotNetWhyService Create() =>
+        new ServiceCollection()
+            .AddServices()
+            .BuildServiceProvider()
+            .GetRequiredService<IDotNetWhyService>();
+
+    private static IServiceCollection AddServices(this IServiceCollection services) =>
         services
             .AddInterceptedSingleton<IDotNetWhyService, DotNetWhyService, DurationInterceptor>()
             .AddCore()
