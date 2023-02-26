@@ -4,15 +4,18 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
 {
     private readonly ILockFileProvider _lockFileProvider;
     private string PackageName { get; set; }
+    private string PackageVersion { get; set; }
 
     public DependencyGraphConverter(ILockFileProvider lockFileProvider) => _lockFileProvider = lockFileProvider;
 
     public Solution Convert(
         DependencyGraphSpec dependencyGraphSpec,
         string solutionName,
-        string packageName)
+        string packageName,
+        string packageVersion)
     {
         PackageName = packageName;
+        PackageVersion = packageVersion;
         var solution = new Solution(solutionName);
         var sourceProjects = GetSourceProjects(dependencyGraphSpec);
 
@@ -37,7 +40,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
                     var dependency = sourceLibraryLockFile.ToDependency();
                     CreateDependenciesPaths(sourceTargetLockFile, sourceLibraryLockFile, dependency);
 
-                    if (dependency.HasDependencies || dependency.IsOrContainsPackage(PackageName))
+                    if (dependency.HasDependencies || dependency.IsOrContainsPackage(PackageName, PackageVersion))
                         target.AddDependency(dependency);
                 });
                 if (target.HasDependencies) project.AddTarget(target);
@@ -80,7 +83,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
             var childDependency = childSourceLibraryLockFile.ToDependency();
             CreateDependenciesPaths(sourceTargetLockFile, childSourceLibraryLockFile, childDependency);
 
-            if (childDependency.IsOrContainsPackage(PackageName)) dependency.AddDependency(childDependency);
+            if (childDependency.IsOrContainsPackage(PackageName, PackageVersion)) dependency.AddDependency(childDependency);
         });
     }
 }

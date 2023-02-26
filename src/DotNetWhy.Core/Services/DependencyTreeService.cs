@@ -18,7 +18,8 @@ internal class DependencyTreeService : IDependencyTreeService
 
     public Solution GetDependencyTreeByPackageName(
         string workingDirectory,
-        string packageName)
+        string packageName,
+        string packageVersion)
     {
         var solutionName = Path.GetFileName(workingDirectory) ?? workingDirectory;
 
@@ -30,7 +31,7 @@ internal class DependencyTreeService : IDependencyTreeService
 
         if (solutionDependencyGraph?.Projects?.IsNullOrEmpty() ?? true) return new Solution(solutionName);
 
-        var solution = _converter.Convert(solutionDependencyGraph, solutionName, packageName);
+        var solution = _converter.Convert(solutionDependencyGraph, solutionName, packageName, packageVersion);
 
         return solution;
     }

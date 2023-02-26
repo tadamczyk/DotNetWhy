@@ -11,11 +11,12 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
     public void LogResults(
         Solution solution,
-        string packageName)
+        string packageName,
+        string packageVersion)
     {
         if (!solution.HasProjects)
         {
-            _logger.LogLine($"Package {packageName} usage not found.");
+            _logger.LogLine($"Package {packageName}{(string.IsNullOrEmpty(packageVersion) ? "" : $" {packageVersion}")} usage not found.");
             return;
         }
 

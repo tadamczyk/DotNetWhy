@@ -13,8 +13,8 @@ public record Dependency(string Name, string Version)
 
     public void AddDependency(Dependency dependency) => _dependencies.Add(dependency);
 
-    public bool IsOrContainsPackage(string packageName) =>
-        Name.Contains(packageName, StringComparison.InvariantCultureIgnoreCase) || HasDependencies;
+    public bool IsOrContainsPackage(string packageName, string packageVersion = null) =>
+        (Name.Contains(packageName, StringComparison.InvariantCultureIgnoreCase) && (packageVersion is null || Version.Equals(packageVersion, StringComparison.OrdinalIgnoreCase))) || HasDependencies;
 
     public override string ToString() => $"{Name} ({Version})";
 }
