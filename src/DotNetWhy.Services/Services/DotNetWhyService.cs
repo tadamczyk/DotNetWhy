@@ -4,45 +4,36 @@ internal class DotNetWhyService : IDotNetWhyService
 {
     private readonly IDependencyTreeLogger _logger;
     private readonly IDependencyTreeService _service;
-    private readonly IValidationWrapper _validationWrapper;
+    private readonly IValidator<IParameters> _validator;
 
     public DotNetWhyService(
         IDependencyTreeLogger logger,
         IDependencyTreeService service,
-        IValidationWrapper validationWrapper)
+        IValidator<IParameters> validator)
     {
         _logger = logger;
         _service = service;
-        _validationWrapper = validationWrapper;
+        _validator = validator;
     }
 
-    public void Run(IReadOnlyCollection<string> arguments)
+    public void Run(IParameters parameters)
     {
-        _validationWrapper.ValidateAndExecute(
-            SetValidators,
-            GetDependencyTree,
-            GetErrors);
+        var validationResult = _validator.Validate(parameters);
 
-        void SetValidators(IValidationWrapper validators)
+        if (!validationResult.IsValid)
         {
-            validators
-                .AddInitializedDependenciesValidator(this)
-                .AddNotNullOrEmptyValidator(arguments, "Arguments")
-                .AddNotNullOrEmptyValidator(arguments.FirstOrDefault(), "Package name")
-                .Add(new DirectoryProjectsValidator());
+            _logger.LogErrors(validationResult.Errors.Select(error => error.ErrorMessage).ToHashSet());
+            return;
         }
 
-        void GetDependencyTree()
-        {
-            var workingDirectory = Environment.CurrentDirectory;
-            var packageName = arguments.First();
-            var dependencyTree = _service.GetDependencyTreeByPackageName(workingDirectory, packageName);
-            _logger.LogResults(dependencyTree, packageName);
-        }
+        var dependencyTree = _service.GetDependencyTreeByPackageName(
+            parameters.WorkingDirectory,
+            parameters.PackageName,
+            parameters.PackageVersion);
 
-        void GetErrors(IEnumerable<string> errors)
-        {
-            _logger.LogErrors(errors);
-        }
+        _logger.LogResults(
+            dependencyTree,
+            parameters.PackageName,
+            parameters.PackageVersion);
     }
 }

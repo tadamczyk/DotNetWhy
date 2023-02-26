@@ -11,7 +11,7 @@ public sealed class DotNetExecutor
     private DotNetExecutor()
     {
         Arguments = string.Empty;
-        WorkingDirectory = Environment.CurrentDirectory;
+        WorkingDirectory = string.Empty;
     }
 
     /// <summary>

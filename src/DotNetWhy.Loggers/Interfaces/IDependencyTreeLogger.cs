@@ -4,5 +4,6 @@ public interface IDependencyTreeLogger : IBaseDependencyTreeLogger
 {
     void LogResults(
         Solution solution,
-        string packageName);
+        string packageName,
+        string packageVersion);
 }

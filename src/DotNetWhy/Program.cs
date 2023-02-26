@@ -1,1 +1,1 @@
-DotNetWhy.Services.Factory.Create().Run(args);
+DotNetWhy.Services.Service.Run(args);

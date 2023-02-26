@@ -3,8 +3,15 @@ namespace DotNetWhy.Services.Interceptors;
 internal class DurationInterceptor : IInterceptor
 {
     private readonly IBaseDependencyTreeLogger _logger;
+    private readonly IParameters _parameters;
 
-    public DurationInterceptor(IBaseDependencyTreeLogger logger) => _logger = logger;
+    public DurationInterceptor(
+        IBaseDependencyTreeLogger logger,
+        IParameters parameters)
+    {
+        _logger = logger;
+        _parameters = parameters;
+    }
 
     public void Intercept(IInvocation invocation)
     {
@@ -12,7 +19,7 @@ internal class DurationInterceptor : IInterceptor
 
         try
         {
-            _logger.LogStartMessage(Environment.CurrentDirectory);
+            _logger.LogStartMessage(_parameters.WorkingDirectory);
 
             invocation.Proceed();
         }

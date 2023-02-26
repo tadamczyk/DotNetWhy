@@ -4,5 +4,6 @@ public interface IDependencyTreeService
 {
     Solution GetDependencyTreeByPackageName(
         string workingDirectory,
-        string packageName);
+        string packageName,
+        string packageVersion);
 }
