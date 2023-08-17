@@ -4,7 +4,7 @@ global using System.IO;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Threading.Tasks;
-global using DotNet.CommandExecutor;
+global using DotNet.Cli;
 global using DotNetWhy.Core.Commands;
 global using DotNetWhy.Core.Exceptions;
 global using DotNetWhy.Core.Interfaces;
