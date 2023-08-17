@@ -2,16 +2,16 @@ namespace DotNetWhy.Core.Commands;
 
 internal static partial class DotNetRunner
 {
-    internal static DotNetResult GenerateGraphFile(
+    internal static CommandResult GenerateGraphFile(
         string workingDirectory,
         string outputDirectory) =>
-        DotNetExecutor
-            .Initialize()
-            .InDirectory(Path.GetDirectoryName(workingDirectory))
-            .WithArguments(GetGenerateGraphFileArguments(workingDirectory, outputDirectory))
-            .AndExecute();
+        Command
+            .Create()
+            .WithArguments(GetArguments(workingDirectory, outputDirectory))
+            .WithWorkingDirectory(Path.GetDirectoryName(workingDirectory))
+            .Execute();
 
-    private static IEnumerable<string> GetGenerateGraphFileArguments(
+    private static IEnumerable<string> GetArguments(
         string workingDirectory,
         string outputDirectory) =>
         new[]

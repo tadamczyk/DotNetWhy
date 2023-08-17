@@ -15,7 +15,7 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\DotNet.CommandExecutor\DotNet.CommandExecutor.csproj"/>
+        <ProjectReference Include="..\DotNet.Cli\DotNet.Cli.csproj"/>
         <ProjectReference Include="..\DotNetWhy.Domain\DotNetWhy.Domain.csproj"/>
     </ItemGroup>
 </Project>

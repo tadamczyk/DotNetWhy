@@ -2,14 +2,14 @@ namespace DotNetWhy.Core.Commands;
 
 internal static partial class DotNetRunner
 {
-    internal static DotNetResult Restore(string workingDirectory) =>
-        DotNetExecutor
-            .Initialize()
-            .InDirectory(Path.GetDirectoryName(workingDirectory))
-            .WithArguments(GetRestoreArguments(workingDirectory))
-            .AndExecute();
+    internal static CommandResult Restore(string workingDirectory) =>
+        Command
+            .Create()
+            .WithArguments(GetArguments(workingDirectory))
+            .WithWorkingDirectory(Path.GetDirectoryName(workingDirectory))
+            .Execute();
 
-    private static IEnumerable<string> GetRestoreArguments(string workingDirectory) =>
+    private static IEnumerable<string> GetArguments(string workingDirectory) =>
         new[]
         {
             "restore",
