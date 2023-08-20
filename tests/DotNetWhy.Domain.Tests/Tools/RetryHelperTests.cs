@@ -1,5 +1,6 @@
-[TestFixture]
-[TestOf(typeof(RetryHelper))]
+namespace DotNetWhy.Domain.Tests.Tools;
+
+[TestFixture(TestOf = typeof(RetryHelper))]
 public class RetryHelperTests
 {
     [Test]

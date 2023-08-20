@@ -4,6 +4,8 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{73C1D697-FB88-4209-A706-5A4B6628A7E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Cli.Tests", "tests\DotNet.Cli.Tests\DotNet.Cli.Tests.csproj", "{DD30CEE2-5C05-4847-BB58-2E27FD87EEE5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Domain.Tests", "tests\DotNetWhy.Domain.Tests\DotNetWhy.Domain.Tests.csproj", "{7F9F9396-1BC1-4738-B89E-F18B032DD134}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Cli", "src\DotNet.Cli\DotNet.Cli.csproj", "{E133F21B-06F3-47F9-A93B-E2F0D6B62842}"
@@ -24,6 +26,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD30CEE2-5C05-4847-BB58-2E27FD87EEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD30CEE2-5C05-4847-BB58-2E27FD87EEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD30CEE2-5C05-4847-BB58-2E27FD87EEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD30CEE2-5C05-4847-BB58-2E27FD87EEE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F9F9396-1BC1-4738-B89E-F18B032DD134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F9F9396-1BC1-4738-B89E-F18B032DD134}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F9F9396-1BC1-4738-B89E-F18B032DD134}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,6 +60,7 @@ Global
 		{7A7E01DD-8077-4398-A826-770534AE3954}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{DD30CEE2-5C05-4847-BB58-2E27FD87EEE5} = {73C1D697-FB88-4209-A706-5A4B6628A7E7}
 		{7F9F9396-1BC1-4738-B89E-F18B032DD134} = {73C1D697-FB88-4209-A706-5A4B6628A7E7}
 	EndGlobalSection
 EndGlobal
