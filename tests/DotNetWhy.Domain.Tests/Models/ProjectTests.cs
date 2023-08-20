@@ -1,5 +1,6 @@
-[TestFixture]
-[TestOf(typeof(Project))]
+namespace DotNetWhy.Domain.Tests.Models;
+
+[TestFixture(TestOf = typeof(Project))]
 public class ProjectTests
 {
     [Test]

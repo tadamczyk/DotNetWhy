@@ -1,5 +1,6 @@
-[TestFixture]
-[TestOf(typeof(IndexHelper))]
+namespace DotNetWhy.Domain.Tests.Tools;
+
+[TestFixture(TestOf = typeof(IndexHelper))]
 public class IndexHelperTests
 {
     [Test]

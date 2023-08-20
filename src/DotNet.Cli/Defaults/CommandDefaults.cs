@@ -1,4 +1,4 @@
-﻿namespace DotNet.Cli.Constants;
+﻿namespace DotNet.Cli.Defaults;
 
 internal static class CommandDefaults
 {
