@@ -1,4 +1,4 @@
-﻿namespace DotNet.Cli.Defaults;
+namespace DotNet.Cli.Defaults;
 
 internal static class CommandResultDefaults
 {

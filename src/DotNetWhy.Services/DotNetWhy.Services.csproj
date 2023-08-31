@@ -16,7 +16,6 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\DotNetWhy.Core\DotNetWhy.Core.csproj"/>
         <ProjectReference Include="..\DotNetWhy.Loggers\DotNetWhy.Loggers.csproj"/>
     </ItemGroup>
 </Project>

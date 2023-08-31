@@ -1,23 +1,22 @@
-namespace DotNetWhy.Core.Services;
+namespace DotNetWhy.Domain.CommandHandlers;
 
-internal class DependencyGraphConverter : IDependencyGraphConverter
+internal sealed class ConvertDependencyGraphSpecCommandHandler
+    : ICommandHandler<ConvertDependencyGraphSpecCommand, Solution>
 {
-    private readonly ILockFileProvider _lockFileProvider;
+    private readonly IMediator _mediator;
+
     private string PackageName { get; set; }
     private string PackageVersion { get; set; }
 
-    public DependencyGraphConverter(ILockFileProvider lockFileProvider) => _lockFileProvider = lockFileProvider;
+    public ConvertDependencyGraphSpecCommandHandler(IMediator mediator) =>
+        _mediator = mediator;
 
-    public Solution Convert(
-        DependencyGraphSpec dependencyGraphSpec,
-        string solutionName,
-        string packageName,
-        string packageVersion)
+    public Solution Handle(ConvertDependencyGraphSpecCommand command)
     {
-        PackageName = packageName;
-        PackageVersion = packageVersion;
-        var solution = new Solution(solutionName);
-        var sourceProjects = GetSourceProjects(dependencyGraphSpec);
+        PackageName = command.PackageName;
+        PackageVersion = command.PackageVersion;
+        var solution = new Solution(command.SolutionName);
+        var sourceProjects = GetSourceProjects(command.DependencyGraphSpec);
 
         sourceProjects.ForEach(sourceProject =>
         {
@@ -27,7 +26,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
 
             sourceProject.TargetFrameworks.ForEach(sourceTarget =>
             {
-                var target = new Target(sourceTarget.FrameworkName.ToString() ?? sourceTarget.TargetAlias);
+                var target = new Target(sourceTarget.FrameworkName.ToString());
                 var sourceTargetLockFile =
                     GetSourceTargetLockFile(sourceProjectLockFile, sourceTarget.FrameworkName.ToString());
                 if (sourceTargetLockFile is null) return;
@@ -56,7 +55,7 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
         dependencyGraphSpec.Projects.Where(p => p.RestoreMetadata.ProjectStyle is ProjectStyle.PackageReference);
 
     private LockFile GetSourceProjectLockFile(string outputPath) =>
-        _lockFileProvider.Get(outputPath);
+        _mediator.Send<GetLockFileCommand, LockFile>(new GetLockFileCommand(outputPath));
 
     private LockFileTarget GetSourceTargetLockFile(
         LockFile sourceProjectLockFile,
@@ -83,7 +82,8 @@ internal class DependencyGraphConverter : IDependencyGraphConverter
             var childDependency = childSourceLibraryLockFile.ToDependency();
             CreateDependenciesPaths(sourceTargetLockFile, childSourceLibraryLockFile, childDependency);
 
-            if (childDependency.IsOrContainsPackage(PackageName, PackageVersion)) dependency.AddDependency(childDependency);
+            if (childDependency.IsOrContainsPackage(PackageName, PackageVersion))
+                dependency.AddDependency(childDependency);
         });
     }
 }

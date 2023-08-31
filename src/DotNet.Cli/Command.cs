@@ -1,4 +1,4 @@
-﻿namespace DotNet.Cli;
+namespace DotNet.Cli;
 
 /// <summary>
 ///     Represents "dotnet" command that can be executed in the command-line interface.

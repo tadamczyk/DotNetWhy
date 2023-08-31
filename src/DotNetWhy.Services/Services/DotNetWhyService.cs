@@ -3,16 +3,16 @@ namespace DotNetWhy.Services;
 internal class DotNetWhyService : IDotNetWhyService
 {
     private readonly IDependencyTreeLogger _logger;
-    private readonly IDependencyTreeService _service;
+    private readonly IDependencyGraphProvider _provider;
     private readonly IValidator<IParameters> _validator;
 
     public DotNetWhyService(
         IDependencyTreeLogger logger,
-        IDependencyTreeService service,
+        IDependencyGraphProvider provider,
         IValidator<IParameters> validator)
     {
         _logger = logger;
-        _service = service;
+        _provider = provider;
         _validator = validator;
     }
 
@@ -26,13 +26,13 @@ internal class DotNetWhyService : IDotNetWhyService
             return;
         }
 
-        var dependencyTree = _service.GetDependencyTreeByPackageName(
+        var dependencyGraph = _provider.Get(
             parameters.WorkingDirectory,
             parameters.PackageName,
             parameters.PackageVersion);
 
         _logger.LogResults(
-            dependencyTree,
+            dependencyGraph,
             parameters.PackageName,
             parameters.PackageVersion);
     }

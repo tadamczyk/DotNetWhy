@@ -1,4 +1,4 @@
-namespace DotNetWhy.Domain;
+namespace DotNetWhy.Domain.Extensions;
 
 public static class DependencyExtensions
 {

@@ -1,4 +1,4 @@
-namespace DotNetWhy.Domain;
+namespace DotNetWhy.Domain.Models;
 
 public record Solution(string Name)
 {

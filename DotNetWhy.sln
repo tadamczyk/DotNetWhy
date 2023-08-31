@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Cli", "src\DotNet.Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy", "src\DotNetWhy\DotNetWhy.csproj", "{D5FF2D49-DDDB-468E-A48A-781C3441F23A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Core", "src\DotNetWhy.Core\DotNetWhy.Core.csproj", "{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Domain", "src\DotNetWhy.Domain\DotNetWhy.Domain.csproj", "{013347CE-F74D-4051-9C26-16DBB90FF429}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetWhy.Loggers", "src\DotNetWhy.Loggers\DotNetWhy.Loggers.csproj", "{71B1839A-636D-46A7-9621-BAE724A6FCC3}"
@@ -42,10 +40,6 @@ Global
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5FF2D49-DDDB-468E-A48A-781C3441F23A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE30FEC9-3BC3-420C-BBA4-5C3DDBBB5272}.Release|Any CPU.Build.0 = Release|Any CPU
 		{013347CE-F74D-4051-9C26-16DBB90FF429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{013347CE-F74D-4051-9C26-16DBB90FF429}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{013347CE-F74D-4051-9C26-16DBB90FF429}.Release|Any CPU.ActiveCfg = Release|Any CPU

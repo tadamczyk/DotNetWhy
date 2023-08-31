@@ -6,7 +6,7 @@ internal static class ServiceCollectionExtensions
         services
             .AddInterceptedSingleton<IDotNetWhyService, DotNetWhyService, DurationInterceptor>()
             .AddSingleton<IValidator<IParameters>, ParametersValidator>()
-            .AddCore()
+            .AddDomain()
             .AddLoggers();
 
     private static IServiceCollection AddInterceptedSingleton<TInterface, TImplementation, TInterceptor>(
