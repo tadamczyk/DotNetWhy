@@ -10,11 +10,11 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         _logger = logger;
 
     public void LogResults(
-        Solution solution,
+        Node solution,
         string packageName,
         string packageVersion)
     {
-        if (!solution.HasProjects)
+        if (!solution.HasNodes)
         {
             _logger.LogLine($"Package {packageName}{(string.IsNullOrEmpty(packageVersion) ? "" : $" {packageVersion}")} usage not found.");
             return;
@@ -25,31 +25,31 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
         _logger.LogLine(solution.GetSolutionLabel(), Color.DarkCyan);
 
-        solution.Projects.ForEach(project =>
+        solution.Nodes.ForEach(project =>
         {
-            _logger.LogLine(project.GetProjectLabel(solution.DependencyPathCounter), Color.Green);
+            _logger.LogLine(project.GetProjectLabel(solution.NodesCount), Color.Green);
 
-            project.Targets.ForEach(target =>
+            project.Nodes.ForEach(target =>
             {
                 _index.Reset();
-                _logger.LogLine(target.GetTargetLabel(project.DependencyPathCounter), Color.DarkGreen);
+                _logger.LogLine(target.GetTargetLabel(project.NodesCount), Color.DarkGreen);
 
-                target.Dependencies.ForEach(dependency => LogDependencyTree(dependency));
+                target.Nodes.ForEach(dependency => LogDependencyTree(dependency));
             });
 
             _logger.LogLine();
         });
     }
 
-    private void LogDependencyTree(Dependency dependency, StringBuilder dependencyPathBuilder = null)
+    private void LogDependencyTree(Node dependency, StringBuilder dependencyPathBuilder = null)
     {
-        if (!dependency.HasDependencies)
+        if (!dependency.HasNodes)
         {
             LogDependencyPath(dependencyPathBuilder?.ToString() ?? dependency.ToString());
             return;
         }
 
-        dependency.Dependencies.ForEach(childDependency =>
+        dependency.Nodes.ForEach(childDependency =>
         {
             var currentDependencyPathLength = dependencyPathBuilder?.Length ?? dependency.ToString().Length;
 

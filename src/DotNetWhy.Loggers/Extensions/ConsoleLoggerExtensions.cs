@@ -13,40 +13,40 @@ internal static class ConsoleLoggerExtensions
     public static void SetAsSearchedPackageName(this string packageName) =>
         SearchedPackageName = packageName;
 
-    public static void SetLabelWidth(this Solution solution) =>
+    public static void SetLabelWidth(this Node solution) =>
         ConsoleLoggerConstants.Widths.Label =
             new[]
             {
                 solution.Name.Length,
                 solution
-                    .Projects
-                    .Select(project => project.Name.Length).Max(),
+                    .Nodes
+                    .Select(node => node.Name.Length).Max(),
                 solution
-                    .Projects
-                    .SelectMany(project => project.Targets
-                        .Select(target => target.Name.Length)).Max()
+                    .Nodes
+                    .SelectMany(node => node.Nodes
+                        .Select(childNode => childNode.Name.Length)).Max()
             }.Max()
             + ConsoleLoggerConstants.Widths.DoubleTab;
 
-    public static string GetSolutionLabel(this Solution solution) =>
+    public static string GetSolutionLabel(this Node solution) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Solution,
             solution.Name,
-            solution.DependencyPathCounter);
+            solution.NodesCount);
 
-    public static string GetProjectLabel(this Project project, int solutionDependencyCounter) =>
+    public static string GetProjectLabel(this Node project, int solutionDependencyCounter) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Project,
             project.Name,
             solutionDependencyCounter,
-            project.DependencyPathCounter);
+            project.NodesCount);
 
-    public static string GetTargetLabel(this Target target, int projectDependencyCounter) =>
+    public static string GetTargetLabel(this Node target, int projectDependencyCounter) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Target,
             target.Name,
             projectDependencyCounter,
-            target.DependencyPathCounter);
+            target.NodesCount);
 
     private static string GetLabel(
         string prefix,

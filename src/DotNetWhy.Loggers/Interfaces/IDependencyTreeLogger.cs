@@ -3,7 +3,7 @@ namespace DotNetWhy.Loggers;
 public interface IDependencyTreeLogger : IBaseDependencyTreeLogger
 {
     void LogResults(
-        Solution solution,
+        Node solution,
         string packageName,
         string packageVersion);
 }

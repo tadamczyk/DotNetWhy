@@ -1,6 +1,6 @@
-namespace DotNetWhy.Domain.Mediator;
+﻿namespace DotNetWhy.Common;
 
-internal interface IMediator
+public interface IMediator
 {
     void Send<TCommand>(
         TCommand command)

@@ -84,7 +84,7 @@ public sealed class Command
             var readOutput = process.StandardOutput.ReadToEndAsync();
             var readError = process.StandardError.ReadToEndAsync();
 
-            var processExited = process.WaitForExit(ProcessConstants.Timeout);
+            var processExited = process.WaitForExit(ProcessConstants.TimeoutMilliseconds);
 
             if (processExited)
             {
@@ -99,7 +99,7 @@ public sealed class Command
 
             process.Kill();
 
-            return CommandResult.Failure(CommandResultConstants.ProcessHasNotExitedError);
+            return CommandResult.Failure(ProcessConstants.NotExitedError);
         }
         catch (Exception exception)
         {

@@ -6,7 +6,6 @@ global using System.Linq;
 global using Castle.DynamicProxy;
 global using FluentValidation;
 global using DotNetWhy.Domain;
-global using DotNetWhy.Domain.Facade;
 global using DotNetWhy.Loggers;
 global using DotNetWhy.Services.Models;
 global using DotNetWhy.Services.Interceptors;

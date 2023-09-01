@@ -4,7 +4,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomain(this IServiceCollection services) =>
         services
-            .AddSingleton<ICommandHandler<ConvertDependencyGraphSpecCommand, Solution>,
+            .AddMediator()
+            .AddSingleton<ICommandHandler<ConvertDependencyGraphSpecCommand, Node>,
                 ConvertDependencyGraphSpecCommandHandler>()
             .AddSingleton<ICommandHandler<CreateLockFilesCommand>,
                 CreateLockFilesCommandHandler>()
@@ -12,6 +13,5 @@ public static class ServiceCollectionExtensions
                 GetDependencyGraphSpecCommandHandler>()
             .AddSingleton<ICommandHandler<GetLockFileCommand, LockFile>,
                 GetLockFileCommandHandler>()
-            .AddSingleton<IMediator, Mediator.Mediator>()
             .AddSingleton<IDependencyGraphProvider, DependencyGraphProvider>();
 }

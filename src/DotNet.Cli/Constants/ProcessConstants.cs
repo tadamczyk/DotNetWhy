@@ -3,7 +3,8 @@ namespace DotNet.Cli.Constants;
 internal static class ProcessConstants
 {
     public const string Name = "dotnet";
-    public const int SuccessStatusCode = 0;
+    public const string NotExitedError = $"'{Name}' process has not exited";
 
-    public static readonly int Timeout = (int) TimeSpan.FromSeconds(30).TotalMilliseconds;
+    public const int SuccessStatusCode = 0;
+    public const int TimeoutMilliseconds = 30000;
 }

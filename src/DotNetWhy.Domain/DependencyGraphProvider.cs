@@ -1,8 +1,8 @@
-namespace DotNetWhy.Domain.Facade;
+namespace DotNetWhy.Domain;
 
 public interface IDependencyGraphProvider
 {
-    Solution Get(
+    Node Get(
         string workingDirectory,
         string packageName,
         string packageVersion);
@@ -15,7 +15,7 @@ internal sealed class DependencyGraphProvider : IDependencyGraphProvider
     public DependencyGraphProvider(IMediator mediator) =>
         _mediator = mediator;
 
-    public Solution Get(
+    public Node Get(
         string workingDirectory,
         string packageName,
         string packageVersion)
@@ -47,14 +47,14 @@ internal sealed class DependencyGraphProvider : IDependencyGraphProvider
         return solutionDependencyGraphSpec;
     }
 
-    private Solution GetSolution(
+    private Node GetSolution(
         DependencyGraphSpec dependencyGraphSpec,
         string solutionName,
         string packageName,
         string packageVersion) =>
         dependencyGraphSpec?.Projects?.IsNullOrEmpty() ?? true
-            ? new Solution(solutionName)
-            : _mediator.Send<ConvertDependencyGraphSpecCommand, Solution>(
+            ? new Node(solutionName)
+            : _mediator.Send<ConvertDependencyGraphSpecCommand, Node>(
                 new ConvertDependencyGraphSpecCommand(
                     dependencyGraphSpec,
                     solutionName,
