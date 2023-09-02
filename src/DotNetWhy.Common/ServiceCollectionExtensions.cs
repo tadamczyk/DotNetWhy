@@ -3,5 +3,5 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMediator(this IServiceCollection services) =>
-        services.AddScoped<IMediator, Mediator>();
+        services.AddScoped<IMediator, Mediator.Mediator>();
 }

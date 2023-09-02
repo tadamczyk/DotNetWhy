@@ -13,9 +13,7 @@ public class CommandTests
     public void Should_Execute_Command_With_No_Error_As_Result()
     {
         // Act
-        var result =
-            _command
-                .Execute();
+        var result = _command.Execute();
 
         // Assert
         result.Output.Should().NotBeNull();

@@ -1,20 +1,38 @@
 ﻿namespace DotNetWhy.Domain;
 
-public readonly record struct Node(
-    string Name,
-    string Version = null)
+public readonly record struct DependencyTreeNode
 {
     private const StringComparison StringComparisonType = StringComparison.OrdinalIgnoreCase;
 
-    private readonly List<Node> _nodes = new();
+    private readonly List<DependencyTreeNode> _nodes = new();
 
     private bool IsMatchingNode(
         string name,
         string version = null) =>
-        Name.Contains(name, StringComparisonType)
+        Name.ToLower().Contains(name.ToLower())
         && (version is null || Version.Equals(version, StringComparisonType));
 
-    public IEnumerable<Node> Nodes =>
+    private DependencyTreeNode(
+        string name,
+        string version = null)
+    {
+        Name = name;
+        Version = version;
+    }
+
+    public DependencyTreeNode() =>
+        throw new InitializeDependencyTreeNodeFailedException();
+
+    public static DependencyTreeNode Create(
+        string name,
+        string version = null) =>
+        new(name, version);
+
+    public string Name { get; }
+
+    public string Version { get; }
+
+    public IEnumerable<DependencyTreeNode> Nodes =>
         _nodes.OrderBy(node => node.Name);
 
     public bool HasNodes =>
@@ -25,7 +43,7 @@ public readonly record struct Node(
             ? _nodes.Sum(node => node.NodesCount)
             : 1;
 
-    public void AddNode(Node node) =>
+    public void AddNode(DependencyTreeNode node) =>
         _nodes.Add(node);
 
     public bool ContainsNode(

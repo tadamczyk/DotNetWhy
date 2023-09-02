@@ -1,15 +1,17 @@
 namespace DotNetWhy.Domain.Commands;
 
-internal record struct CreateLockFilesCommand(string WorkingDirectory) : ICommand;
+internal record struct RestoreProjectCommand(
+        string WorkingDirectory)
+    : ICommand;
 
-internal sealed class CreateLockFilesCommandHandler
-    : ICommandHandler<CreateLockFilesCommand>
+internal sealed class RestoreProjectCommandHandler
+    : ICommandHandler<RestoreProjectCommand>
 {
-    public void Handle(CreateLockFilesCommand command)
+    public Task HandleAsync(RestoreProjectCommand command)
     {
         var commandResult = GetCommandResult(command.WorkingDirectory);
 
-        if (commandResult.IsSuccess) return;
+        if (commandResult.IsSuccess) return Task.CompletedTask;
 
         throw new RestoreProjectFailedException(command.WorkingDirectory);
     }

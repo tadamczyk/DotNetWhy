@@ -3,12 +3,12 @@ namespace DotNetWhy.Services;
 internal class DotNetWhyService : IDotNetWhyService
 {
     private readonly IDependencyTreeLogger _logger;
-    private readonly IDependencyGraphProvider _provider;
+    private readonly IDependencyTreeProvider _provider;
     private readonly IValidator<IParameters> _validator;
 
     public DotNetWhyService(
         IDependencyTreeLogger logger,
-        IDependencyGraphProvider provider,
+        IDependencyTreeProvider provider,
         IValidator<IParameters> validator)
     {
         _logger = logger;
@@ -16,9 +16,9 @@ internal class DotNetWhyService : IDotNetWhyService
         _validator = validator;
     }
 
-    public void Run(IParameters parameters)
+    public async Task RunAsync(IParameters parameters)
     {
-        var validationResult = _validator.Validate(parameters);
+        var validationResult = await _validator.ValidateAsync(parameters);
 
         if (!validationResult.IsValid)
         {
@@ -26,7 +26,7 @@ internal class DotNetWhyService : IDotNetWhyService
             return;
         }
 
-        var dependencyGraph = _provider.Get(
+        var dependencyGraph = await _provider.GetAsync(
             parameters.WorkingDirectory,
             parameters.PackageName,
             parameters.PackageVersion);

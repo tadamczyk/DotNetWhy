@@ -10,7 +10,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         _logger = logger;
 
     public void LogResults(
-        Node solution,
+        DependencyTreeNode solution,
         string packageName,
         string packageVersion)
     {
@@ -41,7 +41,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         });
     }
 
-    private void LogDependencyTree(Node dependency, StringBuilder dependencyPathBuilder = null)
+    private void LogDependencyTree(DependencyTreeNode dependency, StringBuilder dependencyPathBuilder = null)
     {
         if (!dependency.HasNodes)
         {
