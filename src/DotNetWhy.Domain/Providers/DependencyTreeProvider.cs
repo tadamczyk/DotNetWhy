@@ -53,8 +53,8 @@ internal sealed class DependencyTreeProvider : IDependencyTreeProvider
         string name,
         string packageName,
         string packageVersion = null) =>
-        await _mediator.SendAsync<GetDependencyTreeNodeQuery, DependencyTreeNode>(
-            new GetDependencyTreeNodeQuery(
+        await _mediator.SendAsync<GetDependencyTreeQuery, DependencyTreeNode>(
+            new GetDependencyTreeQuery(
                 restoreGraphOutputPath,
                 name,
                 packageName,

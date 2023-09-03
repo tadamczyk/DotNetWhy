@@ -32,21 +32,21 @@ internal static class ConsoleLoggerExtensions
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Solution,
             solution.Name,
-            solution.NodesCount);
+            solution.LastNodesSum);
 
     public static string GetProjectLabel(this DependencyTreeNode project, int solutionDependencyCounter) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Project,
             project.Name,
             solutionDependencyCounter,
-            project.NodesCount);
+            project.LastNodesSum);
 
     public static string GetTargetLabel(this DependencyTreeNode target, int projectDependencyCounter) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Target,
             target.Name,
             projectDependencyCounter,
-            target.NodesCount);
+            target.LastNodesSum);
 
     private static string GetLabel(
         string prefix,

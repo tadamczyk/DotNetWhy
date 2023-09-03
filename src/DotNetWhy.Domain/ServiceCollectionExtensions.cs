@@ -9,7 +9,7 @@ public static class ServiceCollectionExtensions
                 GenerateRestoreGraphFileCommandHandler>()
             .AddSingleton<ICommandHandler<RestoreProjectCommand>,
                 RestoreProjectCommandHandler>()
-            .AddSingleton<IQueryHandler<GetDependencyTreeNodeQuery, DependencyTreeNode>,
-                GetDependencyTreeNodeQueryHandler>()
+            .AddSingleton<IQueryHandler<GetDependencyTreeQuery, DependencyTreeNode>,
+                GetDependencyTreeQueryHandler>()
             .AddSingleton<IDependencyTreeProvider, DependencyTreeProvider>();
 }

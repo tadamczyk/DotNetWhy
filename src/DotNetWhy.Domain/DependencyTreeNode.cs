@@ -20,6 +20,15 @@ public readonly record struct DependencyTreeNode
         Version = version;
     }
 
+    internal void AddNodes(IEnumerable<DependencyTreeNode> nodes) =>
+        _nodes.AddRange(nodes);
+
+    internal bool ContainsNode(
+        string name,
+        string version = null) =>
+        HasNodes
+        || IsMatchingNode(name, version);
+
     public DependencyTreeNode() =>
         throw new InitializeDependencyTreeNodeFailedException();
 
@@ -38,19 +47,10 @@ public readonly record struct DependencyTreeNode
     public bool HasNodes =>
         _nodes.Any();
 
-    public int NodesCount =>
+    public int LastNodesSum =>
         HasNodes
-            ? _nodes.Sum(node => node.NodesCount)
+            ? _nodes.Sum(node => node.LastNodesSum)
             : 1;
-
-    public void AddNode(DependencyTreeNode node) =>
-        _nodes.Add(node);
-
-    public bool ContainsNode(
-        string name,
-        string version = null) =>
-        HasNodes
-        || IsMatchingNode(name, version);
 
     public override string ToString() =>
         $"{Name}{(Version is null ? string.Empty : $" ({Version})")}";
