@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Domain.Constants;
+namespace DotNetWhy.Domain.Constants;
 
 internal static class FileExtensions
 {

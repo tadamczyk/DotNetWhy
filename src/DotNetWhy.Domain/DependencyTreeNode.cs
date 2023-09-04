@@ -1,48 +1,30 @@
-﻿namespace DotNetWhy.Domain;
+namespace DotNetWhy.Domain;
 
-public readonly record struct DependencyTreeNode
+public record struct DependencyTreeNode(
+    string Name,
+    string Version = null)
 {
     private const StringComparison StringComparisonType = StringComparison.OrdinalIgnoreCase;
 
     private readonly List<DependencyTreeNode> _nodes = new();
 
-    private bool IsMatchingNode(
-        string name,
-        string version = null) =>
-        Name.ToLower().Contains(name.ToLower())
-        && (version is null || Version.Equals(version, StringComparisonType));
-
-    private DependencyTreeNode(
-        string name,
-        string version = null)
-    {
-        Name = name;
-        Version = version;
-    }
-
-    internal void AddNodes(IEnumerable<DependencyTreeNode> nodes) =>
-        _nodes.AddRange(nodes);
-
-    internal bool ContainsNode(
-        string name,
-        string version = null) =>
+    private bool ContainsNode(
+        DependencyTreeNode node) =>
         HasNodes
-        || IsMatchingNode(name, version);
+        || IsMatchingNode(node);
 
-    public DependencyTreeNode() =>
-        throw new InitializeDependencyTreeNodeFailedException();
+    private bool IsMatchingNode(
+        DependencyTreeNode node) =>
+        Name.ToLower().Contains(node.Name.ToLower())
+        && (node.Version is null || Version.Equals(node.Version, StringComparisonType));
 
-    public static DependencyTreeNode Create(
-        string name,
-        string version = null) =>
-        new(name, version);
-
-    public string Name { get; }
-
-    public string Version { get; }
+    internal void AddMatchingNodes(
+        IEnumerable<DependencyTreeNode> nodes,
+        DependencyTreeNode searchNode) =>
+        _nodes.AddRange(nodes.Where(node => node.ContainsNode(searchNode)));
 
     public IEnumerable<DependencyTreeNode> Nodes =>
-        _nodes.OrderBy(node => node.Name);
+        _nodes.OrderBy(node => node.Name).AsEnumerable();
 
     public bool HasNodes =>
         _nodes.Any();

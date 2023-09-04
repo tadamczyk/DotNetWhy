@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Domain.Providers;
+namespace DotNetWhy.Domain.Providers;
 
 internal sealed class DependencyTreeProvider : IDependencyTreeProvider
 {
@@ -7,25 +7,22 @@ internal sealed class DependencyTreeProvider : IDependencyTreeProvider
     public DependencyTreeProvider(IMediator mediator) =>
         _mediator = mediator;
 
-    public async Task<DependencyTreeNode> GetAsync(
-        string workingDirectory,
-        string packageName,
-        string packageVersion = null)
+    public async Task<DependencyTreeNode> GetAsync(DependencyTreeParameters parameters)
     {
-        var name = GetName(workingDirectory);
+        var name = GetName(parameters.WorkingDirectory);
         var restoreGraphOutputPath = GetRestoreGraphOutputPath();
 
         await Task.WhenAll(
-            RestoreProjects(workingDirectory),
-            GenerateRestoreGraphFile(workingDirectory, restoreGraphOutputPath));
+            RestoreProjects(parameters.WorkingDirectory),
+            GenerateRestoreGraphFile(parameters.WorkingDirectory, restoreGraphOutputPath));
 
-        var dependencyTreeNode = await GetDependencyTreeNode(
+        var dependencyTree = await GetDependencyTree(
             restoreGraphOutputPath,
             name,
-            packageName,
-            packageVersion);
+            parameters.PackageName,
+            parameters.PackageVersion);
 
-        return dependencyTreeNode;
+        return dependencyTree;
     }
 
     private static string GetName(string workingDirectory) =>
@@ -48,7 +45,7 @@ internal sealed class DependencyTreeProvider : IDependencyTreeProvider
                 workingDirectory,
                 restoreGraphOutputPath));
 
-    private async Task<DependencyTreeNode> GetDependencyTreeNode(
+    private async Task<DependencyTreeNode> GetDependencyTree(
         string restoreGraphOutputPath,
         string name,
         string packageName,

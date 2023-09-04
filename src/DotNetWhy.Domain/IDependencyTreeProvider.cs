@@ -2,8 +2,5 @@ namespace DotNetWhy.Domain;
 
 public interface IDependencyTreeProvider
 {
-    Task<DependencyTreeNode> GetAsync(
-        string workingDirectory,
-        string packageName,
-        string packageVersion = null);
+    Task<DependencyTreeNode> GetAsync(DependencyTreeParameters parameters);
 }

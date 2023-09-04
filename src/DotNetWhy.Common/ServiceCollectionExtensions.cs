@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Common;
+namespace DotNetWhy.Common;
 
 public static class ServiceCollectionExtensions
 {

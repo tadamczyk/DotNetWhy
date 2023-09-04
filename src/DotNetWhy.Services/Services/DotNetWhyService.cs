@@ -27,9 +27,10 @@ internal class DotNetWhyService : IDotNetWhyService
         }
 
         var dependencyGraph = await _provider.GetAsync(
-            parameters.WorkingDirectory,
-            parameters.PackageName,
-            parameters.PackageVersion);
+            new DependencyTreeParameters(
+                parameters.WorkingDirectory,
+                parameters.PackageName,
+                parameters.PackageVersion));
 
         _logger.LogResults(
             dependencyGraph,

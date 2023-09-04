@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Common.Mediator;
+namespace DotNetWhy.Common.Mediator;
 
 internal sealed class Mediator : IMediator
 {

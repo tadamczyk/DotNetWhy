@@ -1,4 +1,4 @@
-﻿namespace DotNetWhy.Common;
+namespace DotNetWhy.Common;
 
 public interface IQueryHandler<in TQuery, TQueryResult>
     where TQuery : IQuery
