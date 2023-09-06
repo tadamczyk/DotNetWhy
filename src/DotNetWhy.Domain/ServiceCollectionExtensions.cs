@@ -4,6 +4,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomain(this IServiceCollection services) =>
         services
+            .AddCli()
             .AddMediator()
             .AddSingleton<ICommandHandler<GenerateRestoreGraphFileCommand>,
                 GenerateRestoreGraphFileCommandHandler>()
@@ -11,5 +12,9 @@ public static class ServiceCollectionExtensions
                 RestoreProjectCommandHandler>()
             .AddSingleton<IQueryHandler<GetDependencyTreeQuery, DependencyTreeNode>,
                 GetDependencyTreeQueryHandler>()
-            .AddSingleton<IDependencyTreeProvider, DependencyTreeProvider>();
+            .AddSingleton<IDependencyGraphSpecProvider, DependencyGraphSpecProvider>()
+            .AddSingleton<IDependencyTreeProvider, DependencyTreeProvider>()
+            .AddSingleton<ILockFileProvider, LockFileProvider>()
+            .AddSingleton<ILockFileTargetLibraryProvider, LockFileTargetLibraryProvider>()
+            .AddSingleton<ILockFileTargetProvider, LockFileTargetProvider>();
 }

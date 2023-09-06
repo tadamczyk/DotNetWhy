@@ -7,7 +7,7 @@ public class CommandTests
 
     [SetUp]
     public void SetUp() =>
-        _command = Command.Create();
+        _command = new Command();
 
     [Test]
     public void Should_Execute_Command_With_No_Error_As_Result()

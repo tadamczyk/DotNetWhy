@@ -8,6 +8,11 @@ internal record struct GenerateRestoreGraphFileCommand(
 internal sealed class GenerateRestoreGraphFileCommandHandler
     : ICommandHandler<GenerateRestoreGraphFileCommand>
 {
+    private readonly ICommandFactory _commandFactory;
+
+    public GenerateRestoreGraphFileCommandHandler(ICommandFactory commandFactory) =>
+        _commandFactory = commandFactory;
+
     public Task HandleAsync(GenerateRestoreGraphFileCommand command)
     {
         var commandResult = GetCommandResult(command.WorkingDirectory, command.RestoreGraphOutputPath);
@@ -17,10 +22,10 @@ internal sealed class GenerateRestoreGraphFileCommandHandler
         throw new GenerateRestoreGraphFileFailedException(command.WorkingDirectory);
     }
 
-    private static CommandResult GetCommandResult(
+    private CommandResult GetCommandResult(
         string workingDirectory,
         string restoreGraphOutputPath) =>
-        Command
+        _commandFactory
             .Create()
             .WithArguments(GetCommandArguments(workingDirectory, restoreGraphOutputPath))
             .WithWorkingDirectory(GetCommandWorkingDirectory(workingDirectory))

@@ -5,7 +5,7 @@ namespace DotNet.Cli;
 /// </summary>
 public sealed class Command
 {
-    private Command()
+    internal Command()
     {
         Arguments = CommandDefaults.Arguments;
         WorkingDirectory = CommandDefaults.WorkingDirectory;
@@ -20,13 +20,6 @@ public sealed class Command
     ///     Gets the working directory for "dotnet" command execution.
     /// </summary>
     public string WorkingDirectory { get; private set; }
-
-    /// <summary>
-    ///     Creates a new instance of "dotnet" <see cref="Command" /> class.
-    /// </summary>
-    /// <returns>A new "dotnet" <see cref="Command" /> instance.</returns>
-    public static Command Create() =>
-        new();
 
     /// <summary>
     ///     Sets the arguments for "dotnet" command.

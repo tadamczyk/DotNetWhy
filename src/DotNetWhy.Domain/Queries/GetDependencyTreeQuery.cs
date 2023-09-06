@@ -10,6 +10,23 @@ internal record struct GetDependencyTreeQuery(
 internal sealed class GetDependencyTreeQueryHandler
     : IQueryHandler<GetDependencyTreeQuery, DependencyTreeNode>
 {
+    private readonly IDependencyGraphSpecProvider _dependencyGraphSpecProvider;
+    private readonly ILockFileProvider _lockFileProvider;
+    private readonly ILockFileTargetProvider _lockFileTargetProvider;
+    private readonly ILockFileTargetLibraryProvider _lockFileTargetLibraryProvider;
+
+    public GetDependencyTreeQueryHandler(
+        IDependencyGraphSpecProvider dependencyGraphSpecProvider,
+        ILockFileProvider lockFileProvider,
+        ILockFileTargetProvider lockFileTargetProvider,
+        ILockFileTargetLibraryProvider lockFileTargetLibraryProvider)
+    {
+        _dependencyGraphSpecProvider = dependencyGraphSpecProvider;
+        _lockFileProvider = lockFileProvider;
+        _lockFileTargetProvider = lockFileTargetProvider;
+        _lockFileTargetLibraryProvider = lockFileTargetLibraryProvider;
+    }
+
     public Task<DependencyTreeNode> QueryAsync(GetDependencyTreeQuery query)
     {
         var searchNode = new DependencyTreeNode(
@@ -24,14 +41,14 @@ internal sealed class GetDependencyTreeQueryHandler
         return Task.FromResult(tree);
     }
 
-    private static DependencyTreeNode GetTree(
+    private DependencyTreeNode GetTree(
         string name,
         string restoreGraphOutputPath,
         DependencyTreeNode searchNode)
     {
         var root = new DependencyTreeNode(name);
 
-        var dependencyGraphSpec = GetDependencyGraphSpec(restoreGraphOutputPath);
+        var dependencyGraphSpec = _dependencyGraphSpecProvider.Get(restoreGraphOutputPath);
         if (dependencyGraphSpec is null) return root;
 
         var projectTrees = dependencyGraphSpec
@@ -46,13 +63,13 @@ internal sealed class GetDependencyTreeQueryHandler
         return root;
     }
 
-    private static DependencyTreeNode GetProjectTree(
+    private DependencyTreeNode GetProjectTree(
         PackageSpec packageSpec,
         DependencyTreeNode searchNode)
     {
         var project = new DependencyTreeNode(packageSpec.Name);
 
-        var lockFile = GetLockFile(packageSpec.RestoreMetadata.OutputPath);
+        var lockFile = _lockFileProvider.Get(packageSpec.RestoreMetadata.OutputPath);
         if (lockFile is null) return project;
 
         var targetTrees = packageSpec
@@ -66,19 +83,19 @@ internal sealed class GetDependencyTreeQueryHandler
         return project;
     }
 
-    private static DependencyTreeNode GetTargetTree(
+    private DependencyTreeNode GetTargetTree(
         TargetFrameworkInformation targetFramework,
         LockFile lockFile,
         DependencyTreeNode searchNode)
     {
         var target = new DependencyTreeNode(targetFramework.ToString());
 
-        var lockFileTarget = GetLockFileTarget(lockFile, targetFramework.FrameworkName.ToString());
+        var lockFileTarget = _lockFileTargetProvider.Get(lockFile, targetFramework.FrameworkName.ToString());
         if (lockFileTarget is null) return target;
 
         var libraryTrees = targetFramework
             .Dependencies
-            .Select(dependency => GetLockFileTargetLibrary(lockFileTarget, dependency.Name))
+            .Select(dependency => _lockFileTargetLibraryProvider.Get(lockFileTarget, dependency.Name))
             .Where(lockFileTargetLibrary => lockFileTargetLibrary is not null)
             .Select(lockFileTargetLibrary => GetLibraryTree(lockFileTarget, lockFileTargetLibrary, searchNode));
 
@@ -89,7 +106,7 @@ internal sealed class GetDependencyTreeQueryHandler
         return target;
     }
 
-    private static DependencyTreeNode GetLibraryTree(
+    private DependencyTreeNode GetLibraryTree(
         LockFileTarget lockFileTarget,
         LockFileTargetLibrary lockFileTargetLibrary,
         DependencyTreeNode searchNode)
@@ -98,7 +115,7 @@ internal sealed class GetDependencyTreeQueryHandler
 
         var libraryTrees = lockFileTargetLibrary
             .Dependencies
-            .Select(dependency => GetLockFileTargetLibrary(lockFileTarget, dependency.Id))
+            .Select(dependency => _lockFileTargetLibraryProvider.Get(lockFileTarget, dependency.Id))
             .Where(childLockFileTargetLibrary => childLockFileTargetLibrary is not null)
             .Select(childLockFileTargetLibrary => GetLibraryTree(lockFileTarget, childLockFileTargetLibrary, searchNode));
 
@@ -108,28 +125,4 @@ internal sealed class GetDependencyTreeQueryHandler
 
         return library;
     }
-
-    private static DependencyGraphSpec GetDependencyGraphSpec(string restoreGraphOutputPath) =>
-        DependencyGraphSpec.Load(restoreGraphOutputPath);
-
-    private static LockFile GetLockFile(string lockFileDirectory) =>
-        LockFileUtilities.GetLockFile(
-            Path.Combine(
-                lockFileDirectory,
-                FileNames.LockFile),
-            NullLogger.Instance);
-
-    private static LockFileTarget GetLockFileTarget(
-        LockFile lockFile,
-        string targetName) =>
-        lockFile
-            .Targets
-            .FirstOrDefault(target => target.TargetFramework.ToString().Equals(targetName));
-
-    private static LockFileTargetLibrary GetLockFileTargetLibrary(
-        LockFileTarget lockFileTarget,
-        string libraryName) =>
-        lockFileTarget
-            .Libraries
-            .FirstOrDefault(library => library.Name.Equals(libraryName));
 }
