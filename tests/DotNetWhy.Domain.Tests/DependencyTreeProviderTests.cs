@@ -51,4 +51,86 @@ public class DependencyTreeProviderTests
         result.HasNodes.Should().BeFalse();
         result.Nodes.Should().BeEmpty();
     }
+
+    [Test]
+    public async Task Should_Throw_RestoreProjectFailedException_When_RestoreProjectCommandHandler_Failed()
+    {
+        // Arrange
+        var workingDirectory = "WorkingDirectory";
+
+        var parameters = new DependencyTreeParameters(
+            workingDirectory,
+            "PackageName",
+            "PackageVersion");
+
+        _mediator
+            .SendAsync(Arg.Any<RestoreProjectCommand>())
+            .Returns(Task.FromException(new RestoreProjectFailedException(workingDirectory)));
+
+        _mediator
+            .SendAsync(Arg.Any<GenerateRestoreGraphFileCommand>())
+            .Returns(Task.CompletedTask);
+
+        // Act
+        Func<Task> result = () => _sut.GetAsync(parameters);
+
+        // Assert
+        await result.Should().ThrowAsync<RestoreProjectFailedException>();
+    }
+
+    [Test]
+    public async Task Should_Throw_GenerateRestoreGraphFileFailedException_When_GenerateRestoreGraphFileCommandHandler_Failed()
+    {
+        // Arrange
+        var workingDirectory = "WorkingDirectory";
+
+        var parameters = new DependencyTreeParameters(
+            workingDirectory,
+            "PackageName",
+            "PackageVersion");
+
+        _mediator
+            .SendAsync(Arg.Any<RestoreProjectCommand>())
+            .Returns(Task.CompletedTask);
+
+        _mediator
+            .SendAsync(Arg.Any<GenerateRestoreGraphFileCommand>())
+            .Returns(Task.FromException(new GenerateRestoreGraphFileFailedException(workingDirectory)));
+
+        // Act
+        Func<Task> result = () => _sut.GetAsync(parameters);
+
+        // Assert
+        await result.Should().ThrowAsync<GenerateRestoreGraphFileFailedException>();
+    }
+
+    [Test]
+    public async Task Should_Throw_Exception_When_GetDependencyTreeQueryHandler_Failed()
+    {
+        // Arrange
+        var parameters = new DependencyTreeParameters(
+            "WorkingDirectory",
+            "PackageName",
+            "PackageVersion");
+
+        var expectedException = new Exception("Failed");
+
+        _mediator
+            .SendAsync(Arg.Any<RestoreProjectCommand>())
+            .Returns(Task.CompletedTask);
+
+        _mediator
+            .SendAsync(Arg.Any<GenerateRestoreGraphFileCommand>())
+            .Returns(Task.CompletedTask);
+
+        _mediator
+            .SendAsync<GetDependencyTreeQuery, DependencyTreeNode>(Arg.Any<GetDependencyTreeQuery>())
+            .Returns(Task.FromException<DependencyTreeNode>(expectedException));
+
+        // Act
+        Func<Task> result = () => _sut.GetAsync(parameters);
+
+        // Assert
+        await result.Should().ThrowAsync<Exception>(expectedException.Message);
+    }
 }
