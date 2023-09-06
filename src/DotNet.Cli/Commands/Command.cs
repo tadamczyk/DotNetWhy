@@ -1,9 +1,9 @@
-namespace DotNet.Cli;
+namespace DotNet.Cli.Commands;
 
 /// <summary>
 ///     Represents "dotnet" command that can be executed in the command-line interface.
 /// </summary>
-public sealed class Command
+internal sealed class Command : ICommand
 {
     internal Command()
     {
@@ -26,7 +26,7 @@ public sealed class Command
     /// </summary>
     /// <param name="arguments">The arguments to be set.</param>
     /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
-    public Command WithArguments(IEnumerable<string> arguments) =>
+    public ICommand WithArguments(IEnumerable<string> arguments) =>
         WithArguments(string.Join(CommandConstants.ArgumentsSeparator, arguments));
 
     /// <summary>
@@ -34,7 +34,7 @@ public sealed class Command
     /// </summary>
     /// <param name="arguments">The arguments to be set.</param>
     /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
-    public Command WithArguments(string arguments)
+    public ICommand WithArguments(string arguments)
     {
         Arguments = arguments;
 
@@ -46,7 +46,7 @@ public sealed class Command
     /// </summary>
     /// <param name="workingDirectory">The working directory to be set.</param>
     /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
-    public Command WithWorkingDirectory(string workingDirectory)
+    public ICommand WithWorkingDirectory(string workingDirectory)
     {
         WorkingDirectory = workingDirectory;
 

@@ -1,5 +1,6 @@
 global using System;
 global using System.Threading.Tasks;
+global using DotNet.Cli;
 global using DotNetWhy.Common;
 global using DotNetWhy.Domain.Commands;
 global using DotNetWhy.Domain.Exceptions;
@@ -7,4 +8,5 @@ global using DotNetWhy.Domain.Providers;
 global using DotNetWhy.Domain.Queries;
 global using FluentAssertions;
 global using NSubstitute;
+global using NSubstitute.ExceptionExtensions;
 global using NUnit.Framework;

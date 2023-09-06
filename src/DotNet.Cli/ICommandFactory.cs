@@ -9,5 +9,5 @@ public interface ICommandFactory
     ///     Creates a new instance of "dotnet" <see cref="Command" /> class.
     /// </summary>
     /// <returns>A new "dotnet" <see cref="Command" /> instance.</returns>
-    Command Create();
+    ICommand Create();
 }

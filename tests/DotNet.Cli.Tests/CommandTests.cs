@@ -3,7 +3,7 @@ namespace DotNet.Cli.Tests;
 [TestFixture(TestOf = typeof(Command))]
 public class CommandTests
 {
-    private Command _command;
+    private ICommand _command;
 
     [SetUp]
     public void SetUp() =>

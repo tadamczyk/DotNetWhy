@@ -2,7 +2,7 @@ namespace DotNetWhy.Domain.Commands;
 
 internal record struct RestoreProjectCommand(
         string WorkingDirectory)
-    : ICommand;
+    : Common.ICommand;
 
 internal sealed class RestoreProjectCommandHandler
     : ICommandHandler<RestoreProjectCommand>

@@ -3,7 +3,7 @@ namespace DotNetWhy.Domain.Commands;
 internal record struct GenerateRestoreGraphFileCommand(
         string WorkingDirectory,
         string RestoreGraphOutputPath)
-    : ICommand;
+    : Common.ICommand;
 
 internal sealed class GenerateRestoreGraphFileCommandHandler
     : ICommandHandler<GenerateRestoreGraphFileCommand>
