@@ -1,12 +1,9 @@
 namespace DotNetWhy.Domain.Providers;
 
-internal sealed class DependencyTreeProvider : IDependencyTreeProvider
+internal sealed class DependencyTreeProvider(
+        IMediator mediator)
+    : IDependencyTreeProvider
 {
-    private readonly IMediator _mediator;
-
-    public DependencyTreeProvider(IMediator mediator) =>
-        _mediator = mediator;
-
     public async Task<DependencyTreeNode> GetAsync(DependencyTreeParameters parameters)
     {
         var name = GetName(parameters.WorkingDirectory);
@@ -34,13 +31,13 @@ internal sealed class DependencyTreeProvider : IDependencyTreeProvider
             Path.GetTempFileName().Replace(FileExtensions.Temp, FileExtensions.Json));
 
     private async Task RestoreProjects(string workingDirectory) =>
-        await _mediator.SendAsync(
+        await mediator.SendAsync(
             new RestoreProjectCommand(workingDirectory));
 
     private async Task GenerateRestoreGraphFile(
         string workingDirectory,
         string restoreGraphOutputPath) =>
-        await _mediator.SendAsync(
+        await mediator.SendAsync(
             new GenerateRestoreGraphFileCommand(
                 workingDirectory,
                 restoreGraphOutputPath));
@@ -50,7 +47,7 @@ internal sealed class DependencyTreeProvider : IDependencyTreeProvider
         string name,
         string packageName,
         string packageVersion = null) =>
-        await _mediator.SendAsync<GetDependencyTreeQuery, DependencyTreeNode>(
+        await mediator.SendAsync<GetDependencyTreeQuery, DependencyTreeNode>(
             new GetDependencyTreeQuery(
                 restoreGraphOutputPath,
                 name,

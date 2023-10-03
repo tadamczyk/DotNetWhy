@@ -1,18 +1,20 @@
-name: Continuous Integration
+name: Build
 on:
   pull_request:
     branches: [ master ]
   push:
     branches: [ master ]
 jobs:
-  build-test-and-report:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Setup
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.0.x
+          global-json-file: global.json
       - name: Restore
         run: dotnet restore
         continue-on-error: false
@@ -20,10 +22,10 @@ jobs:
         run: dotnet build --no-restore
         continue-on-error: false
       - name: Test
-        run: dotnet test --no-restore --logger trx --results-directory ./testsResults
+        run: dotnet test --no-restore --logger trx --results-directory ./tests-results
+        continue-on-error: false
       - name: Report
-        uses: bibipkins/dotnet-test-reporter@v1.2.3
+        uses: bibipkins/dotnet-test-reporter@v1.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: ./testsResults
-          comment-title: 'Tests Results'
+          results-path: ./tests-results/*.trx

@@ -4,14 +4,10 @@ internal record struct RestoreProjectCommand(
         string WorkingDirectory)
     : Common.ICommand;
 
-internal sealed class RestoreProjectCommandHandler
+internal sealed class RestoreProjectCommandHandler(
+        ICommandFactory commandFactory)
     : ICommandHandler<RestoreProjectCommand>
 {
-    private readonly ICommandFactory _commandFactory;
-
-    public RestoreProjectCommandHandler(ICommandFactory commandFactory) =>
-        _commandFactory = commandFactory;
-
     public Task HandleAsync(RestoreProjectCommand command)
     {
         var commandResult = GetCommandResult(command.WorkingDirectory);
@@ -21,8 +17,8 @@ internal sealed class RestoreProjectCommandHandler
         throw new RestoreProjectFailedException(command.WorkingDirectory);
     }
 
-    private CommandResult GetCommandResult(string workingDirectory) =>
-        _commandFactory
+    private ICommandResult GetCommandResult(string workingDirectory) =>
+        commandFactory
             .Create()
             .WithArguments(GetCommandArguments(workingDirectory))
             .WithWorkingDirectory(GetCommandWorkingDirectory(workingDirectory))

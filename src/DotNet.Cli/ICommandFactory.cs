@@ -6,8 +6,8 @@ namespace DotNet.Cli;
 public interface ICommandFactory
 {
     /// <summary>
-    ///     Creates a new instance of "dotnet" <see cref="Command" /> class.
+    ///     Creates a new instance of "dotnet" <see cref="ICommand" /> class.
     /// </summary>
-    /// <returns>A new "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>A new "dotnet" <see cref="ICommand" /> instance.</returns>
     ICommand Create();
 }

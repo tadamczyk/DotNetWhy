@@ -1,5 +1,8 @@
 namespace DotNet.Cli;
 
+/// <summary>
+///     Represents "dotnet" command that can be executed in the command-line interface.
+/// </summary>
 public interface ICommand
 {
     /// <summary>
@@ -16,26 +19,26 @@ public interface ICommand
     ///     Sets the arguments for "dotnet" command.
     /// </summary>
     /// <param name="arguments">The arguments to be set.</param>
-    /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>The current "dotnet" <see cref="ICommand" /> instance.</returns>
     ICommand WithArguments(IEnumerable<string> arguments);
 
     /// <summary>
     ///     Sets the arguments for "dotnet" command.
     /// </summary>
     /// <param name="arguments">The arguments to be set.</param>
-    /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>The current "dotnet" <see cref="ICommand" /> instance.</returns>
     ICommand WithArguments(string arguments);
 
     /// <summary>
     ///     Sets the working directory for "dotnet" command.
     /// </summary>
     /// <param name="workingDirectory">The working directory to be set.</param>
-    /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>The current "dotnet" <see cref="ICommand" /> instance.</returns>
     ICommand WithWorkingDirectory(string workingDirectory);
 
     /// <summary>
-    ///     Executes "dotnet" command and returns <see cref="CommandResult" />.
+    ///     Executes "dotnet" command and returns <see cref="ICommandResult" />.
     /// </summary>
-    /// <returns>An instance of <see cref="CommandResult" /> being the result of the command execution.</returns>
-    CommandResult Execute();
+    /// <returns>An instance of <see cref="ICommandResult" /> being the result of the command execution.</returns>
+    ICommandResult Execute();
 }

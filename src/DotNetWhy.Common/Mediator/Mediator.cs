@@ -1,23 +1,20 @@
 namespace DotNetWhy.Common.Mediator;
 
-internal sealed class Mediator : IMediator
+internal sealed class Mediator(
+        IServiceProvider serviceProvider)
+    : IMediator
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public Mediator(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     public async Task SendAsync<TCommand>(
         TCommand command)
         where TCommand : ICommand =>
-        await _serviceProvider
+        await serviceProvider
             .GetRequiredService<ICommandHandler<TCommand>>()
             .HandleAsync(command);
 
     public async Task<TQueryResult> SendAsync<TQuery, TQueryResult>(
         TQuery query)
         where TQuery : IQuery =>
-        await _serviceProvider
+        await serviceProvider
             .GetRequiredService<IQueryHandler<TQuery, TQueryResult>>()
             .QueryAsync(query);
 }

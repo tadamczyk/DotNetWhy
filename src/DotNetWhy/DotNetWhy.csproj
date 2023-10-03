@@ -2,11 +2,9 @@
     <PropertyGroup>
         <AssemblyName>DotNetWhy</AssemblyName>
         <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <LangVersion>latest</LangVersion>
         <OutputType>exe</OutputType>
         <PackAsTool>true</PackAsTool>
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <Title>$(AssemblyName)</Title>
         <ToolCommandName>dotnet-why</ToolCommandName>
     </PropertyGroup>
@@ -14,22 +12,15 @@
         <Authors>Tomasz Adamczyk</Authors>
         <Copyright>Copyright (c) 2021 $(Authors)</Copyright>
         <Description>A .NET global tool to show information about why a NuGet package is installed.</Description>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <IncludeSymbols>true</IncludeSymbols>
         <PackageIcon>logo.png</PackageIcon>
         <PackageId>$(AssemblyName)</PackageId>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/tadamczyk/DotNetWhy</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>See $(PackageProjectUrl)/blob/master/CHANGELOG.md for release notes.</PackageReleaseNotes>
+        <PackageReleaseNotes>See $(PackageProjectUrl)/releases for release notes.</PackageReleaseNotes>
         <PackageTags>CLI;Tool;DependencyTree;Dependencies;Tree;NuGet;DotNet;.NET;CSharp;C#</PackageTags>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\assets\logo\256\logo.png" Pack="true" PackagePath="\"/>
@@ -37,7 +28,7 @@
         <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\DotNetWhy.Services\DotNetWhy.Services.csproj"/>

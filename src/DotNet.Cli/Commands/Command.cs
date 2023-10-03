@@ -25,7 +25,7 @@ internal sealed class Command : ICommand
     ///     Sets the arguments for "dotnet" command.
     /// </summary>
     /// <param name="arguments">The arguments to be set.</param>
-    /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>The current "dotnet" <see cref="ICommand" /> instance.</returns>
     public ICommand WithArguments(IEnumerable<string> arguments) =>
         WithArguments(string.Join(CommandConstants.ArgumentsSeparator, arguments));
 
@@ -33,7 +33,7 @@ internal sealed class Command : ICommand
     ///     Sets the arguments for "dotnet" command.
     /// </summary>
     /// <param name="arguments">The arguments to be set.</param>
-    /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>The current "dotnet" <see cref="ICommand" /> instance.</returns>
     public ICommand WithArguments(string arguments)
     {
         Arguments = arguments;
@@ -45,7 +45,7 @@ internal sealed class Command : ICommand
     ///     Sets the working directory for "dotnet" command.
     /// </summary>
     /// <param name="workingDirectory">The working directory to be set.</param>
-    /// <returns>The current "dotnet" <see cref="Command" /> instance.</returns>
+    /// <returns>The current "dotnet" <see cref="ICommand" /> instance.</returns>
     public ICommand WithWorkingDirectory(string workingDirectory)
     {
         WorkingDirectory = workingDirectory;
@@ -54,10 +54,10 @@ internal sealed class Command : ICommand
     }
 
     /// <summary>
-    ///     Executes "dotnet" command and returns <see cref="CommandResult" />.
+    ///     Executes "dotnet" command and returns <see cref="ICommandResult" />.
     /// </summary>
-    /// <returns>An instance of <see cref="CommandResult" /> being the result of the command execution.</returns>
-    public CommandResult Execute()
+    /// <returns>An instance of <see cref="ICommandResult" /> being the result of the command execution.</returns>
+    public ICommandResult Execute()
     {
         var process = new Process();
 
