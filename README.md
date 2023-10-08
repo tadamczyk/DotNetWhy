@@ -57,3 +57,20 @@ At this moment, the only additional optional query argument for `dotnet why` com
 > dotnet why Newtonsoft.Json --version 13.0.1
 > dotnet why Newtonsoft.Json -v 13.0.2
 ```
+
+
+## Architecture
+
+The application architecture is Clean Architecture (more details [here](https://blog.cleancoder.com/uncle-bob/2011/11/22/Clean-Architecture.html) and [here](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)).
+
+The diagram below shows the architecture layers and the relationships between them:
+
+```mermaid
+flowchart TB
+    why(DotNetWhy) --> why.i(DotNetWhy.Infrastructure)
+    why(DotNetWhy) --> why.a(DotNetWhy.Application)
+    why.i(DotNetWhy.Infrastructure) --> why.a(DotNetWhy.Application)
+    subgraph Domain
+    why.a(DotNetWhy.Application) --> why.d(DotNetWhy.Core)
+    end
+```
