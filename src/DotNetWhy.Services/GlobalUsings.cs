@@ -1,10 +1,8 @@
 global using System.Diagnostics;
 global using Castle.DynamicProxy;
-global using FluentValidation;
-global using DotNetWhy.Domain;
+global using DotNetWhy.Core;
 global using DotNetWhy.Loggers;
 global using DotNetWhy.Services.Models;
 global using DotNetWhy.Services.Interceptors;
-global using DotNetWhy.Services.Validators;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;

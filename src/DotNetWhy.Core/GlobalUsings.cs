@@ -1,0 +1,11 @@
+global using System;
+global using System.Diagnostics;
+global using DotNetWhy.Core.Commands;
+global using DotNetWhy.Core.Entities;
+global using DotNetWhy.Core.Providers;
+global using DotNetWhy.Core.Queries;
+global using DotNetWhy.Core.Results;
+global using DotNetWhy.Core.Validations;
+global using Microsoft.Extensions.DependencyInjection;
+global using NuGet.Common;
+global using NuGet.ProjectModel;

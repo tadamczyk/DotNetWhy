@@ -4,7 +4,6 @@
         <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
         <OutputType>exe</OutputType>
         <PackAsTool>true</PackAsTool>
-        <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
         <Title>$(AssemblyName)</Title>
         <ToolCommandName>dotnet-why</ToolCommandName>
     </PropertyGroup>

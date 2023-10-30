@@ -24,8 +24,8 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --logger trx --results-directory ./tests-results
         continue-on-error: false
-      - name: Report
-        uses: bibipkins/dotnet-test-reporter@v1.3.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          results-path: ./tests-results/*.trx
+#      - name: Report
+#        uses: bibipkins/dotnet-test-reporter@v1.3.0
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          results-path: ./tests-results/*.trx

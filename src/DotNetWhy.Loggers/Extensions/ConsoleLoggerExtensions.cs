@@ -13,7 +13,7 @@ internal static class ConsoleLoggerExtensions
     public static void SetAsSearchedPackageName(this string packageName) =>
         SearchedPackageName = packageName;
 
-    public static void SetLabelWidth(this DependencyTreeNode solution) =>
+    public static void SetLabelWidth(this Node solution) =>
         ConsoleLoggerConstants.Widths.Label =
             new[]
             {
@@ -28,20 +28,20 @@ internal static class ConsoleLoggerExtensions
             }.Max()
             + ConsoleLoggerConstants.Widths.DoubleTab;
 
-    public static string GetSolutionLabel(this DependencyTreeNode solution) =>
+    public static string GetSolutionLabel(this Node solution) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Solution,
             solution.Name,
             solution.LastNodesSum);
 
-    public static string GetProjectLabel(this DependencyTreeNode project, int solutionDependencyCounter) =>
+    public static string GetProjectLabel(this Node project, int solutionDependencyCounter) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Project,
             project.Name,
             solutionDependencyCounter,
             project.LastNodesSum);
 
-    public static string GetTargetLabel(this DependencyTreeNode target, int projectDependencyCounter) =>
+    public static string GetTargetLabel(this Node target, int projectDependencyCounter) =>
         GetLabel(
             ConsoleLoggerConstants.Prefixes.Target,
             target.Name,

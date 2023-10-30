@@ -12,7 +12,13 @@ internal class BaseDependencyTreeLogger : IBaseDependencyTreeLogger
         _logger.LogLine();
     }
 
-    public void LogErrors(IEnumerable<string> errors) => errors.ForEach(error => _logger.LogLine(error, Color.Red));
+    public void LogErrors(IEnumerable<string> errors)
+    {
+        foreach (var error in errors)
+        {
+            _logger.LogLine(error, Color.Red);
+        }
+    }
 
     public void LogEndMessage(TimeSpan elapsedTime) =>
         _logger.LogLine($"Time elapsed: {elapsedTime:hh\\:mm\\:ss\\.ff}");
