@@ -2,5 +2,5 @@ namespace DotNetWhy.Services;
 
 public interface IDotNetWhyService
 {
-    void Run(IParameters parameters);
+    Task RunAsync(IParameters parameters);
 }

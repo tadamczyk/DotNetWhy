@@ -3,14 +3,16 @@ on:
   push:
     tags: [ '*.*.*' ]
 jobs:
-  build-test-pack-and-publish:
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Setup
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.0.x
+          global-json-file: global.json
       - name: Restore
         run: dotnet restore
         continue-on-error: false

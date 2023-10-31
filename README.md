@@ -5,7 +5,7 @@
 
 ## Installation
 
-Download and install the [.NET 6 or 7 SDK](https://www.microsoft.com/net/download).
+Download and install the [.NET 6/8 SDK](https://www.microsoft.com/net/download).
 
 Once installed, run the following command:
 

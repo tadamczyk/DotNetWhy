@@ -1,0 +1,31 @@
+name: Build
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: actions/setup-dotnet@v3
+        with:
+          global-json-file: global.json
+      - name: Restore
+        run: dotnet restore
+        continue-on-error: false
+      - name: Build
+        run: dotnet build --no-restore
+        continue-on-error: false
+      - name: Test
+        run: dotnet test --no-restore --logger trx --results-directory ./tests-results
+        continue-on-error: false
+#      - name: Report
+#        uses: bibipkins/dotnet-test-reporter@v1.3.0
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          results-path: ./tests-results/*.trx

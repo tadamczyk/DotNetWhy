@@ -3,37 +3,34 @@ namespace DotNetWhy.Services;
 internal class DotNetWhyService : IDotNetWhyService
 {
     private readonly IDependencyTreeLogger _logger;
-    private readonly IDependencyTreeService _service;
-    private readonly IValidator<IParameters> _validator;
+    private readonly IProvider _provider;
 
     public DotNetWhyService(
         IDependencyTreeLogger logger,
-        IDependencyTreeService service,
-        IValidator<IParameters> validator)
+        IProvider provider)
     {
         _logger = logger;
-        _service = service;
-        _validator = validator;
+        _provider = provider;
     }
 
-    public void Run(IParameters parameters)
+    public Task RunAsync(IParameters parameters)
     {
-        var validationResult = _validator.Validate(parameters);
-
-        if (!validationResult.IsValid)
+        var dependencyGraph = _provider.Get(new Request(parameters.PackageName)
         {
-            _logger.LogErrors(validationResult.Errors.Select(error => error.ErrorMessage).ToHashSet());
-            return;
+            PackageVersion = parameters.PackageVersion
+        });
+
+        if (!dependencyGraph.IsSuccess)
+        {
+            _logger.LogErrors(dependencyGraph.Errors.ToHashSet());
+            return Task.CompletedTask;
         }
 
-        var dependencyTree = _service.GetDependencyTreeByPackageName(
-            parameters.WorkingDirectory,
+        _logger.LogResults(
+            dependencyGraph.Node,
             parameters.PackageName,
             parameters.PackageVersion);
 
-        _logger.LogResults(
-            dependencyTree,
-            parameters.PackageName,
-            parameters.PackageVersion);
+        return Task.CompletedTask;
     }
 }

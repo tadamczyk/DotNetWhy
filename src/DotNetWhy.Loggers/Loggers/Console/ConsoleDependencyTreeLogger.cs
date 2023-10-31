@@ -10,11 +10,11 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         _logger = logger;
 
     public void LogResults(
-        Solution solution,
+        Node solution,
         string packageName,
         string packageVersion)
     {
-        if (!solution.HasProjects)
+        if (!solution.HasNodes)
         {
             _logger.LogLine($"Package {packageName}{(string.IsNullOrEmpty(packageVersion) ? "" : $" {packageVersion}")} usage not found.");
             return;
@@ -25,31 +25,34 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
 
         _logger.LogLine(solution.GetSolutionLabel(), Color.DarkCyan);
 
-        solution.Projects.ForEach(project =>
+        foreach (var project in solution.Nodes)
         {
-            _logger.LogLine(project.GetProjectLabel(solution.DependencyPathCounter), Color.Green);
+            _logger.LogLine(project.GetProjectLabel(solution.LastNodesSum), Color.Green);
 
-            project.Targets.ForEach(target =>
+            foreach (var target in project.Nodes)
             {
                 _index.Reset();
-                _logger.LogLine(target.GetTargetLabel(project.DependencyPathCounter), Color.DarkGreen);
+                _logger.LogLine(target.GetTargetLabel(project.LastNodesSum), Color.DarkGreen);
 
-                target.Dependencies.ForEach(dependency => LogDependencyTree(dependency));
-            });
+                foreach (var dependency in target.Nodes)
+                {
+                    LogDependencyTree(dependency);
+                }
+            }
 
             _logger.LogLine();
-        });
+        }
     }
 
-    private void LogDependencyTree(Dependency dependency, StringBuilder dependencyPathBuilder = null)
+    private void LogDependencyTree(Node dependency, StringBuilder dependencyPathBuilder = null)
     {
-        if (!dependency.HasDependencies)
+        if (!dependency.HasNodes)
         {
             LogDependencyPath(dependencyPathBuilder?.ToString() ?? dependency.ToString());
             return;
         }
 
-        dependency.Dependencies.ForEach(childDependency =>
+        foreach (var childDependency in dependency.Nodes)
         {
             var currentDependencyPathLength = dependencyPathBuilder?.Length ?? dependency.ToString().Length;
 
@@ -62,7 +65,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
             dependencyPathBuilder.Remove(
                 currentDependencyPathLength,
                 dependencyPathBuilder.Length - currentDependencyPathLength);
-        });
+        }
     }
 
     private void LogDependencyPath(string dependencyPath)
@@ -73,7 +76,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
         var dependencyPathIndex = dependencyPathParts?.Length;
         var currentWidth = ConsoleLoggerConstants.Widths.DoubleTab;
 
-        dependencyPathParts.ForEach(dependencyPathPart =>
+        foreach (var dependencyPathPart in dependencyPathParts!)
         {
             var dependencyPathPartWidth = dependencyPathPart.Length + ConsoleLoggerConstants.Separators.Long.Length;
             currentWidth += dependencyPathPartWidth;
@@ -90,7 +93,7 @@ internal class ConsoleDependencyTreeLogger : BaseDependencyTreeLogger, IDependen
                     ? Color.Red
                     : null);
             if (--dependencyPathIndex > 0) _logger.Log(ConsoleLoggerConstants.Separators.Long);
-        });
+        }
 
         _logger.LogLine();
     }
