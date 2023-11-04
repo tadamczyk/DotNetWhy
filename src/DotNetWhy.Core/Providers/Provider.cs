@@ -4,19 +4,18 @@ internal sealed class Provider : IProvider
 {
     public Response Get(Request request)
     {
-        var workingDirectory = Environment.CurrentDirectory;
-        var name = Path.GetFileName(workingDirectory);
+        var name = Path.GetFileName(request.WorkingDirectory);
 
         try
         {
             return new RequestValidator(request)
-                .HandleWith(new WorkingDirectoryValidator(workingDirectory))
+                .HandleWith(new WorkingDirectoryValidator(request.WorkingDirectory))
                 .HandleNext(new GetRestoreGraphOutputPathQuery())
                 .Map(restoreGraphOutputPath =>
                     new GenerateRestoreGraphFileCommand(
-                            workingDirectory,
+                            request.WorkingDirectory,
                             restoreGraphOutputPath)
-                        .HandleWith(new RestoreCommand(workingDirectory))
+                        .HandleWith(new RestoreCommand(request.WorkingDirectory))
                         .HandleNext(new GetDependencyNodeQuery(
                             restoreGraphOutputPath,
                             name,

@@ -30,6 +30,6 @@
         <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\DotNetWhy.Services\DotNetWhy.Services.csproj"/>
+        <ProjectReference Include="..\DotNetWhy.Application\DotNetWhy.Application.csproj"/>
     </ItemGroup>
 </Project>

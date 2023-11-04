@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <PackageReference Include="Castle.Core"/>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\DotNetWhy.Loggers\DotNetWhy.Loggers.csproj"/>
-    </ItemGroup>
-</Project>

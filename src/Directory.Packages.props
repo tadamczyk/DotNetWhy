@@ -3,10 +3,9 @@
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     </PropertyGroup>
     <ItemGroup>
-        <PackageVersion Include="Castle.Core" Version="5.1.1"/>
         <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0"/>
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0"/>
         <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1"/>
         <PackageVersion Include="NuGet.ProjectModel" Version="6.7.0"/>
+        <PackageVersion Include="Spectre.Console.Cli" Version="0.47.0"/>
     </ItemGroup>
 </Project>
