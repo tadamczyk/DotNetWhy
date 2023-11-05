@@ -37,8 +37,6 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
             Log(request, response.Node);
         else
             Log(response.Errors);
-
-        console.WriteLine();
     }
 
     public void Log(ElapsedTime elapsedTime) =>
@@ -176,6 +174,7 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
         console.MarkupLineInterpolated("Errors:".Bold());
         foreach (var error in errors)
             console.MarkupLineInterpolated(error.Red());
+        console.WriteLine();
     }
 
     private static class Characters
