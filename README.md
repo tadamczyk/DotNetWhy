@@ -18,30 +18,21 @@ Once installed, run the following command:
 ```bash
 > dotnet why Newtonsoft.Json
 
-Analyzing project(s) from C:\DotNetWhy directory...
+Why...?
+* is the *Newtonsoft.Json* package
+* in the C:\DotNetWhy directory
 
-ᐉ DotNetWhy                             [6]
-ᐅ DotNet.CommandExecutor.Tests        [2/6]
-ᐳ net7.0                              [2/2]
-1.  Microsoft.NET.Test.Sdk (17.5.0) ▶ Microsoft.TestPlatform.TestHost (17.5.0) ▶
-      Newtonsoft.Json (13.0.2)
-2.  Newtonsoft.Json (13.0.2)
+Answer:
+*   DotNetWhy                  [2]
+**  DotNetWhy.Core           [2/2]
+*** net6.0                   [1/2]
+1.  NuGet.ProjectModel (6.7.0) > NuGet.DependencyResolver.Core (6.7.0) > NuGet.Protocol (6.7.0) >
+      NuGet.Packaging (6.7.0) > Newtonsoft.Json (13.0.1)
+*** net8.0                   [1/2]
+1.  NuGet.ProjectModel (6.7.0) > NuGet.DependencyResolver.Core (6.7.0) > NuGet.Protocol (6.7.0) >
+      NuGet.Packaging (6.7.0) > Newtonsoft.Json (13.0.1)
 
-ᐅ DotNetWhy.Domain                    [2/6]
-ᐳ net6.0                              [1/2]
-1.  NuGet.ProjectModel (6.5.0) ▶ NuGet.DependencyResolver.Core (6.5.0) ▶
-      NuGet.Protocol (6.5.0) ▶ NuGet.Packaging (6.5.0) ▶ Newtonsoft.Json (13.0.1)
-ᐳ net7.0                              [1/2]
-1.  NuGet.ProjectModel (6.5.0) ▶ NuGet.DependencyResolver.Core (6.5.0) ▶
-      NuGet.Protocol (6.5.0) ▶ NuGet.Packaging (6.5.0) ▶ Newtonsoft.Json (13.0.1)
-
-ᐅ DotNetWhy.Domain.Tests              [2/6]
-ᐳ net7.0                              [2/2]
-1.  Microsoft.NET.Test.Sdk (17.5.0) ▶ Microsoft.TestPlatform.TestHost (17.5.0) ▶
-      Newtonsoft.Json (13.0.2)
-2.  Newtonsoft.Json (13.0.2)
-
-Time elapsed: 00:00:03.45
+Time elapsed: 00:00:03.01
 ```
 
 ## Usage

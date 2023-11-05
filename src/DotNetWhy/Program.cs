@@ -1,1 +1,1 @@
-await DotNetWhy.Services.Service.RunAsync(args);
+DotNetWhy.Application.Cli.Run(args);

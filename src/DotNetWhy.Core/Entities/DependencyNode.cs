@@ -11,11 +11,11 @@ internal record struct DependencyNode
     private readonly List<DependencyNode> _nodes = new();
 
     private bool ContainsNode(DependencyNode node) =>
-        _nodes.Any()
+        _nodes.Count != 0
         || IsMatchingNode(node);
 
     private bool IsMatchingNode(DependencyNode node) =>
-        Name.ToLower().Contains(node.Name.ToLower())
+        Name.Contains(node.Name.ToLower(), StringComparisonType)
         && (node.Version is null || Version.Equals(node.Version, StringComparisonType));
 
     internal void AddMatchingNodes(

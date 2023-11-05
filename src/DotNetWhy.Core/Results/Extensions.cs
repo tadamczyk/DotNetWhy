@@ -2,8 +2,6 @@ namespace DotNetWhy.Core.Results;
 
 internal static class Extensions
 {
-    private const char ErrorsSplitter = ';';
-
     public static Result HandleWith(this IResultHandler handler, params IResultHandler[] nextHandlers)
     {
         var handlersResults = new[] {handler}
@@ -18,7 +16,7 @@ internal static class Extensions
             .Where(handlerResult => !handlerResult.IsSuccess)
             .Select(handlerResult => handlerResult.Error);
 
-        var error = string.Join(ErrorsSplitter, errors);
+        var error = string.Join(Errors.Splitter, errors);
 
         return Result.Failure(error);
     }
@@ -40,6 +38,14 @@ internal static class Extensions
 
     public static Response ToResponse(this Result<Node> nodeResult) =>
         nodeResult.IsSuccess
-            ? new Response(nodeResult.Value)
-            : new Response(nodeResult.Error.Split(ErrorsSplitter));
+            ? nodeResult.Value.HasNodes
+                ? new Response(nodeResult.Value)
+                : new Response(new[] {Errors.PackageNotFound})
+            : new Response(nodeResult.Error.Split(Errors.Splitter));
+
+    private static class Errors
+    {
+        public const char Splitter = ';';
+        public const string PackageNotFound = "Package not found.";
+    }
 }

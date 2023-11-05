@@ -1,0 +1,11 @@
+global using System;
+global using System.ComponentModel;
+global using System.Diagnostics;
+global using DotNetWhy.Application.Commands;
+global using DotNetWhy.Application.Infrastructure;
+global using DotNetWhy.Application.Loggers;
+global using DotNetWhy.Core;
+global using Microsoft.Extensions.DependencyInjection;
+global using Spectre.Console;
+global using Spectre.Console.Cli;
+global using ElapsedTime = System.TimeSpan;
