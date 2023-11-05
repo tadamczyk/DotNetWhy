@@ -2,14 +2,13 @@ namespace DotNetWhy.Application.Loggers;
 
 internal sealed class Logger(IAnsiConsole console) : ILogger
 {
-    private static class Tabs
-    {
-        private const char Space = ' ';
-        public static readonly string Single = new(Space, 2);
-        public static readonly string Double = new(Space, 4);
-        public static readonly string Triple = new(Space, 6);
-
-    }
+    private readonly IDictionary<int, Func<string, FormattableString>> _headerLabelsColors =
+        new Dictionary<int, Func<string, FormattableString>>
+        {
+            {1, Extensions.DarkGreen},
+            {2, Extensions.Green},
+            {3, Extensions.DarkCyan}
+        };
 
     public Request LogAction(Func<Request> getRequest)
     {
@@ -25,7 +24,10 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
     }
 
     public Response LogAction(Func<Response> getResponse) =>
-        console.Status().Start("Analyzing...", _ => getResponse());
+        console
+            .Status()
+            .SpinnerStyle(new Style(Color.Green))
+            .Start("Analyzing...", _ => getResponse());
 
     public void Log(Request request, Response response)
     {
@@ -44,61 +46,58 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
 
     private void Log(Request request, Node node)
     {
+        var maxWidth = Console.WindowWidth - Tabs.Double;
+        var nameWidth = GetLongestNodeNameLength(node);
+        var rootLastNodesSum = node.LastNodesSum;
+
         console.MarkupLineInterpolated("Answer:".Bold());
 
-        var labelWidth = FindLongestNodeName(node).Length + Tabs.Double.Length;
-
-        console.MarkupLineInterpolated(
-            $"{"*".PadRight(Tabs.Double.Length)}{$"{node.Name}".PadRight(labelWidth)}{$"[{node.LastNodesSum}]",12}"
-                .DarkGreen());
+        console.MarkupLineInterpolated(GetHeaderLabel(1, node, nameWidth));
         foreach (var project in node.Nodes)
         {
-            console.MarkupLineInterpolated(
-                $"{"**",-4}{$"{project.Name}".PadRight(labelWidth)}{$"[{project.LastNodesSum}/{node.LastNodesSum}]",12}"
-                    .Green());
+            console.MarkupLineInterpolated(GetHeaderLabel(2, project, nameWidth, rootLastNodesSum));
             foreach (var target in project.Nodes)
             {
-                console.MarkupLineInterpolated(
-                    $"{"***",-4}{$"{target.Name}".PadRight(labelWidth)}{$"[{target.LastNodesSum}/{node.LastNodesSum}]",12}"
-                        .DarkCyan());
-
-                var t = new List<List<string>>();
-                foreach (var dependency in target.Nodes) t.AddRange(FindPathsToLeaves(dependency));
+                console.MarkupLineInterpolated(GetHeaderLabel(3, target, nameWidth, rootLastNodesSum));
 
                 var index = 0;
-                foreach (var line in t)
+
+                var paths = target.Nodes.SelectMany(GetPaths);
+                foreach (var path in paths)
                 {
-                    var width = Console.WindowWidth - 4;
-                    var currentWidth = 0;
-                    var iWidth = target.LastNodesSum > 999 ? 6 : 4;
-                    console.MarkupInterpolated($"{$"{++index}.".PadRight(iWidth)}");
-                    currentWidth += iWidth;
-                    foreach (var item in line.SkipLast(1))
+                    var indexWidth = target.LastNodesSum.ToString().Length >= Tabs.Double
+                        ? Tabs.Triple
+                        : Tabs.Double;
+
+                    var width = indexWidth;
+
+                    console.MarkupInterpolated($"{$"{++index}.".PadRight(indexWidth)}");
+
+                    for (var iterator = 0; iterator < path.Count; iterator++)
                     {
-                        currentWidth += item.Length + 8;
-                        if (currentWidth >= width)
+                        var item = path.ElementAt(iterator);
+                        var isLastItem = iterator == path.Count - 1;
+                        width +=
+                            item.Length +
+                            (isLastItem
+                                ? Tabs.Double
+                                : Tabs.Triple);
+
+                        if (width >= maxWidth)
                         {
-                            currentWidth = iWidth + 2;
+                            width = indexWidth + Tabs.Single;
                             console.WriteLine();
-                            console.Write(string.Empty.PadRight(currentWidth));
+                            console.Write(string.Empty.PadRight(width));
                         }
 
-                        console.MarkupInterpolated(item.Contains(request.PackageName)
-                            ? $"{item.Red()} > "
-                            : (FormattableString) $"{item} > ");
+                        console.MarkupInterpolated(
+                            item.Contains(request.PackageName)
+                                ? item.Red()
+                                : $"{item}");
+                        if (!isLastItem)
+                            console.MarkupInterpolated($" {Characters.Separator} ");
                     }
 
-                    currentWidth += line.Last().Length + 4;
-                    if (currentWidth >= width)
-                    {
-                        currentWidth = iWidth + 2;
-                        console.WriteLine();
-                        console.Write(string.Empty.PadRight(currentWidth));
-                    }
-
-                    console.MarkupInterpolated(line.Last().Contains(request.PackageName)
-                        ? line.Last().Red()
-                        : $"{line.Last()}");
                     console.WriteLine();
                 }
             }
@@ -107,29 +106,64 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
         }
     }
 
-    private static IEnumerable<List<string>> FindPathsToLeaves(Node node1)
+    private static int GetLongestNodeNameLength(Node node) =>
+        GetLongestNodeName(node).Length + Tabs.Double;
+
+    private static string GetLongestNodeName(Node node)
     {
-        if (node1 is null)
+        if (node is null)
+            return string.Empty;
+
+        var longestNodeName = node
+            .Nodes
+            .Where(n => string.IsNullOrEmpty(n.Version))
+            .Select(GetLongestNodeName)
+            .MaxBy(name => name.Length);
+
+        return node.Name.Length >= (longestNodeName?.Length ?? default)
+            ? node.Name
+            : longestNodeName;
+    }
+
+    private FormattableString GetHeaderLabel(
+        int level,
+        Node node,
+        int nameWidth,
+        int parentLastNodesSum = default)
+    {
+        var prefix = new string(Characters.Level, level).PadRight(Tabs.Double);
+        var name = node.Name.PadRight(nameWidth);
+        var suffixText = parentLastNodesSum is 0
+            ? $"[{node.LastNodesSum}]"
+            : $"[{node.LastNodesSum}/{parentLastNodesSum}]";
+        var suffix = suffixText.PadLeft(Tabs.Triple * Tabs.Single);
+
+        return _headerLabelsColors[level]($"{prefix}{name}{suffix}");
+    }
+
+    private static IEnumerable<List<string>> GetPaths(Node node)
+    {
+        if (node is null)
             return Enumerable.Empty<List<string>>();
 
-        var value = node1.ToString();
+        var nodeValue = node.ToString();
 
-        if (!node1.Nodes.Any())
+        if (!node.Nodes.Any())
             return new List<List<string>>
             {
                 new()
                 {
-                    value
+                    nodeValue
                 }
             };
 
         var paths = new List<List<string>>();
-        foreach (var child in node1.Nodes)
+        foreach (var childNode in node.Nodes)
         {
-            var childPaths = FindPathsToLeaves(child);
+            var childPaths = GetPaths(childNode);
             foreach (var childPath in childPaths)
             {
-                childPath.Insert(0, value);
+                childPath.Insert(0, nodeValue);
                 paths.Add(childPath.ToList());
             }
         }
@@ -137,24 +171,23 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
         return paths;
     }
 
-    private static string FindLongestNodeName(Node node)
-    {
-        if (node is null) return string.Empty;
-
-        var longestChildName = node.Nodes
-            .Where(n => string.IsNullOrEmpty(n.Version))
-            .Select(FindLongestNodeName)
-            .MaxBy(name => name.Length);
-
-        return node.Name.Length >= (longestChildName?.Length ?? 0)
-            ? node.Name
-            : longestChildName;
-    }
-
     private void Log(IEnumerable<string> errors)
     {
         console.MarkupLineInterpolated("Errors:".Bold());
         foreach (var error in errors)
             console.MarkupLineInterpolated(error.Red());
+    }
+
+    private static class Characters
+    {
+        public const char Level = '*';
+        public const char Separator = '>';
+    }
+
+    private static class Tabs
+    {
+        public const int Single = 2;
+        public const int Double = 4;
+        public const int Triple = 6;
     }
 }
