@@ -1,7 +1,7 @@
 | ![](https://raw.githubusercontent.com/tadamczyk/DotNetWhy/master/assets/logo/256/logo.png) |
 |:--:|
-| `dotnet why` - a .NET global tool to show information about why a NuGet package is installed. |
-| ![GitHub](https://img.shields.io/github/license/tadamczyk/DotNetWhy) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/tadamczyk/DotNetWhy/build.yml?branch=master) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/tadamczyk/DotNetWhy/release.yml?label=release) ![Nuget](https://img.shields.io/nuget/v/DotNetWhy?label=version) ![Nuget](https://img.shields.io/nuget/dt/DotNetWhy) ![GitHub issues](https://img.shields.io/github/issues/tadamczyk/DotNetWhy) ![GitHub pull requests](https://img.shields.io/github/issues-pr/tadamczyk/DotNetWhy) |
+| `dotnet why` - a .NET global tool to show information about why a NuGet package is installed |
+| ![Nuget](https://img.shields.io/nuget/v/DotNetWhy?label=version) ![GitHub](https://img.shields.io/github/license/tadamczyk/DotNetWhy) ![Nuget](https://img.shields.io/nuget/dt/DotNetWhy) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/tadamczyk/DotNetWhy/build.yml?branch=master) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/tadamczyk/DotNetWhy/release.yml?label=release) ![GitHub issues](https://img.shields.io/github/issues/tadamczyk/DotNetWhy) ![GitHub pull requests](https://img.shields.io/github/issues-pr/tadamczyk/DotNetWhy) |
 
 ## Installation
 
