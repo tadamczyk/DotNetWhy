@@ -6,6 +6,6 @@ public static class Cli
         ApplicationBuilder
             .AddServices()
             .AsTypeRegistrar()
-            .ForCommandApplication<DotNetWhyCommand>()
+            .ForCommandApplication<DotNetWhyCommand>("dotnet why")
             .Run(args);
 }

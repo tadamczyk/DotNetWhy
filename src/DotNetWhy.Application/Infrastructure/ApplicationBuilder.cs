@@ -13,7 +13,15 @@ internal static class ApplicationBuilder
         new TypeRegistrar(services);
 
     public static ICommandApp ForCommandApplication<TCommand>(
-        this ITypeRegistrar typeRegistrar)
-        where TCommand : class, ICommand =>
-        new CommandApp<TCommand>(typeRegistrar);
+        this ITypeRegistrar typeRegistrar,
+        string applicationName = null)
+        where TCommand : class, ICommand
+    {
+        var commandApplication = new CommandApp<TCommand>(typeRegistrar);
+
+        if (!string.IsNullOrEmpty(applicationName))
+            commandApplication.Configure(configurator => configurator.SetApplicationName(applicationName));
+
+        return commandApplication;
+    }
 }
