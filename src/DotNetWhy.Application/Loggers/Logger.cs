@@ -26,6 +26,7 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
     public Response LogAction(Func<Response> getResponse) =>
         console
             .Status()
+            .Spinner(Spinner.Known.Line)
             .SpinnerStyle(new Style(Color.Green))
             .Start("Analyzing...", _ => getResponse());
 
