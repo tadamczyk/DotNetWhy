@@ -41,7 +41,7 @@ internal static class Extensions
             ? nodeResult.Value.HasNodes
                 ? new Response(nodeResult.Value)
                 : new Response(new[] {Errors.PackageNotFound})
-            : new Response(nodeResult.Error.Split(Errors.Splitter));
+            : new Response(nodeResult.Error.Split(Errors.Splitter).Distinct());
 
     private static class Errors
     {
