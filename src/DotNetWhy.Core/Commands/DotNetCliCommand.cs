@@ -28,6 +28,9 @@ internal sealed class DotNetCliCommand
 
             process.Start();
 
+            var getError = process.StandardError.ReadToEndAsync();
+            var getOutput = process.StandardOutput.ReadToEndAsync();
+
             var processExited = process.WaitForExit(TimeoutMilliseconds);
 
             if (processExited)
@@ -36,7 +39,7 @@ internal sealed class DotNetCliCommand
 
                 if (isSuccess) return Result.Success();
 
-                var error = process.StandardError.ReadToEnd();
+                var error = getError.Result;
 
                 return Result.Failure(error);
             }
