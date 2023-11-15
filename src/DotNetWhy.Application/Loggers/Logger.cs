@@ -64,9 +64,9 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
                 var paths = target.Nodes.SelectMany(GetPaths);
                 foreach (var path in paths)
                 {
-                    var indexWidth = target.LastNodesSum.ToString().Length >= Tabs.Double
-                        ? Tabs.Triple
-                        : Tabs.Double;
+                    var indexWidth = target.LastNodesSum.ToString().Length < Tabs.Double
+                        ? Tabs.Double
+                        : Tabs.Triple;
 
                     var width = indexWidth;
 
@@ -74,25 +74,21 @@ internal sealed class Logger(IAnsiConsole console) : ILogger
 
                     for (var iterator = 0; iterator < path.Count; iterator++)
                     {
-                        var item = path.ElementAt(iterator);
                         var isLastItem = iterator == path.Count - 1;
-                        width +=
-                            item.Length +
-                            (isLastItem
-                                ? Tabs.Double
-                                : Tabs.Triple);
+                        var item = path[iterator];
+                        var itemWidth = item.Length + (isLastItem ? 0 : 3);
+                        width += itemWidth;
 
                         if (width >= maxWidth)
                         {
-                            width = indexWidth + Tabs.Single;
+                            var nextLineTabWidth = indexWidth + Tabs.Single;
+                            width = nextLineTabWidth + itemWidth;
                             console.WriteLine();
-                            console.Write(string.Empty.PadRight(width));
+                            console.Write(string.Empty.PadRight(nextLineTabWidth));
                         }
 
-                        console.MarkupInterpolated(
-                            item.Contains(request.PackageName)
-                                ? item.Red()
-                                : $"{item}");
+                        console.MarkupInterpolated(item.Contains(request.PackageName) ? item.Red() : $"{item}");
+
                         if (!isLastItem)
                             console.MarkupInterpolated($" {Characters.Separator} ");
                     }
