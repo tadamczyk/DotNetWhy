@@ -6,18 +6,23 @@ internal sealed class WorkingDirectoryValidator
 ) : IResultHandler
 {
     private const StringComparison StringComparisonType = StringComparison.InvariantCultureIgnoreCase;
-    private const string ProjectFileExtension = ".csproj";
+    private const string CSharpProjectFileExtension = ".csproj";
+    private const string FSharpProjectFileExtension = ".fsproj";
     private const string SolutionFileExtension = ".sln";
 
     public Result Handle()
     {
         var workingDirectoryFiles = Directory.GetFiles(workingDirectory);
-        var workingDirectoryContainsProject = workingDirectoryFiles
-            .Any(file => file.EndsWith(ProjectFileExtension, StringComparisonType));
+        var workingDirectoryContainsCSharpProject = workingDirectoryFiles
+            .Any(file => file.EndsWith(CSharpProjectFileExtension, StringComparisonType));
+        var workingDirectoryContainsFSharpProject = workingDirectoryFiles
+            .Any(file => file.EndsWith(FSharpProjectFileExtension, StringComparisonType));
         var workingDirectoryContainsSolution = workingDirectoryFiles
             .Any(file => file.EndsWith(SolutionFileExtension, StringComparisonType));
 
-        return workingDirectoryContainsProject || workingDirectoryContainsSolution
+        return workingDirectoryContainsCSharpProject ||
+               workingDirectoryContainsFSharpProject ||
+               workingDirectoryContainsSolution
             ? Result.Success()
             : Result.Failure(Errors.DirectoryWithoutAnyProject(workingDirectory));
     }
@@ -25,6 +30,6 @@ internal sealed class WorkingDirectoryValidator
     private static class Errors
     {
         public static string DirectoryWithoutAnyProject(string workingDirectory) =>
-            $"Directory {workingDirectory} does not contain any C# project.";
+            $"Directory {workingDirectory} does not contain any C#/F# project.";
     }
 }
