@@ -1,3 +1,11 @@
+> **This project is no longer maintained.**
+>
+> The functionality provided by this tool has been superseded by the native `dotnet nuget why` command introduced in the .NET CLI.
+> We recommend using the official command for future development.
+> For more information, please refer to the [official documentation](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-why).
+
+----
+
 | ![](https://raw.githubusercontent.com/tadamczyk/DotNetWhy/master/assets/logo/256/logo.png) |
 |:--:|
 | `dotnet why` - a .NET global tool to show information about why a NuGet package is installed |
